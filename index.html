@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StickVerse - 3D Stickman Gaming Platform</title>
+    <title>StickVerse - 2D Stickman Adventure Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -13,48 +13,48 @@
             font-family: 'Comic Neue', cursive;
         }
         :root {
-            --primary: #00b4ff;
-            --primary-hover: #0094d6;
-            --secondary: #191919;
+            --primary: #00a2ff;
+            --primary-hover: #0088cc;
+            --secondary: #393b3d;
             --accent: #ff6b35;
-            --success: #00d26a;
-            --dark: #0a0a0a;
-            --card-bg: #232527;
-            --card-hover: #2a2d30;
-            --border: #393b3d;
+            --success: #02b757;
+            --dark: #232527;
+            --card-bg: #393b3d;
+            --card-hover: #4a4c4e;
+            --border: #5a5c5e;
             --text: #ffffff;
-            --text-secondary: #9da1a6;
-            --shadow: rgba(0, 0, 0, 0.4);
+            --text-secondary: #b8b8b8;
+            --shadow: rgba(0, 0, 0, 0.5);
         }
         body {
             background-color: var(--dark);
             color: var(--text);
             overflow-x: hidden;
-            font-family: 'Comic Neue', cursive;
         }
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 12px;
         }
         ::-webkit-scrollbar-track {
             background: var(--secondary);
         }
         ::-webkit-scrollbar-thumb {
             background: var(--border);
+            border: 2px solid var(--secondary);
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #555;
+            background: #6a6c6e;
         }
         header {
             background-color: var(--secondary);
-            padding: 12px 24px;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px var(--shadow);
+            box-shadow: 0 2px 4px var(--shadow);
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 3px solid var(--border);
         }
         .logo {
             display: flex;
@@ -62,39 +62,35 @@
             gap: 12px;
         }
         .logo-img {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--primary), #0094d6);
+            width: 42px;
+            height: 42px;
+            background: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
             font-size: 24px;
             color: white;
-            box-shadow: 0 2px 8px rgba(0, 180, 255, 0.3);
+            border: 2px solid var(--border);
         }
         .logo h1 {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), #00d4ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-family: 'Comic Neue', cursive;
+            color: var(--text);
         }
         .search-bar {
             flex: 1;
-            max-width: 500px;
-            margin: 0 24px;
+            max-width: 450px;
+            margin: 0 20px;
             position: relative;
         }
         .search-bar input {
             width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border);
-            background-color: var(--card-bg);
+            padding: 10px 14px;
+            border: 2px solid var(--border);
+            background-color: var(--dark);
             color: var(--text);
-            font-family: 'Comic Neue', cursive;
+            font-size: 14px;
         }
         .search-bar input:focus {
             outline: none;
@@ -102,39 +98,40 @@
         }
         .user-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
         }
         .btn {
-            padding: 10px 20px;
-            border: none;
+            padding: 8px 18px;
+            border: 2px solid var(--border);
             cursor: pointer;
             font-weight: 600;
             font-size: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
-            font-family: 'Comic Neue', cursive;
+            background-color: var(--card-bg);
+            color: var(--text);
+        }
+        .btn:hover {
+            background-color: var(--card-hover);
+            border-color: var(--primary);
         }
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary), #0094d6);
+            background: var(--primary);
             color: white;
-            box-shadow: 0 4px 12px rgba(0, 180, 255, 0.3);
+            border-color: var(--primary);
         }
         .btn-primary:hover {
-            background: linear-gradient(135deg, #0094d6, var(--primary));
+            background: var(--primary-hover);
         }
         .btn-secondary {
             background-color: var(--card-bg);
             color: var(--text);
-            border: 1px solid var(--border);
-        }
-        .btn-secondary:hover {
-            background-color: var(--card-hover);
-            border-color: var(--primary);
         }
         .btn-logout {
             background-color: var(--accent);
+            border-color: var(--accent);
             color: white;
         }
         .btn-logout:hover {
@@ -142,6 +139,7 @@
         }
         .btn-danger {
             background-color: #dc3545;
+            border-color: #dc3545;
             color: white;
             padding: 6px 12px;
             font-size: 12px;
@@ -149,27 +147,46 @@
         .btn-danger:hover {
             background-color: #c82333;
         }
+        .inbox-btn {
+            position: relative;
+        }
+        .inbox-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            border: 2px solid var(--secondary);
+        }
         nav {
             background-color: var(--secondary);
-            padding: 0 24px;
-            border-bottom: 1px solid var(--border);
+            padding: 0 20px;
+            border-bottom: 2px solid var(--border);
         }
         .nav-tabs {
             display: flex;
             list-style: none;
-            gap: 8px;
+            gap: 4px;
         }
         .nav-tabs li {
-            padding: 16px 24px;
+            padding: 14px 22px;
             cursor: pointer;
-            border-bottom: 3px solid transparent;
+            border-bottom: 4px solid transparent;
             font-weight: 600;
             color: var(--text-secondary);
         }
         .nav-tabs li.active {
-            border-bottom: 3px solid var(--primary);
-            color: var(--primary);
-            background-color: rgba(0, 180, 255, 0.1);
+            border-bottom: 4px solid var(--primary);
+            color: var(--text);
+            background-color: rgba(0, 162, 255, 0.15);
         }
         .nav-tabs li:hover {
             background-color: var(--card-bg);
@@ -180,45 +197,48 @@
             min-height: calc(100vh - 130px);
         }
         .sidebar {
-            width: 280px;
+            width: 260px;
             background-color: var(--secondary);
-            padding: 24px;
-            border-right: 1px solid var(--border);
+            padding: 20px;
+            border-right: 2px solid var(--border);
         }
         .sidebar-section {
-            margin-bottom: 32px;
+            margin-bottom: 28px;
         }
         .sidebar-section h3 {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             color: var(--text);
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-family: 'Comic Neue', cursive;
+            letter-spacing: 0.5px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
         }
         .friend-item {
-            padding: 12px;
+            padding: 10px;
             margin-bottom: 6px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            border: 1px solid var(--border);
+            gap: 10px;
+            border: 2px solid var(--border);
             cursor: pointer;
             background-color: var(--card-bg);
         }
         .friend-item:hover {
             background-color: var(--card-hover);
+            border-color: var(--primary);
         }
         .friend-avatar {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--primary), #0094d6);
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
+            border: 2px solid var(--border);
         }
         .friend-status {
             width: 10px;
@@ -228,11 +248,11 @@
         }
         .status-online {
             background-color: var(--success);
-            box-shadow: 0 0 8px var(--success);
+            box-shadow: 0 0 6px var(--success);
         }
         .main-content {
             flex: 1;
-            padding: 24px;
+            padding: 20px;
             overflow-y: auto;
             background-color: var(--dark);
         }
@@ -243,78 +263,71 @@
             display: block;
         }
         .hero-banner {
-            background: linear-gradient(135deg, #00b4ff, #0061ff);
-            padding: 48px;
-            margin-bottom: 24px;
+            background: var(--primary);
+            padding: 40px;
+            margin-bottom: 20px;
             text-align: center;
-            border: 2px solid var(--border);
+            border: 3px solid var(--border);
         }
         .hero-banner h2 {
-            font-size: 42px;
-            margin-bottom: 12px;
+            font-size: 38px;
+            margin-bottom: 10px;
             font-weight: 700;
-            font-family: 'Comic Neue', cursive;
         }
         .hero-banner p {
-            font-size: 18px;
+            font-size: 17px;
             max-width: 600px;
-            margin: 0 auto 24px;
-            opacity: 0.95;
-            font-family: 'Comic Neue', cursive;
+            margin: 0 auto 20px;
         }
         .events-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px;
-            margin-top: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
         .event-card {
             background-color: var(--card-bg);
             overflow: hidden;
-            border: 1px solid var(--border);
+            border: 3px solid var(--border);
         }
         .event-card:hover {
             border-color: var(--primary);
         }
         .event-card-content {
-            padding: 20px;
+            padding: 18px;
         }
         .event-card h3 {
-            margin-bottom: 12px;
-            font-size: 20px;
+            margin-bottom: 10px;
+            font-size: 19px;
             font-weight: 700;
-            font-family: 'Comic Neue', cursive;
         }
         .event-card p {
             color: var(--text-secondary);
             font-size: 14px;
-            line-height: 1.6;
-            font-family: 'Comic Neue', cursive;
+            line-height: 1.5;
         }
         .avatar-container {
-            display: flex;
-            gap: 24px;
-            margin-top: 24px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 20px;
+            margin-top: 20px;
         }
         .avatar-viewer {
-            flex: 1;
             background-color: var(--card-bg);
-            padding: 32px;
+            padding: 30px;
             text-align: center;
-            min-height: 500px;
+            min-height: 450px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 12px var(--shadow);
+            border: 3px solid var(--border);
         }
         .stickman-avatar {
             width: 200px;
             height: 300px;
             position: relative;
-            margin-bottom: 32px;
-            image-rendering: pixelated;
+            margin-bottom: 30px;
         }
         .stickman-body {
             position: absolute;
@@ -370,76 +383,39 @@
             transform: rotate(30deg);
             transform-origin: left center;
         }
-        .accessory-hat {
+        .accessory-layer {
             position: absolute;
-            width: 40px;
-            height: 40px;
-            top: 10px;
-            left: 80px;
-            display: none;
-        }
-        .accessory-face {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            top: 10px;
-            left: 80px;
-            display: none;
-        }
-        .accessory-shirt {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            top: 50px;
-            left: 70px;
-            display: none;
-        }
-        .accessory-pants {
-            position: absolute;
-            width: 50px;
-            height: 60px;
-            top: 110px;
-            left: 75px;
-            display: none;
-        }
-        .accessory-glasses {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            top: 10px;
-            left: 80px;
-            display: none;
+            pointer-events: none;
         }
         .accessories-panel {
-            width: 380px;
             background-color: var(--card-bg);
-            padding: 24px;
-            max-height: 800px;
+            padding: 20px;
+            max-height: 900px;
             overflow-y: auto;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 12px var(--shadow);
+            border: 3px solid var(--border);
         }
         .accessory-category {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
         .accessory-category h4 {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             color: var(--text);
             font-size: 14px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-family: 'Comic Neue', cursive;
+            letter-spacing: 0.5px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--border);
         }
         .accessory-items {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 10px;
         }
         .accessory-item {
             width: 100%;
             aspect-ratio: 1;
-            background-color: var(--secondary);
+            background-color: var(--dark);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -451,10 +427,11 @@
         }
         .accessory-item:hover {
             border-color: var(--primary);
+            background-color: var(--secondary);
         }
         .accessory-item.selected {
-            border-color: var(--accent);
-            background-color: rgba(255, 107, 53, 0.2);
+            border-color: var(--success);
+            background-color: rgba(2, 183, 87, 0.2);
         }
         .accessory-item-preview {
             width: 100%;
@@ -466,12 +443,11 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            background: rgba(0,0,0,0.9);
             padding: 4px;
             font-size: 10px;
             text-align: center;
             color: white;
-            font-family: 'Comic Neue', cursive;
         }
         .delete-accessory {
             position: absolute;
@@ -479,7 +455,7 @@
             right: 4px;
             width: 20px;
             height: 20px;
-            background-color: rgba(220, 53, 69, 0.9);
+            background-color: rgba(220, 53, 69, 0.95);
             border: none;
             color: white;
             font-size: 12px;
@@ -488,6 +464,7 @@
             align-items: center;
             justify-content: center;
             z-index: 10;
+            font-weight: bold;
         }
         .accessory-item:hover .delete-accessory {
             display: flex;
@@ -497,72 +474,65 @@
         }
         .creator-tool {
             background-color: var(--card-bg);
-            padding: 24px;
-            margin-top: 24px;
-            border: 1px solid var(--border);
+            padding: 20px;
+            margin-top: 20px;
+            border: 3px solid var(--border);
         }
         .creator-tool h3 {
-            margin-bottom: 20px;
-            font-size: 18px;
+            margin-bottom: 16px;
+            font-size: 17px;
             font-weight: 700;
-            font-family: 'Comic Neue', cursive;
         }
         .tool-options {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 16px;
         }
         .tool-btn {
-            padding: 10px 16px;
-            background-color: var(--secondary);
-            border: 1px solid var(--border);
+            padding: 10px;
+            background-color: var(--dark);
+            border: 2px solid var(--border);
             color: var(--text);
             cursor: pointer;
             font-weight: 600;
-            font-family: 'Comic Neue', cursive;
+            font-size: 13px;
         }
         .tool-btn:hover {
             border-color: var(--primary);
-            background-color: var(--card-hover);
+            background-color: var(--secondary);
         }
         .tool-btn.active {
-            background: linear-gradient(135deg, var(--primary), #0094d6);
+            background: var(--primary);
             border-color: var(--primary);
             color: white;
         }
-        .creator-canvas-container {
-            display: flex;
-            gap: 24px;
-            margin-bottom: 20px;
-        }
-        .canvas-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .creator-canvas-wrapper {
+            margin-bottom: 16px;
         }
         .canvas-label {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            color: var(--text-secondary);
+            color: var(--text);
+            margin-bottom: 8px;
             text-align: center;
-            font-family: 'Comic Neue', cursive;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .creator-canvas {
             width: 100%;
-            aspect-ratio: 1;
-            background-color: var(--secondary);
-            border: 2px solid var(--border);
+            height: 280px;
+            background-color: var(--dark);
+            border: 3px solid var(--border);
             position: relative;
             cursor: crosshair;
-            image-rendering: pixelated;
+            margin-bottom: 12px;
         }
         .preview-area {
             width: 100%;
-            aspect-ratio: 1;
-            background-color: var(--secondary);
-            border: 2px solid var(--border);
+            height: 280px;
+            background-color: var(--dark);
+            border: 3px solid var(--border);
             position: relative;
             display: flex;
             align-items: center;
@@ -570,13 +540,13 @@
         }
         .pixel {
             position: absolute;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.02);
         }
         .color-picker {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
-            gap: 8px;
-            margin-bottom: 20px;
+            gap: 6px;
+            margin-bottom: 16px;
         }
         .color-option {
             aspect-ratio: 1;
@@ -584,51 +554,49 @@
             border: 3px solid transparent;
         }
         .color-option:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
         .color-option.selected {
             border-color: white;
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
         }
         .profile-header {
             display: flex;
-            gap: 24px;
-            margin-bottom: 32px;
+            gap: 20px;
+            margin-bottom: 28px;
             background-color: var(--card-bg);
-            padding: 32px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 12px var(--shadow);
+            padding: 28px;
+            border: 3px solid var(--border);
         }
         .profile-avatar {
-            width: 180px;
-            height: 180px;
-            background: linear-gradient(135deg, var(--secondary), var(--card-bg));
+            width: 160px;
+            height: 160px;
+            background: var(--dark);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
-            border: 2px solid var(--border);
+            border: 3px solid var(--border);
         }
         .profile-stickman {
             width: 100%;
             height: 100%;
             position: relative;
-            transform: scale(0.8);
+            transform: scale(0.7);
         }
         .profile-info {
             flex: 1;
         }
         .profile-info h2 {
             margin-bottom: 8px;
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 700;
-            font-family: 'Comic Neue', cursive;
         }
         .profile-badges {
             display: flex;
             gap: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             flex-wrap: wrap;
         }
         .badge {
@@ -640,89 +608,77 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
-            font-family: 'Comic Neue', cursive;
+            border: 2px solid var(--border);
         }
         .badge-icon {
-            width: 16px;
-            height: 16px;
-            background-color: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            color: #ffd700;
+            font-size: 14px;
         }
         .profile-info p {
             color: var(--text-secondary);
-            margin-bottom: 20px;
-            font-family: 'Comic Neue', cursive;
+            margin-bottom: 18px;
+            font-size: 14px;
         }
         .profile-stats {
             display: flex;
-            gap: 32px;
+            gap: 28px;
         }
         .stat {
             text-align: center;
         }
         .stat-value {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), #00d4ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-family: 'Comic Neue', cursive;
+            color: var(--primary);
         }
         .stat-label {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-family: 'Comic Neue', cursive;
+            letter-spacing: 0.5px;
         }
         .profile-content {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 24px;
+            gap: 20px;
         }
         .about-section, .wearing-section {
             background-color: var(--card-bg);
-            padding: 24px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 12px var(--shadow);
+            padding: 20px;
+            border: 3px solid var(--border);
         }
         .about-section h3, .wearing-section h3 {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
-            font-family: 'Comic Neue', cursive;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
         }
         .edit-btn {
             background: none;
-            border: none;
+            border: 2px solid var(--border);
             color: var(--primary);
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            padding: 6px 12px;
-            font-family: 'Comic Neue', cursive;
+            padding: 4px 10px;
+            background-color: var(--dark);
         }
         .edit-btn:hover {
-            background-color: rgba(0, 180, 255, 0.1);
+            background-color: var(--secondary);
+            border-color: var(--primary);
         }
         .wearing-items {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            gap: 10px;
         }
         .wearing-item {
             aspect-ratio: 1;
-            background-color: var(--secondary);
+            background-color: var(--dark);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -732,30 +688,29 @@
         .no-friends {
             text-align: center;
             color: var(--text-secondary);
-            padding: 32px;
+            padding: 28px;
             font-size: 14px;
-            font-family: 'Comic Neue', cursive;
         }
         .currency-display {
             display: flex;
             align-items: center;
             gap: 8px;
-            background-color: var(--card-bg);
-            padding: 8px 16px;
-            border: 1px solid var(--border);
+            background-color: var(--dark);
+            padding: 8px 14px;
+            border: 2px solid var(--border);
             font-weight: 600;
-            font-family: 'Comic Neue', cursive;
         }
         .pencil-icon {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             background: linear-gradient(135deg, #ffd700, #ffed4e);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: #000;
+            border: 2px solid var(--border);
         }
         .modal {
             display: none;
@@ -764,7 +719,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.85);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -776,53 +731,56 @@
             background-color: var(--card-bg);
             width: 420px;
             max-width: 90%;
-            padding: 32px;
+            padding: 28px;
             position: relative;
-            border: 1px solid var(--border);
-            box-shadow: 0 12px 48px var(--shadow);
+            border: 3px solid var(--border);
+            box-shadow: 0 8px 32px var(--shadow);
         }
         .close-modal {
             position: absolute;
-            top: 16px;
-            right: 16px;
-            background: none;
-            border: none;
+            top: 12px;
+            right: 12px;
+            background: var(--dark);
+            border: 2px solid var(--border);
             color: var(--text-secondary);
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .close-modal:hover {
-            background-color: var(--secondary);
-            color: var(--text);
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
         }
         .modal h2 {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             text-align: center;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
-            font-family: 'Comic Neue', cursive;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
         }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: var(--text);
             font-weight: 600;
             font-size: 14px;
-            font-family: 'Comic Neue', cursive;
         }
         .form-group input, .form-group select {
             width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border);
-            background-color: var(--secondary);
+            padding: 10px 12px;
+            border: 2px solid var(--border);
+            background-color: var(--dark);
             color: var(--text);
             font-size: 14px;
-            font-family: 'Comic Neue', cursive;
         }
         .form-group input:focus, .form-group select:focus {
             outline: none;
@@ -830,18 +788,17 @@
         }
         .form-actions {
             display: flex;
-            gap: 12px;
-            margin-top: 24px;
+            gap: 10px;
+            margin-top: 20px;
         }
         .form-actions .btn {
             flex: 1;
         }
         .switch-auth {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 16px;
             color: var(--text-secondary);
-            font-size: 14px;
-            font-family: 'Comic Neue', cursive;
+            font-size: 13px;
         }
         .switch-auth a {
             color: var(--primary);
@@ -853,19 +810,18 @@
         }
         .notification {
             position: fixed;
-            top: 24px;
-            right: 24px;
+            top: 20px;
+            right: 20px;
             background-color: var(--card-bg);
-            padding: 16px 20px;
+            padding: 14px 18px;
             border-left: 4px solid var(--primary);
-            box-shadow: 0 8px 24px var(--shadow);
+            border: 3px solid var(--border);
+            box-shadow: 0 4px 16px var(--shadow);
             z-index: 1001;
-            max-width: 320px;
+            max-width: 300px;
             opacity: 0;
             transform: translateX(100%);
             transition: all 0.3s ease;
-            border: 1px solid var(--border);
-            font-family: 'Comic Neue', cursive;
         }
         .notification.show {
             opacity: 1;
@@ -886,24 +842,23 @@
             left: 0;
             width: 100%;
             background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            margin-top: 8px;
-            max-height: 400px;
+            border: 2px solid var(--border);
+            margin-top: 6px;
+            max-height: 380px;
             overflow-y: auto;
             z-index: 10;
             display: none;
-            box-shadow: 0 8px 24px var(--shadow);
         }
         .search-results.active {
             display: block;
         }
         .search-result-item {
-            padding: 12px 16px;
+            padding: 12px 14px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             cursor: pointer;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 2px solid var(--border);
         }
         .search-result-item:last-child {
             border-bottom: none;
@@ -912,66 +867,128 @@
             background-color: var(--secondary);
         }
         .search-result-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary), #0094d6);
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
             font-weight: bold;
+            border: 2px solid var(--border);
         }
-        .follow-btn {
-            padding: 6px 16px;
-            background: linear-gradient(135deg, var(--primary), #0094d6);
-            border: none;
+        .add-friend-btn {
+            padding: 6px 14px;
+            background: var(--success);
+            border: 2px solid var(--success);
             color: white;
             cursor: pointer;
             font-size: 12px;
             font-weight: 600;
             margin-left: auto;
-            font-family: 'Comic Neue', cursive;
         }
-        .follow-btn:hover {
-            transform: scale(1.05);
+        .add-friend-btn:hover {
+            background: #01a049;
         }
-        .follow-btn.following {
+        .add-friend-btn.pending {
             background: var(--secondary);
-            border: 1px solid var(--border);
+            border-color: var(--border);
+        }
+        .add-friend-btn.friends {
+            background: var(--dark);
+            border-color: var(--border);
         }
         .preview-stickman {
             width: 200px;
             height: 300px;
             position: relative;
         }
+        .inbox-panel {
+            background-color: var(--card-bg);
+            border: 3px solid var(--border);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .inbox-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+        }
+        .friend-request-item {
+            background-color: var(--dark);
+            border: 2px solid var(--border);
+            padding: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .friend-request-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            border: 2px solid var(--border);
+        }
+        .friend-request-info {
+            flex: 1;
+        }
+        .friend-request-username {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .friend-request-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .accept-btn, .decline-btn {
+            padding: 6px 14px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .accept-btn {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        .accept-btn:hover {
+            background: #01a049;
+        }
+        .decline-btn {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+        .decline-btn:hover {
+            background: #e55a2b;
+        }
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
             }
-           
             .sidebar {
                 width: 100%;
                 order: 2;
             }
-           
             .avatar-container {
-                flex-direction: column;
+                grid-template-columns: 1fr;
             }
-           
             .accessories-panel {
                 width: 100%;
             }
-           
             .profile-content {
                 grid-template-columns: 1fr;
             }
-           
             .nav-tabs {
                 overflow-x: auto;
-            }
-           
-            .creator-canvas-container {
-                flex-direction: column;
             }
         }
     </style>
@@ -997,6 +1014,7 @@
             <li class="active" data-tab="home">Home</li>
             <li data-tab="avatar">Avatar</li>
             <li data-tab="profile">Profile</li>
+            <li data-tab="inbox" style="display: none;">Inbox</li>
         </ul>
     </nav>
     <div class="container">
@@ -1012,55 +1030,48 @@
             <div class="content-section active" id="home">
                 <div class="hero-banner">
                     <h2>Welcome to StickVerse</h2>
-                    <p>The ultimate 3D stickman gaming platform where creativity meets adventure!</p>
-                    <button class="btn btn-primary">Play Now</button>
+                    <p>The ultimate 2D stickman adventure platform where creativity meets fun!</p>
                 </div>
                
-                <h2 style="margin-bottom: 16px; font-size: 28px; font-weight: 700;">Current Event</h2>
+                <h2 style="margin-bottom: 16px; font-size: 26px; font-weight: 700;">Current Event</h2>
                 <div class="events-grid">
                     <div class="event-card">
-                        <div style="background: linear-gradient(135deg, #ff6b35, #ff8c42); height: 180px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold;">
+                        <div style="background: linear-gradient(135deg, #ff6b35, #ff8c42); height: 160px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; border-bottom: 3px solid var(--border);">
                             Accessory Creator Challenge
                         </div>
                         <div class="event-card-content">
                             <h3>Design Your Own Accessories</h3>
                             <p>Create unique accessories for your stickman avatar and earn exclusive rewards!</p>
-                            <p style="margin-top: 12px; color: #ffd700; font-weight: 600;">Prize: 1000 Pencils + First Creator Badge</p>
+                            <p style="margin-top: 10px; color: #ffd700; font-weight: 600;">Prize: 1000 Pencils + Designer Badge</p>
                         </div>
                     </div>
                 </div>
                
-                <h2 style="margin-top: 40px; margin-bottom: 16px; font-size: 28px; font-weight: 700;">What is StickVerse?</h2>
-                <div style="background-color: var(--card-bg); padding: 24px; border: 1px solid var(--border);">
-                    <p style="line-height: 1.8; margin-bottom: 16px;">StickVerse is a revolutionary 3D gaming platform where players can create, share, and play stickman-based games. Our platform offers:</p>
-                    <ul style="margin: 20px 0 20px 24px; line-height: 2;">
+                <h2 style="margin-top: 36px; margin-bottom: 16px; font-size: 26px; font-weight: 700;">What is StickVerse?</h2>
+                <div style="background-color: var(--card-bg); padding: 20px; border: 3px solid var(--border);">
+                    <p style="line-height: 1.7; margin-bottom: 14px;">StickVerse is a revolutionary 2D adventure platform where players can create, share, and play stickman-based games. Our platform offers:</p>
+                    <ul style="margin: 18px 0 18px 24px; line-height: 1.9;">
                         <li>Advanced avatar customization with player-created accessories</li>
                         <li>A growing library of user-created stickman games</li>
                         <li>Social features to connect with friends and other players</li>
                         <li>Regular events with exclusive rewards</li>
                     </ul>
-                    <p style="line-height: 1.8;">Whether you're into action, adventure, or creative games, StickVerse has something for everyone!</p>
+                    <p style="line-height: 1.7;">Whether you're into action, adventure, or creative games, StickVerse has something for everyone!</p>
                 </div>
             </div>
             <div class="content-section" id="avatar">
-                <h2 style="margin-bottom: 24px; font-size: 28px; font-weight: 700;">Avatar Editor</h2>
+                <h2 style="margin-bottom: 20px; font-size: 26px; font-weight: 700;">Avatar Editor</h2>
                 <div class="avatar-container">
                     <div class="avatar-viewer">
-                        <div class="stickman-avatar">
+                        <div class="stickman-avatar" id="main-avatar">
                             <div class="stickman-head"></div>
                             <div class="stickman-body"></div>
                             <div class="stickman-arm-left"></div>
                             <div class="stickman-arm-right"></div>
                             <div class="stickman-leg-left"></div>
                             <div class="stickman-leg-right"></div>
-                           
-                            <div class="accessory-hat" id="current-hat"></div>
-                            <div class="accessory-face" id="current-face"></div>
-                            <div class="accessory-shirt" id="current-shirt"></div>
-                            <div class="accessory-pants" id="current-pants"></div>
-                            <div class="accessory-glasses" id="current-glasses"></div>
                         </div>
-                        <button class="btn btn-primary" id="save-avatar">Save Avatar</button>
+                        <button class="btn btn-secondary" id="remove-all-items">Remove All Items</button>
                     </div>
                     <div class="accessories-panel">
                         <div class="accessory-category">
@@ -1088,25 +1099,23 @@
                                 <div class="color-option" style="background-color: #ffffff;" data-color="#ffffff"></div>
                                 <div class="color-option" style="background-color: #000000;" data-color="#000000"></div>
                                 <div class="color-option" style="background-color: #ff6b35;" data-color="#ff6b35"></div>
-                                <div class="color-option" style="background-color: #00b4ff;" data-color="#00b4ff"></div>
+                                <div class="color-option" style="background-color: #00a2ff;" data-color="#00a2ff"></div>
                             </div>
-                            <div class="creator-canvas-container">
-                                <div class="canvas-wrapper">
-                                    <div class="canvas-label">Drawing Canvas</div>
-                                    <div class="creator-canvas" id="creator-canvas"></div>
-                                </div>
-                                <div class="canvas-wrapper">
-                                    <div class="canvas-label">Live Preview</div>
-                                    <div class="preview-area" id="preview-area">
-                                        <div class="preview-stickman" id="preview-stickman">
-                                            <div class="stickman-head"></div>
-                                            <div class="stickman-body"></div>
-                                            <div class="stickman-arm-left"></div>
-                                            <div class="stickman-arm-right"></div>
-                                            <div class="stickman-leg-left"></div>
-                                            <div class="stickman-leg-right"></div>
-                                            <div class="accessory-preview" id="accessory-preview"></div>
-                                        </div>
+                            <div class="creator-canvas-wrapper">
+                                <div class="canvas-label">Drawing Canvas</div>
+                                <div class="creator-canvas" id="creator-canvas"></div>
+                            </div>
+                            <div class="creator-canvas-wrapper">
+                                <div class="canvas-label">Live Preview</div>
+                                <div class="preview-area" id="preview-area">
+                                    <div class="preview-stickman" id="preview-stickman">
+                                        <div class="stickman-head"></div>
+                                        <div class="stickman-body"></div>
+                                        <div class="stickman-arm-left"></div>
+                                        <div class="stickman-arm-right"></div>
+                                        <div class="stickman-leg-left"></div>
+                                        <div class="stickman-leg-right"></div>
+                                        <div class="accessory-layer" id="accessory-preview"></div>
                                     </div>
                                 </div>
                             </div>
@@ -1179,6 +1188,14 @@
                     </div>
                 </div>
             </div>
+            <div class="content-section" id="inbox">
+                <div class="inbox-panel">
+                    <div class="inbox-header">Friend Requests</div>
+                    <div id="friend-requests-list">
+                        <div class="no-friends">No pending friend requests</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="modal" id="login-modal">
@@ -1235,6 +1252,7 @@
         const server = {
             users: {},
             accessories: {},
+            friendRequests: {},
            
             generateId: function() {
                 return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -1286,46 +1304,73 @@
                 return results;
             },
            
-            followUser: function(follower, target) {
-                if (!this.users[follower] || !this.users[target] || follower === target) return false;
-               
-                if (!this.users[follower].friends) {
-                    this.users[follower].friends = [];
+            sendFriendRequest: function(from, to) {
+                if (!this.friendRequests[to]) {
+                    this.friendRequests[to] = [];
                 }
-               
-                if (!this.users[target].followers) {
-                    this.users[target].followers = [];
-                }
-               
-                if (!this.users[follower].friends.includes(target)) {
-                    this.users[follower].friends.push(target);
-                    this.saveUser(follower, this.users[follower]);
-                   
-                    if (!this.users[target].followers.includes(follower)) {
-                        this.users[target].followers.push(follower);
-                        this.saveUser(target, this.users[target]);
-                    }
-                   
+                if (!this.friendRequests[to].includes(from) && from !== to) {
+                    this.friendRequests[to].push(from);
+                    localStorage.setItem('stickverse_friend_requests', JSON.stringify(this.friendRequests));
                     return true;
                 }
                 return false;
             },
            
-            unfollowUser: function(follower, target) {
-                if (!this.users[follower] || !this.users[target]) return false;
+            acceptFriendRequest: function(user, requester) {
+                if (!this.users[user] || !this.users[requester]) return false;
                
-                if (this.users[follower].friends && this.users[follower].friends.includes(target)) {
-                    this.users[follower].friends = this.users[follower].friends.filter(f => f !== target);
-                    this.saveUser(follower, this.users[follower]);
-                   
-                    if (this.users[target].followers && this.users[target].followers.includes(follower)) {
-                        this.users[target].followers = this.users[target].followers.filter(f => f !== follower);
-                        this.saveUser(target, this.users[target]);
-                    }
-                   
+                if (!this.users[user].friends) this.users[user].friends = [];
+                if (!this.users[requester].friends) this.users[requester].friends = [];
+               
+                if (!this.users[user].friends.includes(requester)) {
+                    this.users[user].friends.push(requester);
+                    this.saveUser(user, this.users[user]);
+                }
+               
+                if (!this.users[requester].friends.includes(user)) {
+                    this.users[requester].friends.push(user);
+                    this.saveUser(requester, this.users[requester]);
+                }
+               
+                if (this.friendRequests[user]) {
+                    this.friendRequests[user] = this.friendRequests[user].filter(r => r !== requester);
+                    localStorage.setItem('stickverse_friend_requests', JSON.stringify(this.friendRequests));
+                }
+               
+                return true;
+            },
+           
+            declineFriendRequest: function(user, requester) {
+                if (this.friendRequests[user]) {
+                    this.friendRequests[user] = this.friendRequests[user].filter(r => r !== requester);
+                    localStorage.setItem('stickverse_friend_requests', JSON.stringify(this.friendRequests));
                     return true;
                 }
                 return false;
+            },
+           
+            getFriendRequests: function(username) {
+                const saved = localStorage.getItem('stickverse_friend_requests');
+                if (saved) {
+                    this.friendRequests = JSON.parse(saved);
+                }
+                return this.friendRequests[username] || [];
+            },
+           
+            removeFriend: function(user1, user2) {
+                if (!this.users[user1] || !this.users[user2]) return false;
+               
+                if (this.users[user1].friends) {
+                    this.users[user1].friends = this.users[user1].friends.filter(f => f !== user2);
+                    this.saveUser(user1, this.users[user1]);
+                }
+               
+                if (this.users[user2].friends) {
+                    this.users[user2].friends = this.users[user2].friends.filter(f => f !== user1);
+                    this.saveUser(user2, this.users[user2]);
+                }
+               
+                return true;
             }
         };
         let currentUser = null;
@@ -1344,13 +1389,14 @@
         let currentColor = '#ff0000';
         let pixels = [];
         let currentAccessoryType = 'hat';
-        const accessorySizes = {
-            hat: { width: 40, height: 40 },
-            face: { width: 40, height: 40 },
-            shirt: { width: 60, height: 60 },
-            pants: { width: 50, height: 60 },
-            glasses: { width: 40, height: 40 }
+        const accessoryPositions = {
+            hat: { width: 40, height: 20, gridSize: 20, top: -10, left: 80 },
+            face: { width: 30, height: 20, gridSize: 20, top: 20, left: 85 },
+            shirt: { width: 20, height: 50, gridSize: 20, top: 50, left: 90 },
+            pants: { width: 20, height: 50, gridSize: 20, top: 110, left: 90 },
+            glasses: { width: 30, height: 10, gridSize: 20, top: 22, left: 85 }
         };
+        
         document.addEventListener('DOMContentLoaded', function() {
             updateUIForLoggedInState();
             updateWearingItems();
@@ -1369,6 +1415,8 @@
                     updateFriendsList();
                     updateAvatarDisplay();
                     updateUserAccessories();
+                    updateFriendRequestsList();
+                    document.querySelector('[data-tab="inbox"]').style.display = 'block';
                 }
             }
            
@@ -1378,16 +1426,27 @@
                 updatePreviewArea();
             });
            
+            document.getElementById('remove-all-items').addEventListener('click', function() {
+                if (currentUser) {
+                    userData.equippedItems = {};
+                    server.saveUser(currentUser, userData);
+                    updateAvatarDisplay();
+                    updateWearingItems();
+                    showNotification('All items removed!', 'success');
+                }
+            });
+           
             updatePreviewArea();
         });
+        
         function setupPixelCanvas() {
             const canvas = document.getElementById('creator-canvas');
             canvas.innerHTML = '';
             pixels = [];
            
-            const size = accessorySizes[currentAccessoryType];
-            const gridSize = Math.max(size.width, size.height);
-            const pixelSize = 300 / gridSize;
+            const config = accessoryPositions[currentAccessoryType];
+            const gridSize = config.gridSize;
+            const pixelSize = 280 / gridSize;
            
             for (let y = 0; y < gridSize; y++) {
                 for (let x = 0; x < gridSize; x++) {
@@ -1409,6 +1468,7 @@
                 }
             }
         }
+        
         function handlePixelClick(e) {
             if (!currentUser) {
                 showNotification('Please log in to create accessories', 'warning');
@@ -1429,14 +1489,16 @@
            
             updatePreview();
         }
+        
         function handlePixelHover(e) {
             if (e.buttons === 1) {
                 handlePixelClick(e);
             }
         }
+        
         function floodFill(x, y, targetColor, replacementColor) {
-            if (x < 0 || x >= accessorySizes[currentAccessoryType].width || 
-                y < 0 || y >= accessorySizes[currentAccessoryType].height) return;
+            if (x < 0 || x >= accessoryPositions[currentAccessoryType].gridSize || 
+                y < 0 || y >= accessoryPositions[currentAccessoryType].gridSize) return;
            
             const pixel = pixels.find(p => parseInt(p.dataset.x) === x && parseInt(p.dataset.y) === y);
             if (!pixel) return;
@@ -1451,6 +1513,7 @@
             floodFill(x, y + 1, targetColor, replacementColor);
             floodFill(x, y - 1, targetColor, replacementColor);
         }
+        
         function setupCreatorTool() {
             document.querySelectorAll('.tool-btn').forEach(btn => {
                 if (btn.id !== 'clear-canvas') {
@@ -1481,60 +1544,30 @@
                 });
             });
         }
+        
         function updatePreviewArea() {
             const accessoryPreview = document.getElementById('accessory-preview');
             accessoryPreview.innerHTML = '';
             accessoryPreview.style.cssText = '';
            
-            const size = accessorySizes[currentAccessoryType];
-           
-            switch(currentAccessoryType) {
-                case 'hat':
-                    accessoryPreview.style.position = 'absolute';
-                    accessoryPreview.style.width = size.width + 'px';
-                    accessoryPreview.style.height = size.height + 'px';
-                    accessoryPreview.style.top = '10px';
-                    accessoryPreview.style.left = '80px';
-                    break;
-                case 'face':
-                    accessoryPreview.style.position = 'absolute';
-                    accessoryPreview.style.width = size.width + 'px';
-                    accessoryPreview.style.height = size.height + 'px';
-                    accessoryPreview.style.top = '10px';
-                    accessoryPreview.style.left = '80px';
-                    break;
-                case 'shirt':
-                    accessoryPreview.style.position = 'absolute';
-                    accessoryPreview.style.width = size.width + 'px';
-                    accessoryPreview.style.height = size.height + 'px';
-                    accessoryPreview.style.top = '50px';
-                    accessoryPreview.style.left = '70px';
-                    break;
-                case 'pants':
-                    accessoryPreview.style.position = 'absolute';
-                    accessoryPreview.style.width = size.width + 'px';
-                    accessoryPreview.style.height = size.height + 'px';
-                    accessoryPreview.style.top = '110px';
-                    accessoryPreview.style.left = '75px';
-                    break;
-                case 'glasses':
-                    accessoryPreview.style.position = 'absolute';
-                    accessoryPreview.style.width = size.width + 'px';
-                    accessoryPreview.style.height = size.height + 'px';
-                    accessoryPreview.style.top = '10px';
-                    accessoryPreview.style.left = '80px';
-                    break;
-            }
+            const config = accessoryPositions[currentAccessoryType];
+            accessoryPreview.style.position = 'absolute';
+            accessoryPreview.style.width = config.width + 'px';
+            accessoryPreview.style.height = config.height + 'px';
+            accessoryPreview.style.top = config.top + 'px';
+            accessoryPreview.style.left = config.left + 'px';
            
             updatePreview();
         }
+        
         function updatePreview() {
             const accessoryPreview = document.getElementById('accessory-preview');
             accessoryPreview.innerHTML = '';
            
-            const size = accessorySizes[currentAccessoryType];
-            const gridSize = Math.max(size.width, size.height);
-            const scale = size.width / gridSize;
+            const config = accessoryPositions[currentAccessoryType];
+            const gridSize = config.gridSize;
+            const scaleX = config.width / gridSize;
+            const scaleY = config.height / gridSize;
            
             for (let y = 0; y < gridSize; y++) {
                 for (let x = 0; x < gridSize; x++) {
@@ -1542,21 +1575,22 @@
                     if (pixel && pixel.style.backgroundColor !== 'transparent') {
                         const previewPixel = document.createElement('div');
                         previewPixel.style.position = 'absolute';
-                        previewPixel.style.left = (x * scale) + 'px';
-                        previewPixel.style.top = (y * scale) + 'px';
-                        previewPixel.style.width = scale + 'px';
-                        previewPixel.style.height = scale + 'px';
+                        previewPixel.style.left = (x * scaleX) + 'px';
+                        previewPixel.style.top = (y * scaleY) + 'px';
+                        previewPixel.style.width = scaleX + 'px';
+                        previewPixel.style.height = scaleY + 'px';
                         previewPixel.style.backgroundColor = pixel.style.backgroundColor;
                         accessoryPreview.appendChild(previewPixel);
                     }
                 }
             }
         }
+        
         document.querySelectorAll('.nav-tabs li').forEach(item => {
             item.addEventListener('click', function() {
                 const tabId = this.getAttribute('data-tab');
                
-                if ((tabId === 'profile' || tabId === 'avatar') && !currentUser) {
+                if ((tabId === 'profile' || tabId === 'avatar' || tabId === 'inbox') && !currentUser) {
                     document.getElementById('signup-modal').classList.add('active');
                     return;
                 }
@@ -1571,8 +1605,13 @@
                     section.classList.remove('active');
                 });
                 document.getElementById(tabId).classList.add('active');
+               
+                if (tabId === 'inbox') {
+                    updateFriendRequestsList();
+                }
             });
         });
+        
         const loginBtn = document.getElementById('login-btn');
         const signupBtn = document.getElementById('signup-btn');
         const loginModal = document.getElementById('login-modal');
@@ -1582,36 +1621,45 @@
         const switchToSignup = document.getElementById('switch-to-signup');
         const switchToLogin = document.getElementById('switch-to-login');
         const closeModalBtns = document.querySelectorAll('.close-modal');
+        
         loginBtn.addEventListener('click', () => {
             loginModal.classList.add('active');
         });
+        
         signupBtn.addEventListener('click', () => {
             signupModal.classList.add('active');
         });
+        
         closeLogin.addEventListener('click', () => {
             loginModal.classList.remove('active');
         });
+        
         closeSignup.addEventListener('click', () => {
             signupModal.classList.remove('active');
         });
+        
         switchToSignup.addEventListener('click', () => {
             loginModal.classList.remove('active');
             signupModal.classList.add('active');
         });
+        
         switchToLogin.addEventListener('click', () => {
             signupModal.classList.remove('active');
             loginModal.classList.add('active');
         });
+        
         closeModalBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 this.closest('.modal').classList.remove('active');
             });
         });
+        
         window.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal')) {
                 e.target.classList.remove('active');
             }
         });
+        
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const username = document.getElementById('login-username').value;
@@ -1634,11 +1682,14 @@
                     updateFriendsList();
                     updateAvatarDisplay();
                     updateUserAccessories();
+                    updateFriendRequestsList();
+                    document.querySelector('[data-tab="inbox"]').style.display = 'block';
                 } else {
                     showNotification('Invalid username or password', 'error');
                 }
             }
         });
+        
         document.getElementById('signup-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const username = document.getElementById('signup-username').value;
@@ -1673,8 +1724,10 @@
                 signupModal.classList.remove('active');
                 updateUIForLoggedInState();
                 updateProfileData();
+                document.querySelector('[data-tab="inbox"]').style.display = 'block';
             }
         });
+        
         document.getElementById('create-accessory').addEventListener('click', function() {
             if (!currentUser) {
                 showNotification('Please log in to create accessories', 'warning');
@@ -1701,7 +1754,7 @@
             }
            
             const pixelData = [];
-            const gridSize = Math.max(accessorySizes[type].width, accessorySizes[type].height);
+            const gridSize = accessoryPositions[type].gridSize;
             for (let y = 0; y < gridSize; y++) {
                 const row = [];
                 for (let x = 0; x < gridSize; x++) {
@@ -1730,10 +1783,10 @@
            
             if (isFirstAccessory) {
                 userData.pencils += 1000;
-                if (!userData.badges.includes('First Creator')) {
-                    userData.badges.push('First Creator');
+                if (!userData.badges.includes('Designer')) {
+                    userData.badges.push('Designer');
                 }
-                showNotification('Congratulations! You earned the "First Creator" badge and 1000 Pencils!', 'success');
+                showNotification('Congratulations! You earned the "Designer" badge and 1000 Pencils!', 'success');
             }
            
             server.saveUser(currentUser, userData);
@@ -1746,6 +1799,7 @@
             setupPixelCanvas();
             updatePreview();
         });
+        
         function deleteAccessory(accessoryId) {
             if (!currentUser) return;
            
@@ -1765,10 +1819,16 @@
                 showNotification('Accessory deleted successfully', 'success');
             }
         }
+        
         function updateUIForLoggedInState() {
             const userActions = document.getElementById('user-actions');
             if (currentUser) {
+                const pendingRequests = server.getFriendRequests(currentUser).length;
                 userActions.innerHTML = `
+                    <button class="btn btn-secondary inbox-btn" id="inbox-btn">
+                        Inbox
+                        ${pendingRequests > 0 ? `<span class="inbox-badge">${pendingRequests}</span>` : ''}
+                    </button>
                     <div class="currency-display">
                         <div class="pencil-icon">P</div>
                         <span id="pencil-count">${userData.pencils || 0}</span>
@@ -1776,6 +1836,14 @@
                     <span style="font-weight: 600;">Welcome, ${currentUser}!</span>
                     <button class="btn btn-logout" id="logout-btn">Log Out</button>
                 `;
+               
+                document.getElementById('inbox-btn').addEventListener('click', function() {
+                    document.querySelectorAll('.nav-tabs li').forEach(tab => tab.classList.remove('active'));
+                    document.querySelector('[data-tab="inbox"]').classList.add('active');
+                    document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+                    document.getElementById('inbox').classList.add('active');
+                    updateFriendRequestsList();
+                });
                
                 document.getElementById('logout-btn').addEventListener('click', function() {
                     if (confirm('Are you sure you want to log out?')) {
@@ -1797,6 +1865,7 @@
                 });
             }
         }
+        
         function updateProfileData() {
             if (currentUser) {
                 document.getElementById('profile-username').textContent = currentUser;
@@ -1813,29 +1882,39 @@
                     userData.badges.forEach(badge => {
                         const badgeEl = document.createElement('div');
                         badgeEl.className = 'badge';
-                        badgeEl.innerHTML = `<div class="badge-icon">★</div>${badge}`;
+                        badgeEl.innerHTML = `<span class="badge-icon">🎩</span>${badge}`;
                         badgesContainer.appendChild(badgeEl);
                     });
                 }
+                
+                const pendingRequests = server.getFriendRequests(currentUser).length;
+                if (pendingRequests > 0) {
+                    updateUIForLoggedInState();
+                }
             }
         }
+        
         function updateUserAccessories() {
             const container = document.getElementById('user-accessories');
             container.innerHTML = '';
            
             if (!userData.createdAccessories || userData.createdAccessories.length === 0) {
-                container.innerHTML = '<div class="no-friends">Create accessories first!</div>';
+                container.innerHTML = '<div class="no-friends" style="grid-column: 1/-1;">Create accessories first!</div>';
                 return;
             }
            
             userData.createdAccessories.forEach(accessory => {
                 const item = document.createElement('div');
                 item.className = 'accessory-item';
+                
+                if (userData.equippedItems[accessory.type] && userData.equippedItems[accessory.type].id === accessory.id) {
+                    item.classList.add('selected');
+                }
                
                 const preview = document.createElement('div');
                 preview.className = 'accessory-item-preview';
                
-                const accGridSize = accessory.gridSize || 40;
+                const accGridSize = accessory.gridSize || 20;
                 const previewScale = 70 / accGridSize;
                
                 for (let y = 0; y < accGridSize; y++) {
@@ -1870,69 +1949,86 @@
                 item.appendChild(preview);
                
                 item.addEventListener('click', function() {
-                    userData.equippedItems[accessory.type] = accessory;
+                    if (userData.equippedItems[accessory.type] && userData.equippedItems[accessory.type].id === accessory.id) {
+                        delete userData.equippedItems[accessory.type];
+                        showNotification('Unequipped ' + accessory.name + '!', 'success');
+                    } else {
+                        userData.equippedItems[accessory.type] = accessory;
+                        showNotification('Equipped ' + accessory.name + '!', 'success');
+                    }
                     updateAvatarDisplay();
                     updateWearingItems();
+                    updateUserAccessories();
                     server.saveUser(currentUser, userData);
-                    showNotification('Equipped ' + accessory.name + '!', 'success');
                 });
                
                 container.appendChild(item);
             });
         }
-        function updateAvatarDisplay() {
-            document.querySelectorAll('[class^="accessory-"]').forEach(el => {
-                if (el.classList.contains('accessory-hat') ||
-                    el.classList.contains('accessory-face') ||
-                    el.classList.contains('accessory-shirt') ||
-                    el.classList.contains('accessory-pants') ||
-                    el.classList.contains('accessory-glasses')) {
-                    el.style.display = 'none';
-                    el.innerHTML = '';
-                }
-            });
+        
+        function renderAccessoryOnAvatar(container, accessory) {
+            const config = accessoryPositions[accessory.type];
+            const accGridSize = accessory.gridSize || 20;
+            const scaleX = config.width / accGridSize;
+            const scaleY = config.height / accGridSize;
            
-            Object.entries(userData.equippedItems).forEach(([type, accessory]) => {
-                const element = document.getElementById('current-' + type);
-                if (element && accessory) {
-                    element.style.display = 'block';
-                   
-                    if (accessory.pixelData) {
-                        element.style.backgroundImage = 'none';
-                        element.style.backgroundColor = 'transparent';
-                        element.innerHTML = '';
-                       
-                        const size = accessorySizes[type];
-                        const accGridSize = accessory.gridSize || 40;
-                        const scale = size.width / accGridSize;
-                       
-                        for (let y = 0; y < accGridSize; y++) {
-                            for (let x = 0; x < accGridSize; x++) {
-                                if (accessory.pixelData[y] && accessory.pixelData[y][x]) {
-                                    const color = accessory.pixelData[y][x];
-                                    if (color !== 'transparent') {
-                                        const pixel = document.createElement('div');
-                                        pixel.style.position = 'absolute';
-                                        pixel.style.left = (x * scale) + 'px';
-                                        pixel.style.top = (y * scale) + 'px';
-                                        pixel.style.width = scale + 'px';
-                                        pixel.style.height = scale + 'px';
-                                        pixel.style.backgroundColor = color;
-                                        element.appendChild(pixel);
-                                    }
-                                }
-                            }
+            const layer = document.createElement('div');
+            layer.className = 'accessory-layer';
+            layer.style.position = 'absolute';
+            layer.style.width = config.width + 'px';
+            layer.style.height = config.height + 'px';
+            layer.style.top = config.top + 'px';
+            layer.style.left = config.left + 'px';
+           
+            for (let y = 0; y < accGridSize; y++) {
+                for (let x = 0; x < accGridSize; x++) {
+                    if (accessory.pixelData && accessory.pixelData[y] && accessory.pixelData[y][x]) {
+                        const color = accessory.pixelData[y][x];
+                        if (color !== 'transparent') {
+                            const pixel = document.createElement('div');
+                            pixel.style.position = 'absolute';
+                            pixel.style.left = (x * scaleX) + 'px';
+                            pixel.style.top = (y * scaleY) + 'px';
+                            pixel.style.width = scaleX + 'px';
+                            pixel.style.height = scaleY + 'px';
+                            pixel.style.backgroundColor = color;
+                            layer.appendChild(pixel);
                         }
                     }
                 }
+            }
+           
+            container.appendChild(layer);
+        }
+        
+        function updateAvatarDisplay() {
+            const mainAvatar = document.getElementById('main-avatar');
+            const existingLayers = mainAvatar.querySelectorAll('.accessory-layer');
+            existingLayers.forEach(layer => layer.remove());
+           
+            Object.entries(userData.equippedItems).forEach(([type, accessory]) => {
+                if (accessory) {
+                    renderAccessoryOnAvatar(mainAvatar, accessory);
+                }
+            });
+            
+            const profileAvatar = document.querySelector('.profile-stickman');
+            const profileLayers = profileAvatar.querySelectorAll('.accessory-layer');
+            profileLayers.forEach(layer => layer.remove());
+           
+            Object.entries(userData.equippedItems).forEach(([type, accessory]) => {
+                if (accessory) {
+                    renderAccessoryOnAvatar(profileAvatar, accessory);
+                }
             });
         }
+        
         function updateWearingItems() {
             const wearingContainer = document.getElementById('wearing-items');
             wearingContainer.innerHTML = '';
            
             if (Object.keys(userData.equippedItems).length === 0) {
-                wearingContainer.innerHTML = '<div class="no-friends">No items equipped</div>';
+                wearingContainer.innerHTML = '<div class="no-friends" style="grid-column: 1/-1;">No items equipped</div>';
                 return;
             }
            
@@ -1941,7 +2037,7 @@
                     const itemElement = document.createElement('div');
                     itemElement.className = 'wearing-item';
                    
-                    const accGridSize = accessory.gridSize || 40;
+                    const accGridSize = accessory.gridSize || 20;
                     const previewScale = 60 / accGridSize;
                    
                     for (let y = 0; y < accGridSize; y++) {
@@ -1966,8 +2062,8 @@
                     label.style.right = '0';
                     label.style.textAlign = 'center';
                     label.style.fontSize = '10px';
-                    label.style.background = 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)';
-                    label.style.padding = '8px 4px 4px';
+                    label.style.background = 'rgba(0,0,0,0.9)';
+                    label.style.padding = '6px 4px 4px';
                     label.style.color = 'white';
                     label.textContent = accessory.name;
                     itemElement.appendChild(label);
@@ -1976,14 +2072,7 @@
                 }
             });
         }
-        document.getElementById('save-avatar').addEventListener('click', function() {
-            if (currentUser) {
-                server.saveUser(currentUser, userData);
-                showNotification('Avatar saved successfully!', 'success');
-            } else {
-                showNotification('Please log in to save your avatar.', 'warning');
-            }
-        });
+        
         document.getElementById('edit-about').addEventListener('click', function() {
             if (currentUser) {
                 const newAbout = prompt('Edit your about me:', userData.aboutMe || '');
@@ -1997,6 +2086,7 @@
                 showNotification('Please log in to edit your profile.', 'warning');
             }
         });
+        
         document.getElementById('user-search').addEventListener('input', function() {
             const query = this.value.trim();
             const resultsContainer = document.getElementById('search-results');
@@ -2016,7 +2106,8 @@
                     const resultItem = document.createElement('div');
                     resultItem.className = 'search-result-item';
                    
-                    const isFollowing = currentUser && userData.friends && userData.friends.includes(user.username);
+                    const isFriend = currentUser && userData.friends && userData.friends.includes(user.username);
+                    const hasPendingRequest = currentUser && server.getFriendRequests(user.username).includes(currentUser);
                    
                     resultItem.innerHTML = `
                         <div class="search-result-avatar">${user.username.substring(0, 1).toUpperCase()}</div>
@@ -2025,35 +2116,35 @@
                             <div style="font-size: 12px; color: var(--text-secondary);">${user.aboutMe.substring(0, 30)}${user.aboutMe.length > 30 ? '...' : ''}</div>
                         </div>
                         ${currentUser && user.username !== currentUser ?
-                            `<button class="follow-btn ${isFollowing ? 'following' : ''}" data-username="${user.username}">
-                                ${isFollowing ? 'Following' : 'Follow'}
+                            `<button class="add-friend-btn ${isFriend ? 'friends' : ''} ${hasPendingRequest ? 'pending' : ''}" data-username="${user.username}">
+                                ${isFriend ? 'Friends' : hasPendingRequest ? 'Pending' : 'Add Friend'}
                             </button>` : ''}
                     `;
                    
                     resultsContainer.appendChild(resultItem);
                 });
                
-                document.querySelectorAll('.follow-btn').forEach(btn => {
+                document.querySelectorAll('.add-friend-btn').forEach(btn => {
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
                         const targetUser = this.getAttribute('data-username');
-                        if (this.classList.contains('following')) {
-                            if (server.unfollowUser(currentUser, targetUser)) {
+                        if (this.classList.contains('friends')) {
+                            if (confirm(`Remove ${targetUser} from friends?`)) {
+                                server.removeFriend(currentUser, targetUser);
                                 userData.friends = userData.friends.filter(f => f !== targetUser);
-                                this.textContent = 'Follow';
-                                this.classList.remove('following');
+                                this.textContent = 'Add Friend';
+                                this.classList.remove('friends');
                                 updateFriendsList();
                                 updateProfileData();
-                                showNotification(`Unfollowed ${targetUser}`, 'success');
+                                showNotification(`Removed ${targetUser} from friends`, 'success');
                             }
+                        } else if (this.classList.contains('pending')) {
+                            showNotification('Friend request already sent!', 'warning');
                         } else {
-                            if (server.followUser(currentUser, targetUser)) {
-                                userData.friends.push(targetUser);
-                                this.textContent = 'Following';
-                                this.classList.add('following');
-                                updateFriendsList();
-                                updateProfileData();
-                                showNotification(`Now following ${targetUser}`, 'success');
+                            if (server.sendFriendRequest(currentUser, targetUser)) {
+                                this.textContent = 'Pending';
+                                this.classList.add('pending');
+                                showNotification(`Friend request sent to ${targetUser}!`, 'success');
                             }
                         }
                     });
@@ -2062,11 +2153,13 @@
            
             resultsContainer.classList.add('active');
         });
+        
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.search-bar')) {
                 document.getElementById('search-results').classList.remove('active');
             }
         });
+        
         function updateFriendsList() {
             const friendsList = document.getElementById('friends-list');
             friendsList.innerHTML = '';
@@ -2081,12 +2174,68 @@
                 friendItem.className = 'friend-item';
                 friendItem.innerHTML = `
                     <div class="friend-avatar">${friend.substring(0, 1).toUpperCase()}</div>
-                    <span style="font-weight: 600;">${friend}</span>
+                    <span style="font-weight: 600; font-size: 14px;">${friend}</span>
                     <div class="friend-status status-online"></div>
                 `;
                 friendsList.appendChild(friendItem);
             });
         }
+        
+        function updateFriendRequestsList() {
+            if (!currentUser) return;
+            
+            const container = document.getElementById('friend-requests-list');
+            container.innerHTML = '';
+            
+            const requests = server.getFriendRequests(currentUser);
+            
+            if (requests.length === 0) {
+                container.innerHTML = '<div class="no-friends">No pending friend requests</div>';
+                return;
+            }
+            
+            requests.forEach(requester => {
+                const requestItem = document.createElement('div');
+                requestItem.className = 'friend-request-item';
+                requestItem.innerHTML = `
+                    <div class="friend-request-avatar">${requester.substring(0, 1).toUpperCase()}</div>
+                    <div class="friend-request-info">
+                        <div class="friend-request-username">${requester}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">wants to be your friend</div>
+                    </div>
+                    <div class="friend-request-actions">
+                        <button class="accept-btn" data-requester="${requester}">Accept</button>
+                        <button class="decline-btn" data-requester="${requester}">Decline</button>
+                    </div>
+                `;
+                container.appendChild(requestItem);
+            });
+            
+            document.querySelectorAll('.accept-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const requester = this.getAttribute('data-requester');
+                    if (server.acceptFriendRequest(currentUser, requester)) {
+                        userData.friends.push(requester);
+                        updateFriendRequestsList();
+                        updateFriendsList();
+                        updateProfileData();
+                        showNotification(`You are now friends with ${requester}!`, 'success');
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.decline-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const requester = this.getAttribute('data-requester');
+                    if (server.declineFriendRequest(currentUser, requester)) {
+                        updateFriendRequestsList();
+                        updateProfileData();
+                        showNotification(`Declined friend request from ${requester}`, 'success');
+                    }
+                });
+            });
+        }
+        
         function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
             notification.textContent = message;
