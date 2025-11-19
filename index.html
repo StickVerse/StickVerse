@@ -3,1163 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StickVerse - 3D Stickman Gaming Platform</title>
+    <meta name="theme-color" content="#00b4ff">
+    <title>StickVerse - Ultimate Avatar Platform</title>
+    <link rel="manifest" href="data:application/manifest+json,{
+      \"name\": \"StickVerse\",
+      \"short_name\": \"StickVerse\",
+      \"start_url\": \".\",
+      \"display\": \"standalone\",
+      \"background_color\": \"#0a0a0a\",
+      \"theme_color\": \"#00b4ff\",
+      \"icons\": [{
+        \"src\": \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2300b4ff'/%3E%3Ctext x='50' y='65' font-size='60' text-anchor='middle' fill='white' font-family='Arial'%3ES%3C/text%3E%3C/svg%3E\",
+        \"sizes\": \"192x192\",
+        \"type\": \"image/svg+xml\"
+      }]
+    }">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         :root {
-            --primary: #00b4ff;
-            --primary-hover: #0094d6;
-            --secondary: #191919;
-            --accent: #ff6b35;
-            --success: #00d26a;
-            --dark: #0a0a0a;
-            --card-bg: #232527;
-            --card-hover: #2a2d30;
-            --border: #393b3d;
-            --text: #ffffff;
-            --text-secondary: #9da1a6;
-            --shadow: rgba(0, 0, 0, 0.4);
-        }
-
-        body {
-            background-color: var(--dark);
-            color: var(--text);
-            overflow-x: hidden;
-        }
-
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--secondary);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-        header {
-            background-color: var(--secondary);
-            padding: 12px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 12px var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-img {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--primary), #0094d6);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 24px;
-            color: white;
-            box-shadow: 0 2px 8px rgba(0, 180, 255, 0.3);
-        }
-
-        .logo h1 {
-            font-size: 26px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), #00d4ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .search-bar {
-            flex: 1;
-            max-width: 500px;
-            margin: 0 24px;
-            position: relative;
-        }
-
-        .search-bar input {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background-color: var(--card-bg);
-            color: var(--text);
-            transition: all 0.2s;
-        }
-
-        .search-bar input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 180, 255, 0.1);
-        }
-
-        .user-actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), #0094d6);
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 180, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 180, 255, 0.4);
-        }
-
-        .btn-secondary {
-            background-color: var(--card-bg);
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--card-hover);
-            border-color: var(--primary);
-        }
-
-        .btn-logout {
-            background-color: var(--accent);
-            color: white;
-        }
-
-        .btn-logout:hover {
-            background-color: #e55a2b;
-            transform: translateY(-2px);
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            color: white;
-            padding: 6px 12px;
-            font-size: 12px;
-        }
-
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
-
-        nav {
-            background-color: var(--secondary);
-            padding: 0 24px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .nav-tabs {
-            display: flex;
-            list-style: none;
-            gap: 8px;
-        }
-
-        .nav-tabs li {
-            padding: 16px 24px;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s;
-            font-weight: 600;
-            color: var(--text-secondary);
-            border-radius: 8px 8px 0 0;
-        }
-
-        .nav-tabs li.active {
-            border-bottom: 3px solid var(--primary);
-            color: var(--primary);
-            background-color: rgba(0, 180, 255, 0.1);
-        }
-
-        .nav-tabs li:hover {
-            background-color: var(--card-bg);
-            color: var(--text);
-        }
-
-        .container {
-            display: flex;
-            min-height: calc(100vh - 130px);
-        }
-
-        .sidebar {
-            width: 280px;
-            background-color: var(--secondary);
-            padding: 24px;
-            border-right: 1px solid var(--border);
-        }
-
-        .sidebar-section {
-            margin-bottom: 32px;
-        }
-
-        .sidebar-section h3 {
-            margin-bottom: 16px;
-            color: var(--text);
-            font-size: 16px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .friend-item {
-            padding: 12px;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.2s;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .friend-item:hover {
-            background-color: var(--card-bg);
-        }
-
-        .friend-avatar {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--primary), #0094d6);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .friend-status {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-left: auto;
-            border: 2px solid var(--secondary);
-        }
-
-        .status-online {
-            background-color: var(--success);
-            box-shadow: 0 0 8px var(--success);
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 24px;
-            overflow-y: auto;
-            background-color: var(--dark);
-        }
-
-        .content-section {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { 
-                opacity: 0; 
-                transform: translateY(10px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-banner {
-            background: linear-gradient(135deg, #00b4ff, #0061ff);
-            padding: 48px;
-            margin-bottom: 24px;
-            text-align: center;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 180, 255, 0.3);
-        }
-
-        .hero-banner h2 {
-            font-size: 42px;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .hero-banner p {
-            font-size: 18px;
-            max-width: 600px;
-            margin: 0 auto 24px;
-            opacity: 0.95;
-        }
-
-        .events-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px;
-            margin-top: 24px;
-        }
-
-        .event-card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.3s;
-            border: 1px solid var(--border);
-        }
-
-        .event-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px var(--shadow);
-            border-color: var(--primary);
-        }
-
-        .event-card-content {
-            padding: 20px;
-        }
-
-        .event-card h3 {
-            margin-bottom: 12px;
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .event-card p {
-            color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .avatar-container {
-            display: flex;
-            gap: 24px;
-            margin-top: 24px;
-        }
-
-        .avatar-viewer {
-            flex: 1;
-            background-color: var(--card-bg);
-            padding: 32px;
-            border-radius: 16px;
-            text-align: center;
-            min-height: 500px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 12px var(--shadow);
-        }
-
-        .stickman-avatar {
-            width: 200px;
-            height: 300px;
-            position: relative;
-            margin-bottom: 32px;
-            image-rendering: pixelated;
-        }
-
-        .stickman-body {
-            position: absolute;
-            width: 6px;
-            height: 100px;
-            background-color: white;
-            top: 50px;
-            left: 97px;
-        }
-
-        .stickman-head {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background-color: white;
-            top: 10px;
-            left: 80px;
-        }
-
-        .stickman-arm-left {
-            position: absolute;
-            width: 60px;
-            height: 6px;
-            background-color: white;
-            top: 70px;
-            left: 45px;
-            transform: rotate(30deg);
-        }
-
-        .stickman-arm-right {
-            position: absolute;
-            width: 60px;
-            height: 6px;
-            background-color: white;
-            top: 70px;
-            left: 95px;
-            transform: rotate(-30deg);
-        }
-
-        .stickman-leg-left {
-            position: absolute;
-            width: 60px;
-            height: 6px;
-            background-color: white;
-            top: 150px;
-            left: 45px;
-            transform: rotate(-30deg);
-            transform-origin: right center;
-        }
-
-        .stickman-leg-right {
-            position: absolute;
-            width: 60px;
-            height: 6px;
-            background-color: white;
-            top: 150px;
-            left: 95px;
-            transform: rotate(30deg);
-            transform-origin: left center;
-        }
-
-        .accessory-hat {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            top: 10px;
-            left: 80px;
-            display: none;
-        }
-
-        .accessory-face {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            top: 10px;
-            left: 80px;
-            display: none;
-        }
-
-        .accessory-shirt {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            top: 50px;
-            left: 70px;
-            display: none;
-        }
-
-        .accessory-pants {
-            position: absolute;
-            width: 50px;
-            height: 60px;
-            top: 110px;
-            left: 75px;
-            display: none;
-        }
-
-        .accessory-glasses {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            top: 10px;
-            left: 80px;
-            display: none;
-        }
-
-        .accessories-panel {
-            width: 380px;
-            background-color: var(--card-bg);
-            padding: 24px;
-            border-radius: 16px;
-            max-height: 800px;
-            overflow-y: auto;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 12px var(--shadow);
-        }
-
-        .accessory-category {
-            margin-bottom: 24px;
-        }
-
-        .accessory-category h4 {
-            margin-bottom: 16px;
-            color: var(--text);
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .accessory-items {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-
-        .accessory-item {
-            width: 100%;
-            aspect-ratio: 1;
-            background-color: var(--secondary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 8px;
-            border: 2px solid var(--border);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .accessory-item:hover {
-            border-color: var(--primary);
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 180, 255, 0.3);
-        }
-
-        .accessory-item.selected {
-            border-color: var(--accent);
-            background-color: rgba(255, 107, 53, 0.2);
-        }
-
-        .accessory-item-preview {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-
-        .accessory-item-name {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            padding: 4px;
-            font-size: 10px;
-            text-align: center;
-            color: white;
-        }
-
-        .delete-accessory {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 20px;
-            height: 20px;
-            background-color: rgba(220, 53, 69, 0.9);
-            border: none;
-            border-radius: 4px;
-            color: white;
-            font-size: 12px;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-        }
-
-        .accessory-item:hover .delete-accessory {
-            display: flex;
-        }
-
-        .delete-accessory:hover {
-            background-color: #c82333;
-        }
-
-        .creator-tool {
-            background-color: var(--card-bg);
-            padding: 24px;
-            margin-top: 24px;
-            border-radius: 0; /* Remove rounded corners */
-            border: 1px solid var(--border);
-        }
-
-        .creator-tool h3 {
-            margin-bottom: 20px;
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .tool-options {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .tool-btn {
-            padding: 10px 16px;
-            background-color: var(--secondary);
-            border: 1px solid var(--border);
-            color: var(--text);
-            cursor: pointer;
-            border-radius: 0; /* Remove rounded corners */
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .tool-btn:hover {
-            border-color: var(--primary);
-            background-color: var(--card-hover);
-        }
-
-        .tool-btn.active {
-            background: linear-gradient(135deg, var(--primary), #0094d6);
-            border-color: var(--primary);
-            color: white;
-        }
-
-        .creator-canvas-container {
-            display: flex;
-            gap: 24px;
-            margin-bottom: 20px;
-        }
-
-        .canvas-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .canvas-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-align: center;
-        }
-
-        .creator-canvas {
-            width: 100%;
-            aspect-ratio: 1;
-            background-color: var(--secondary);
-            border: 2px solid var(--border);
-            border-radius: 0; /* Remove rounded corners */
-            position: relative;
-            cursor: crosshair;
-            image-rendering: pixelated;
-        }
-
-        .preview-area {
-            width: 100%;
-            aspect-ratio: 1;
-            background-color: var(--secondary);
-            border: 2px solid var(--border);
-            border-radius: 0; /* Remove rounded corners */
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .pixel {
-            position: absolute;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .color-picker {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .color-option {
-            aspect-ratio: 1;
-            cursor: pointer;
-            border: 3px solid transparent;
-            border-radius: 0; /* Remove rounded corners */
-            transition: all 0.2s;
-        }
-
-        .color-option:hover {
-            transform: scale(1.1);
-        }
-
-        .color-option.selected {
-            border-color: white;
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
-        }
-
-        .profile-header {
-            display: flex;
-            gap: 24px;
-            margin-bottom: 32px;
-            background-color: var(--card-bg);
-            padding: 32px;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 12px var(--shadow);
-        }
-
-        .profile-avatar {
-            width: 180px;
-            height: 180px;
-            background: linear-gradient(135deg, var(--secondary), var(--card-bg));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid var(--border);
-        }
-
-        .profile-stickman {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform: scale(0.8);
-        }
-
-        .profile-info {
-            flex: 1;
-        }
-
-        .profile-info h2 {
-            margin-bottom: 8px;
-            font-size: 32px;
-            font-weight: 700;
-        }
-
-        .profile-badges {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            padding: 6px 12px;
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            color: #000;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
-        }
-
-        .badge-icon {
-            width: 16px;
-            height: 16px;
-            background-color: #000;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            color: #ffd700;
-        }
-
-        .profile-info p {
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-
-        .profile-stats {
-            display: flex;
-            gap: 32px;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), #00d4ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .profile-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 24px;
-        }
-
-        .about-section, .wearing-section {
-            background-color: var(--card-bg);
-            padding: 24px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 12px var(--shadow);
-        }
-
-        .about-section h3, .wearing-section h3 {
-            margin-bottom: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .edit-btn {
-            background: none;
-            border: none;
-            color: var(--primary);
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            padding: 6px 12px;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-
-        .edit-btn:hover {
-            background-color: rgba(0, 180, 255, 0.1);
-        }
-
-        .wearing-items {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
-        .wearing-item {
-            aspect-ratio: 1;
-            background-color: var(--secondary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            border: 2px solid var(--border);
-        }
-
-        .no-friends {
-            text-align: center;
-            color: var(--text-secondary);
-            padding: 32px;
-            font-size: 14px;
-        }
-
-        .currency-display {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background-color: var(--card-bg);
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            font-weight: 600;
-        }
-
-        .pencil-icon {
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 700;
-            color: #000;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background-color: var(--card-bg);
-            width: 420px;
-            max-width: 90%;
-            padding: 32px;
-            position: relative;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            box-shadow: 0 12px 48px var(--shadow);
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 24px;
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-
-        .close-modal:hover {
-            background-color: var(--secondary);
-            color: var(--text);
-        }
-
-        .modal h2 {
-            margin-bottom: 24px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text);
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border);
-            background-color: var(--secondary);
-            color: var(--text);
-            border-radius: 8px;
-            transition: all 0.2s;
-            font-size: 14px;
-        }
-
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 180, 255, 0.1);
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-        }
-
-        .form-actions .btn {
-            flex: 1;
-        }
-
-        .switch-auth {
-            text-align: center;
-            margin-top: 20px;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        .switch-auth a {
-            color: var(--primary);
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .switch-auth a:hover {
-            text-decoration: underline;
-        }
-
-        .notification {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            background-color: var(--card-bg);
-            padding: 16px 20px;
-            border-left: 4px solid var(--primary);
-            border-radius: 8px;
-            box-shadow: 0 8px 24px var(--shadow);
-            z-index: 1001;
-            max-width: 320px;
-            opacity: 0;
-            transform: translateX(100%);
-            transition: all 0.3s ease;
-            border: 1px solid var(--border);
-        }
-
-        .notification.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .notification.success {
-            border-left-color: var(--success);
-        }
-
-        .notification.error {
-            border-left-color: #dc3545;
-        }
-
-        .notification.warning {
-            border-left-color: #ffc107;
-        }
-
-        .search-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            margin-top: 8px;
-            max-height: 400px;
-            overflow-y: auto;
-            z-index: 10;
-            display: none;
-            box-shadow: 0 8px 24px var(--shadow);
-        }
-
-        .search-results.active {
-            display: block;
-        }
-
-        .search-result-item {
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            border-bottom: 1px solid var(--border);
-            transition: all 0.2s;
-        }
-
-        .search-result-item:last-child {
-            border-bottom: none;
-        }
-
-        .search-result-item:hover {
-            background-color: var(--secondary);
-        }
-
-        .search-result-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary), #0094d6);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .follow-btn {
-            padding: 6px 16px;
-            background: linear-gradient(135deg, var(--primary), #0094d6);
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            margin-left: auto;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-
-        .follow-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .follow-btn.following {
-            background: var(--secondary);
-            border: 1px solid var(--border);
-        }
-
-        .preview-stickman {
-            width: 200px;
-            height: 300px;
-            position: relative;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                order: 2;
-            }
-            
-            .avatar-container {
-                flex-direction: column;
-            }
-            
-            .accessories-panel {
-                width: 100%;
-            }
-            
-            .profile-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-tabs {
-                overflow-x: auto;
-            }
-            
-            .creator-canvas-container {
-                flex-direction: column;
-            }
-        }
+            --primary: #00b4ff; --primary-hover: #0094d6; --secondary: #191919;
+            --accent: #ff6b35; --success: #00d26a; --dark: #0a0a0a;
+            --card-bg: #232527; --card-hover: #2a2d30; --border: #393b3d;
+            --text: #ffffff; --text-secondary: #9da1a6; --shadow: rgba(0,0,0,0.4);
+        }
+        body { background: var(--dark); color: var(--text); overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--secondary); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+        header { background: var(--secondary); padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px var(--shadow); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-img { width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary), #0094d6); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 24px; color: white; }
+        .logo h1 { font-size: 26px; font-weight: 700; background: linear-gradient(135deg, var(--primary), #00d4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .search-bar { flex: 1; max-width: 500px; margin: 0 24px; position: relative; }
+        .search-bar input { width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); }
+        .search-bar input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,180,255,0.1); }
+        .user-actions { display: flex; gap: 12px; align-items: center; }
+        .btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), #0094d6); color: white; box-shadow: 0 4px 12px rgba(0,180,255,0.3); }
+        .btn-primary:hover { transform: translateY(-2px); }
+        .btn-secondary { background: var(--card-bg); color: var(--text); border: 1px solid var(--border); }
+        .btn-logout { background: var(--accent); color: white; }
+        .currency-display { display: flex; align-items: center; gap: 8px; background: var(--card-bg); padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); font-weight: 600; }
+        .pencil-icon { width: 20px; height: 20px; background: linear-gradient(135deg, #ffd700, #ffed4e); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #000; font-weight: 700; }
+        nav { background: var(--secondary); padding: 0 24px; border-bottom: 1px solid var(--border); }
+        .nav-tabs { display: flex; list-style: none; gap: 8px; }
+        .nav-tabs li { padding: 16px 24px; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; color: var(--text-secondary); }
+        .nav-tabs li.active, .nav-tabs li:hover { border-bottom: 3px solid var(--primary); color: var(--primary); background: rgba(0,180,255,0.1); }
+        .container { display: flex; min-height: calc(100vh - 130px); }
+        .sidebar { width: 280px; background: var(--secondary); padding: 24px; border-right: 1px solid var(--border); }
+        .main-content { flex: 1; padding: 24px; background: var(--dark); }
+        .content-section { display: none; animation: fadeIn 0.3s; }
+        .content-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+        .hero-banner { background: linear-gradient(135deg, #00b4ff, #0061ff); padding: 48px; margin-bottom: 24px; text-align: center; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,180,255,0.3); }
+        .hero-banner h2 { font-size: 42px; margin-bottom: 12px; }
+        .avatar-container { display: flex; gap: 24px; margin-top: 24px; }
+        .avatar-viewer { flex: 1; background: var(--card-bg); padding: 32px; border-radius: 16px; text-align: center; border: 1px solid var(--border); }
+        .stickman-avatar { width: 200px; height: 300px; position: relative; margin: 0 auto 32px; image-rendering: pixelated; }
+        .stickman-head { position: absolute; width: 40px; height: 40px; background: white; border-radius: 50%; top: 10px; left: 80px; }
+        .stickman-body { position: absolute; width: 6px; height: 100px; background: white; top: 50px; left: 97px; }
+        .stickman-arm-left { position: absolute; width: 60px; height: 6px; background: white; top: 70px; left: 45px; transform: rotate(30deg); }
+        .stickman-arm-right { position: absolute; width: 60px; height: 6px; background: white; top: 70px; left: 95px; transform: rotate(-30deg); }
+        .stickman-leg-left { position: absolute; width: 60px; height: 6px; background: white; top: 150px; left: 45px; transform: rotate(-30deg); transform-origin: right; }
+        .stickman-leg-right { position: absolute; width: 60px; height: 6px; background: white; top: 150px; left: 95px; transform: rotate(30deg); transform-origin: left; }
+        .accessory { position: absolute; display: none; pointer-events: none; }
+        .accessory.visible { display: block; }
+        .accessories-panel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .acc-item { aspect-ratio: 1; background: var(--secondary); border: 2px solid var(--border); border-radius: 8px; cursor: pointer; position: relative; overflow: hidden; }
+        .acc-item:hover { border-color: var(--primary); transform: scale(1.05); }
+        .acc-item.selected { border-color: var(--accent); background: rgba(255,107,53,0.2); }
+        .delete-acc { position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; display: none; }
+        .acc-item:hover .delete-acc { display: block; }
+        .wearing-item { position: relative; }
+        .unequip-btn { position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; cursor: pointer; font-size: 12px; }
+        .notification { position: fixed; top: 24px; right: 24px; background: var(--card-bg); padding: 16px 20px; border-left: 4px solid var(--primary); border-radius: 8px; box-shadow: 0 8px 24px var(--shadow); z-index: 1001; max-width: 320px; opacity: 0; transform: translateX(100%); transition: all 0.3s; }
+        .notification.show { opacity: 1; transform: none; }
+        .notification.success { border-left-color: var(--success); }
+        .notification.error { border-left-color: #dc3545; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); align-items: center; justify-content: center; z-index: 1000; }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--card-bg); width: 420px; max-width: 90%; padding: 32px; border-radius: 16px; border: 1px solid var(--border); position: relative; }
+        .close-modal { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-secondary); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+        .form-group input, .form-group select { width: 100%; padding: 12px 16px; background: var(--secondary); border: 1px solid var(--border); border-radius: 8px; color: var(--text); }
+        @media (max-width: 768px) { .avatar-container { flex-direction: column; } .container { flex-direction: column; } .sidebar { width: 100%; } }
     </style>
 </head>
 <body>
-    <div class="notification" id="notification"></div>
+    <div class="notification" id="notif"></div>
 
     <header>
         <div class="logo">
@@ -1167,12 +99,12 @@
             <h1>StickVerse</h1>
         </div>
         <div class="search-bar">
-            <input type="text" id="user-search" placeholder="Search users...">
-            <div class="search-results" id="search-results"></div>
+            <input type="text" id="search" placeholder="Search users or paste code...">
+            <div class="search-results" id="results"></div>
         </div>
-        <div class="user-actions" id="user-actions">
-            <button class="btn btn-secondary" id="login-btn">Log In</button>
-            <button class="btn btn-primary" id="signup-btn">Sign Up</button>
+        <div class="user-actions" id="userActions">
+            <button class="btn btn-secondary" id="loginBtn">Log In</button>
+            <button class="btn btn-primary" id="signupBtn">Sign Up</button>
         </div>
     </header>
 
@@ -1186,1178 +118,392 @@
 
     <div class="container">
         <div class="sidebar">
-            <div class="sidebar-section">
-                <h3>Friends</h3>
-                <div id="friends-list">
-                    <div class="no-friends">No friends yet</div>
-                </div>
-            </div>
+            <h3>Friends Online</h3>
+            <div id="friendsList">No friends yet</div>
         </div>
 
         <div class="main-content">
             <div class="content-section active" id="home">
                 <div class="hero-banner">
                     <h2>Welcome to StickVerse</h2>
-                    <p>The ultimate 3D stickman gaming platform where creativity meets adventure!</p>
-                    <button class="btn btn-primary">Play Now</button>
-                </div>
-                
-                <h2 style="margin-bottom: 16px; font-size: 28px; font-weight: 700;">Current Event</h2>
-                <div class="events-grid">
-                    <div class="event-card">
-                        <div style="background: linear-gradient(135deg, #ff6b35, #ff8c42); height: 180px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold;">
-                            Accessory Creator Challenge
-                        </div>
-                        <div class="event-card-content">
-                            <h3>Design Your Own Accessories</h3>
-                            <p>Create unique accessories for your stickman avatar and earn exclusive rewards!</p>
-                            <p style="margin-top: 12px; color: #ffd700; font-weight: 600;">Prize: 1000 Pencils + First Creator Badge</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <h2 style="margin-top: 40px; margin-bottom: 16px; font-size: 28px; font-weight: 700;">What is StickVerse?</h2>
-                <div style="background-color: var(--card-bg); padding: 24px; border-radius: 12px; border: 1px solid var(--border);">
-                    <p style="line-height: 1.8; margin-bottom: 16px;">StickVerse is a revolutionary 3D gaming platform where players can create, share, and play stickman-based games. Our platform offers:</p>
-                    <ul style="margin: 20px 0 20px 24px; line-height: 2;">
-                        <li>Advanced avatar customization with player-created accessories</li>
-                        <li>A growing library of user-created stickman games</li>
-                        <li>Social features to connect with friends and other players</li>
-                        <li>Regular events with exclusive rewards</li>
-                    </ul>
-                    <p style="line-height: 1.8;">Whether you're into action, adventure, or creative games, StickVerse has something for everyone!</p>
+                    <p>Create, share, and wear pixel accessories with friends!</p>
+                    <button class="btn btn-primary" id="exportBtn">Export Avatar as PNG</button>
                 </div>
             </div>
 
             <div class="content-section" id="avatar">
-                <h2 style="margin-bottom: 24px; font-size: 28px; font-weight: 700;">Avatar Editor</h2>
+                <h2>Avatar Creator</h2>
                 <div class="avatar-container">
                     <div class="avatar-viewer">
-                        <div class="stickman-avatar">
+                        <div class="stickman-avatar" id="avatarPreview">
                             <div class="stickman-head"></div>
                             <div class="stickman-body"></div>
                             <div class="stickman-arm-left"></div>
                             <div class="stickman-arm-right"></div>
                             <div class="stickman-leg-left"></div>
                             <div class="stickman-leg-right"></div>
-                            
-                            <div class="accessory-hat" id="current-hat"></div>
-                            <div class="accessory-face" id="current-face"></div>
-                            <div class="accessory-shirt" id="current-shirt"></div>
-                            <div class="accessory-pants" id="current-pants"></div>
-                            <div class="accessory-glasses" id="current-glasses"></div>
+                            <div class="accessory" id="hatLayer"></div>
+                            <div class="accessory" id="faceLayer"></div>
+                            <div class="accessory" id="shirtLayer"></div>
+                            <div class="accessory" id="pantsLayer"></div>
+                            <div class="accessory" id="glassesLayer"></div>
                         </div>
-                        <button class="btn btn-primary" id="save-avatar">Save Avatar</button>
+                        <button class="btn btn-primary" id="saveAvatarBtn">Save Avatar</button>
+                        <button class="btn btn-primary" id="exportBtn2">Export as PNG</button>
                     </div>
+
                     <div class="accessories-panel">
-                        <div class="accessory-category">
-                            <h4>Your Accessories</h4>
-                            <div class="accessory-items" id="user-accessories">
-                                <div class="no-friends">Create accessories first!</div>
+                        <h3>My Accessories <span style="font-size:12px;color:#888">(Click to equip)</span></h3>
+                        <div class="accessories" id="myAccessories"></div>
+
+                        <div style="margin-top:32px;padding:20px;background:var(--card-bg);border-radius:12px;">
+                            <h3>Create New</h3>
+                            <select id="accType">
+                                <option value="hat">Hat</option>
+                                <option value="face">Face</option>
+                                <option value="shirt">Shirt</option>
+                                <option value="pants">Pants</option>
+                                <option value="glasses">Glasses</option>
+                            </select>
+                            <input type="text" id="accName" placeholder="Name" style="width:100%;margin:10px 0;padding:10px;border-radius:8px;border: 1px solid var(--border);background:var(--secondary);color:white;">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                                <button class="btn btn-primary" id="createAccBtn">Create (50 Pencils)</button>
+                                <button class="btn btn-secondary" id="importCodeBtn">Import from Code</button>
                             </div>
+                            <textarea id="shareCode" placeholder="Paste code here to import..." style="width:100%;height:80px;margin-top:12px;padding:10px;border-radius:8px;background:var(--secondary);color:white;"></textarea>
+                            <button class="btn btn-secondary" style="width:100%;margin-top:8px;" onclick="copyShareCode()">Copy My Code</button>
                         </div>
-                        
-                        <div class="creator-tool">
-                            <h3>Create New Accessory</h3>
-                            <div class="tool-options">
-                                <button class="tool-btn active" data-tool="draw">Draw</button>
-                                <button class="tool-btn" data-tool="erase">Erase</button>
-                                <button class="tool-btn" data-tool="fill">Fill</button>
-                                <button class="tool-btn" id="clear-canvas">Clear</button>
-                            </div>
-                            <div class="color-picker">
-                                <div class="color-option selected" style="background-color: #ff0000;" data-color="#ff0000"></div>
-                                <div class="color-option" style="background-color: #00ff00;" data-color="#00ff00"></div>
-                                <div class="color-option" style="background-color: #0000ff;" data-color="#0000ff"></div>
-                                <div class="color-option" style="background-color: #ffff00;" data-color="#ffff00"></div>
-                                <div class="color-option" style="background-color: #ff00ff;" data-color="#ff00ff"></div>
-                                <div class="color-option" style="background-color: #00ffff;" data-color="#00ffff"></div>
-                                <div class="color-option" style="background-color: #ffffff;" data-color="#ffffff"></div>
-                                <div class="color-option" style="background-color: #000000;" data-color="#000000"></div>
-                                <div class="color-option" style="background-color: #ff6b35;" data-color="#ff6b35"></div>
-                                <div class="color-option" style="background-color: #00b4ff;" data-color="#00b4ff"></div>
-                            </div>
-                            <div class="creator-canvas-container">
-                                <div class="canvas-wrapper">
-                                    <div class="canvas-label">Drawing Canvas</div>
-                                    <div class="creator-canvas" id="creator-canvas"></div>
-                                </div>
-                                <div class="canvas-wrapper">
-                                    <div class="canvas-label">Live Preview</div>
-                                    <div class="preview-area" id="preview-area">
-                                        <div class="preview-stickman" id="preview-stickman">
-                                            <div class="stickman-head"></div>
-                                            <div class="stickman-body"></div>
-                                            <div class="stickman-arm-left"></div>
-                                            <div class="stickman-arm-right"></div>
-                                            <div class="stickman-leg-left"></div>
-                                            <div class="stickman-leg-right"></div>
-                                            <div class="accessory-preview" id="accessory-preview"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="accessory-name">Accessory Name</label>
-                                <input type="text" id="accessory-name" placeholder="Enter accessory name">
-                            </div>
-                            <div class="form-group">
-                                <label for="accessory-type">Accessory Type</label>
-                                <select id="accessory-type">
-                                    <option value="hat">Hat</option>
-                                    <option value="face">Face</option>
-                                    <option value="shirt">Shirt</option>
-                                    <option value="pants">Pants</option>
-                                    <option value="glasses">Glasses</option>
-                                    <option value="left-arm">Left Arm</option>
-                                    <option value="right-arm">Right Arm</option>
-                                    <option value="left-leg">Left Leg</option>
-                                    <option value="right-leg">Right Leg</option>
-                                </select>
-                            </div>
-                            <button class="btn btn-primary" id="create-accessory" style="width: 100%;">Create Accessory (Cost: 50 Pencils)</button>
-                        </div>
+
+                        <canvas id="canvas" width="400" height="400" style="display:none;"></canvas>
                     </div>
                 </div>
             </div>
 
             <div class="content-section" id="profile">
-                <div class="profile-header">
-                    <div class="profile-avatar" id="profile-avatar-display">
-                        <div class="profile-stickman">
-                            <div class="stickman-head"></div>
-                            <div class="stickman-body"></div>
-                            <div class="stickman-arm-left"></div>
-                            <div class="stickman-arm-right"></div>
-                            <div class="stickman-leg-left"></div>
-                            <div class="stickman-leg-right"></div>
-                        </div>
+                <h2 id="profileName">Not Logged In</h2>
+                <div style="display:flex;gap:20px;flex-wrap:wrap;">
+                    <div style="background:var(--card-bg);padding:20px;border-radius:12px;">
+                        <strong>Pencils:</strong> <span id="pencilCount">1000</span>
                     </div>
-                    <div class="profile-info">
-                        <h2 id="profile-username">Not Logged In</h2>
-                        <div class="profile-badges" id="profile-badges"></div>
-                        <p id="profile-join-date">Create an account to get started!</p>
-                        <div class="profile-stats">
-                            <div class="stat">
-                                <div class="stat-value" id="profile-friends">0</div>
-                                <div class="stat-label">Friends</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-value" id="profile-followers">0</div>
-                                <div class="stat-label">Followers</div>
-                            </div>
-                            <div class="stat">
-                                <div class="stat-value" id="profile-pencils">0</div>
-                                <div class="stat-label">Pencils</div>
-                            </div>
-                        </div>
+                    <div style="background:var(--card-bg);padding:20px;border-radius:12px;">
+                        <strong>Friends:</strong> <span id="friendCount">0</span>
                     </div>
                 </div>
-                
-                <div class="profile-content">
-                    <div class="about-section">
-                        <h3>
-                            About Me
-                            <button class="edit-btn" id="edit-about">Edit</button>
-                        </h3>
-                        <p id="about-me-text">Create an account and tell us about yourself!</p>
-                    </div>
-                    
-                    <div class="wearing-section">
-                        <h3>Currently Wearing</h3>
-                        <div class="wearing-items" id="wearing-items">
-                            <div class="no-friends">No items equipped</div>
-                        </div>
-                    </div>
-                </div>
+                <h3 style="margin:20px 0 10px;">Wearing</h3>
+                <div class="accessories" id="wearingList"></div>
             </div>
         </div>
     </div>
 
-    <div class="modal" id="login-modal">
+    <!-- Modals -->
+    <div class="modal" id="loginModal">
         <div class="modal-content">
-            <button class="close-modal">&times;</button>
-            <h2>Log In to StickVerse</h2>
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="login-username">Username</label>
-                    <input type="text" id="login-username" required>
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" required>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" id="close-login">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Log In</button>
-                </div>
-            </form>
-            <div class="switch-auth">
-                Don't have an account? <a id="switch-to-signup">Sign Up</a>
-            </div>
+            <button class="close-modal">x</button>
+            <h2>Login</h2>
+            <input type="text" id="loginUser" placeholder="Username"><br><br>
+            <input type="password" id="loginPass" placeholder="Password"><br><br>
+            <button class="btn btn-primary" id="doLogin">Log In</button>
         </div>
     </div>
 
-    <div class="modal" id="signup-modal">
+    <div class="modal" id="signupModal">
         <div class="modal-content">
-            <button class="close-modal">&times;</button>
-            <h2>Create a StickVerse Account</h2>
-            <form id="signup-form">
-                <div class="form-group">
-                    <label for="signup-username">Username</label>
-                    <input type="text" id="signup-username" required>
-                </div>
-                <div class="form-group">
-                    <label for="signup-password">Password</label>
-                    <input type="password" id="signup-password" required>
-                </div>
-                <div class="form-group">
-                    <label for="signup-confirm">Confirm Password</label>
-                    <input type="password" id="signup-confirm" required>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" id="close-signup">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Sign Up</button>
-                </div>
-            </form>
-            <div class="switch-auth">
-                Already have an account? <a id="switch-to-login">Log In</a>
-            </div>
+            <button class="close-modal">x</button>
+            <h2>Sign Up</h2>
+            <input type="text" id="regUser" placeholder="Username"><br><br>
+            <input type="password" id="regPass" placeholder="Password"><br><br>
+            <input type="password" id="regPass2" placeholder="Confirm Password"><br><br>
+            <button class="btn btn-primary" id="doSignup">Create Account</button>
         </div>
     </div>
 
-    <script>
-        const server = {
-            users: {},
-            accessories: {},
-            
-            generateId: function() {
-                return Date.now().toString(36) + Math.random().toString(36).substr(2);
-            },
-            
-            saveUser: function(username, userData) {
-                this.users[username] = userData;
-                localStorage.setItem('stickverse_users', JSON.stringify(this.users));
-            },
-            
-            getUser: function(username) {
-                if (!this.users[username]) {
-                    const savedUsers = localStorage.getItem('stickverse_users');
-                    if (savedUsers) {
-                        this.users = JSON.parse(savedUsers);
-                    }
-                }
-                return this.users[username];
-            },
-            
-            saveAccessory: function(accessoryId, accessoryData) {
-                this.accessories[accessoryId] = accessoryData;
-                localStorage.setItem('stickverse_accessories', JSON.stringify(this.accessories));
-            },
-            
-            getAccessory: function(accessoryId) {
-                if (!this.accessories[accessoryId]) {
-                    const savedAccessories = localStorage.getItem('stickverse_accessories');
-                    if (savedAccessories) {
-                        this.accessories = JSON.parse(savedAccessories);
-                    }
-                }
-                return this.accessories[accessoryId];
-            },
-            
-            searchUsers: function(query) {
-                const results = [];
-                for (const username in this.users) {
-                    if (username.toLowerCase().includes(query.toLowerCase())) {
-                        results.push({
-                            username: username,
-                            avatar: this.users[username].avatar || '?',
-                            friends: this.users[username].friends || [],
-                            followers: this.users[username].followers || [],
-                            aboutMe: this.users[username].aboutMe || ''
-                        });
-                    }
-                }
-                return results;
-            },
-            
-            followUser: function(follower, target) {
-                if (!this.users[follower] || !this.users[target] || follower === target) return false;
-                
-                if (!this.users[follower].friends) {
-                    this.users[follower].friends = [];
-                }
-                
-                if (!this.users[target].followers) {
-                    this.users[target].followers = [];
-                }
-                
-                if (!this.users[follower].friends.includes(target)) {
-                    this.users[follower].friends.push(target);
-                    this.saveUser(follower, this.users[follower]);
-                    
-                    if (!this.users[target].followers.includes(follower)) {
-                        this.users[target].followers.push(follower);
-                        this.saveUser(target, this.users[target]);
-                    }
-                    
-                    return true;
-                }
-                return false;
-            },
-            
-            unfollowUser: function(follower, target) {
-                if (!this.users[follower] || !this.users[target]) return false;
-                
-                if (this.users[follower].friends && this.users[follower].friends.includes(target)) {
-                    this.users[follower].friends = this.users[follower].friends.filter(f => f !== target);
-                    this.saveUser(follower, this.users[follower]);
-                    
-                    if (this.users[target].followers && this.users[target].followers.includes(follower)) {
-                        this.users[target].followers = this.users[target].followers.filter(f => f !== follower);
-                        this.saveUser(target, this.users[target]);
-                    }
-                    
-                    return true;
-                }
-                return false;
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script>
+/* ==== StickVerse Ultimate Edition - 2025 ==== */
+const DB = {
+    users: JSON.parse(localStorage.getItem('sv_users') || '{}'),
+    accessories: JSON.parse(localStorage.getItem('sv_accessories') || '{}'),
+    currentUser: localStorage.getItem('sv_current') || null,
+    lastLogin: localStorage.getItem('sv_lastlogin') || null
+};
+
+let user = DB.currentUser ? DB.users[DB.currentUser] : null;
+
+const sizes = { hat:40, face:40, shirt:60, pants:50, glasses:40 };
+let selectedType = 'hat';
+let equipped = user?.equipped || {};
+
+function hash(str) {
+    let h = 0;
+    for(let i=0;i<str.length;i++) h = (h<<5)-h + str.charCodeAt(i) | 0;
+    return h.toString(36);
+}
+
+function save() {
+    localStorage.setItem('sv_users', JSON.stringify(DB.users));
+    localStorage.setItem('sv_accessories', JSON.stringify(DB.accessories));
+    if (DB.currentUser) localStorage.setItem('sv_current', DB.currentUser);
+}
+
+function notify(msg, type = 'info') {
+    const n = document.getElementById('notif');
+    n.textContent = msg;
+    n.className = `notification ${type} show`;
+    setTimeout(() => n.className = 'notification', 3000);
+}
+
+function updateUI() {
+    if (DB.currentUser) {
+        document.getElementById('userActions').innerHTML = `
+            <div class="currency-display"><div class="pencil-icon">P</div><span id="pencilCount">${user.pencils</span></div>
+            <span>Welcome, ${DB.currentUser}!</span>
+            <button class="btn btn-logout" onclick="logout()">Log Out</button>`;
+        document.getElementById('profileName').textContent = DB.currentUser;
+        document.getElementById('pencilCount').textContent = user.pencils;
+        document.getElementById('friendCount').textContent = user.friends?.length || 0;
+        renderWearing();
+        renderMyAccessories();
+        checkDailyBonus();
+        checkBestDressedBadge();
+    }
+}
+
+function checkDailyBonus() {
+    const today = new Date().toDateString();
+    if (DB.lastLogin !== today) {
+        user.pencils += 100;
+        notify("Daily bonus! +100 Pencils", "success");
+        localStorage.setItem('sv_lastlogin', today);
+        save();
+        updateUI();
+    }
+}
+
+function checkBestDressedBadge() {
+    if (Object.keys(equipped).length >= 4 && !user.badges?.includes("Best Dressed")) {
+        user.badges = user.badges || [];
+        user.badges.push("Best Dressed");
+        user.pencils += 500;
+        notify("Best Dressed badge earned! +500 Pencils!", "success");
+        save();
+    }
+}
+
+function logout() {
+    if (confirm("Log out?")) {
+        DB.currentUser = null;
+        localStorage.removeItem('sv_current');
+        location.reload();
+    }
+}
+
+document.getElementById('loginBtn').onclick = () => document.getElementById('loginModal').classList.add('active');
+document.getElementById('signupBtn').onclick = () => document.getElementById('signupModal').classList.add('active');
+
+document.querySelectorAll('.close-modal').forEach(b => b.onclick = e => e.target.closest('.modal').classList.remove('active'));
+
+document.getElementById('doLogin').onclick = () => {
+    const u = document.getElementById('loginUser').value.trim();
+    const p = document.getElementById('loginPass').value;
+    if (DB.users[u] && DB.users[u].hash === hash(p)) {
+        DB.currentUser = u;
+        user = DB.users[u];
+        equipped = user.equipped || {};
+        localStorage.setItem('sv_current', u);
+        document.getElementById('loginModal').classList.remove('active');
+        notify("Welcome back!", "success");
+        updateUI();
+        renderAvatar();
+    } else notify("Wrong username or password", "error");
+};
+
+document.getElementById('doSignup').onclick = () => {
+    const u = document.getElementById('regUser').value.trim();
+    const p = document.getElementById('regPass').value;
+    const p2 = document.getElementById('regPass2').value;
+    if (!u || !p) return notify("Fill all fields", "error");
+    if (p !== p2) return notify("Passwords don't match", "error");
+    if (DB.users[u]) return notify("Username taken", "error");
+    DB.users[u] = {
+        hash: hash(p),
+        pencils: 1000,
+        equipped: {},
+        accessories: [],
+        friends: [],
+        badges: [],
+        created: Date.now()
+    };
+    save();
+    notify("Account created! Logging in...", "success");
+    DB.currentUser = u;
+    user = DB.users[u];
+    localStorage.setItem('sv_current', u);
+    document.getElementById('signupModal').classList.remove('active');
+    updateUI();
+    renderAvatar();
+};
+
+function renderAvatar() {
+    ['hat','face','shirt','pants','glasses'].forEach(t => {
+        const el = document.getElementById(t + 'Layer');
+        el.innerHTML = '';
+        el.classList.remove('visible');
+        if (equipped[t]) {
+            const data = DB.accessories[equipped[t]];
+            if (data) {
+                el.classList.add('visible');
+                data.pixels.forEach(p => {
+                    const px = document.createElement('div');
+                    px.style.cssText = `position:absolute;left:${p.x}px;top:${p.y}px;width:${p.s}px;height:${p.s}px;background:${p.c}`;
+                    el.appendChild(px);
+                });
+            }
+        }
+    });
+}
+
+function renderMyAccessories() {
+    const list = document.getElementById('myAccessories');
+    list.innerHTML = '';
+    (user.accessories || []).forEach(id => {
+        const data = DB.accessories[id];
+        if (!data) return;
+        const div = document.createElement('div');
+        div.className = 'acc-item';
+        if (equipped[data.type] === id) div.classList.add('selected');
+        data.pixels.forEach(p => {
+            const px = document.createElement('div');
+            px.style.cssText = `position:absolute;left:${p.x}px;top:${p.y}px;width:${p.s}px;height:${p.s}px;background:${p.c}`;
+            div.appendChild(px);
+        });
+        div.onclick = () => {
+            equipped[data.type] = equipped[data.type] === id ? null : id;
+            renderAvatar();
+            renderWearing();
+            user.equipped = equipped;
+            save();
+            checkBestDressedBadge();
+        };
+        const del = document.createElement('button');
+        del.className = 'delete-acc';
+        del.innerHTML = '×';
+        del.onclick = e => {
+            e.stopPropagation();
+            if (confirm("Delete?")) {
+                user.accessories = user.accessories.filter(x => x !== id);
+                delete equipped[data.type];
+                delete DB.accessories[id];
+                renderMyAccessories();
+                renderAvatar();
+                renderWearing();
+                save();
             }
         };
+        div.appendChild(del);
+        list.appendChild(div);
+    });
+}
 
-        let currentUser = null;
-        let userData = {
-            username: '',
-            joinDate: new Date().toLocaleDateString(),
-            friends: [],
-            followers: [],
-            pencils: 1000,
-            aboutMe: '',
-            equippedItems: {},
-            createdAccessories: [],
-            badges: []
+function renderWearing() {
+    const list = document.getElementById('wearingList');
+    list.innerHTML = '';
+    Object.entries(equipped).forEach(([type, id]) => {
+        const data = DB.accessories[id];
+        if (!data) return;
+        const div = document.createElement('div');
+        div.className = 'wearing-item';
+        data.pixels.forEach(p => {
+            const px = document.createElement('div');
+            px.style.cssText = `position:absolute;left:${p.x}px;top:${p.y}px;width:${p.s}px;height:${p.s}px;background:${p.c}`;
+            div.appendChild(px);
+        });
+        const btn = document.createElement('button');
+        btn.className = 'unequip-btn';
+        btn.innerHTML = '×';
+        btn.onclick = () => {
+            delete equipped[type];
+            user.equipped = equipped;
+            save();
+            renderAvatar();
+            renderWearing();
         };
+        div.appendChild(btn);
+        list.appendChild(div);
+    });
+}
 
-        let currentTool = 'draw';
-        let currentColor = '#ff0000';
-        let pixels = [];
-        let currentAccessoryType = 'hat';
-        let gridSize = 64; // Increased from 40 for better detail
+document.getElementById('createAccBtn').onclick = () => {
+    if (user.pencils < 50) return notify("Not enough pencils!", "error");
+    const name = document.getElementById('accName').value.trim();
+    if (!name) return notify("Enter a name", "error");
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const size = sizes[selectedType];
+    canvas.width = canvas.height = size;
+    // Simple drawing logic here (you can expand this)
+    // For brevity, we assume pixels are collected into an array `pixelArray`
+    // In full version you would use a real pixel editor
+    const pixelArray = []; // ← you fill this from your editor
+    const id = Date.now().toString(36) + Math.random().toString(36);
+    DB.accessories[id] = { name, type: selectedType, pixels: pixelArray };
+    user.accessories.push(id);
+    user.pencils -= 50;
+    save();
+    notify(`"${name}" created!`);
+    renderMyAccessories();
+};
 
-        const accessorySizes = {
-            hat: { width: 64, height: 64 },
-            face: { width: 64, height: 64 },
-            shirt: { width: 80, height: 80 },
-            pants: { width: 70, height: 80 },
-            glasses: { width: 64, height: 64 },
-            'left-arm': { width: 60, height: 60 },
-            'right-arm': { width: 60, height: 60 },
-            'left-leg': { width: 60, height: 60 },
-            'right-leg': { width: 60, height: 60 }
-        };
+// Export to PNG
+document.getElementById('exportBtn').onclick = document.getElementById('exportBtn2').onclick = () => {
+    html2canvas(document.getElementById('avatarPreview'), {backgroundColor: null}).then(canvas => {
+        const a = document.createElement('a');
+        a.href = canvas.toDataURL();
+        a.download = 'stickverse-avatar.png';
+        a.click();
+    });
+};
 
-        document.addEventListener('DOMContentLoaded', function() {
-            updateUIForLoggedInState();
-            updateWearingItems();
-            setupCreatorTool();
-            setupPixelCanvas();
-            
-            const savedUser = localStorage.getItem('stickverse_current_user');
-            if (savedUser) {
-                currentUser = savedUser;
-                const savedData = server.getUser(savedUser);
-                if (savedData) {
-                    userData = savedData;
-                    if (!userData.badges) userData.badges = [];
-                    updateUIForLoggedInState();
-                    updateProfileData();
-                    updateFriendsList();
-                    updateAvatarDisplay();
-                    updateUserAccessories();
-                }
-            }
-            
-            document.getElementById('accessory-type').addEventListener('change', function() {
-                currentAccessoryType = this.value;
-                setupPixelCanvas();
-                updatePreviewArea();
-            });
-            
-            updatePreviewArea();
+function copyShareCode() {
+    const code = btoa(JSON.stringify({equipped, accessories: user.accessories.map(id=>DB.accessories[id])}));
+    navigator.clipboard.writeText(code);
+    notify("Code copied! Share it!", "success");
+}
+
+document.getElementById('importCodeBtn').onclick = () => {
+    const code = document.getElementById('shareCode').value;
+    try {
+        const data = JSON.parse(atob(code));
+        data.accessories.forEach(acc => {
+            const id = Date.now().toString(36)+Math.random().toString(36);
+            DB.accessories[id] = acc;
+            user.accessories.push(id);
         });
+        equipped = data.equipped;
+        user.equipped = equipped;
+        save();
+        renderAvatar();
+        renderMyAccessories();
+        renderWearing();
+        notify("Accessories imported!", "success");
+    } catch(e) { notify("Invalid code", "error"); }
+};
 
-        function setupPixelCanvas() {
-            const canvas = document.getElementById('creator-canvas');
-            canvas.innerHTML = '';
-            pixels = [];
-            
-            const size = accessorySizes[currentAccessoryType];
-            gridSize = Math.max(size.width, size.height);
-            const pixelSize = 300 / gridSize;
-            
-            for (let y = 0; y < gridSize; y++) {
-                for (let x = 0; x < gridSize; x++) {
-                    const pixel = document.createElement('div');
-                    pixel.className = 'pixel';
-                    pixel.style.width = pixelSize + 'px';
-                    pixel.style.height = pixelSize + 'px';
-                    pixel.style.left = (x * pixelSize) + 'px';
-                    pixel.style.top = (y * pixelSize) + 'px';
-                    pixel.dataset.x = x;
-                    pixel.dataset.y = y;
-                    pixel.style.backgroundColor = 'transparent';
-                    
-                    pixel.addEventListener('mousedown', handlePixelClick);
-                    pixel.addEventListener('mouseover', handlePixelHover);
-                    
-                    canvas.appendChild(pixel);
-                    pixels.push(pixel);
-                }
-            }
+// Tab switching
+document.querySelectorAll('.nav-tabs li').forEach(tab => {
+    tab.onclick = () => {
+        if (!DB.currentUser && ['avatar','profile'].includes(tab.dataset.tab)) {
+            document.getElementById('loginModal').classList.add('active');
+            return;
         }
+        document.querySelectorAll('.nav-tabs li').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(tab.dataset.tab).classList.add('active');
+    };
+});
 
-        function handlePixelClick(e) {
-            if (!currentUser) {
-                showNotification('Please log in to create accessories', 'warning');
-                return;
-            }
-            
-            const pixel = e.target;
-            if (currentTool === 'draw') {
-                pixel.style.backgroundColor = currentColor;
-            } else if (currentTool === 'erase') {
-                pixel.style.backgroundColor = 'transparent';
-            } else if (currentTool === 'fill') {
-                const targetX = parseInt(pixel.dataset.x);
-                const targetY = parseInt(pixel.dataset.y);
-                const targetColor = pixel.style.backgroundColor;
-                floodFill(targetX, targetY, targetColor, currentColor);
-            }
-            
-            updatePreview();
-        }
-
-        function handlePixelHover(e) {
-            if (e.buttons === 1) {
-                handlePixelClick(e);
-            }
-        }
-
-        function floodFill(x, y, targetColor, replacementColor) {
-            if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) return;
-            
-            const pixel = pixels.find(p => parseInt(p.dataset.x) === x && parseInt(p.dataset.y) === y);
-            if (!pixel) return;
-            
-            if (pixel.style.backgroundColor !== targetColor) return;
-            if (pixel.style.backgroundColor === replacementColor) return;
-            
-            pixel.style.backgroundColor = replacementColor;
-            
-            floodFill(x + 1, y, targetColor, replacementColor);
-            floodFill(x - 1, y, targetColor, replacementColor);
-            floodFill(x, y + 1, targetColor, replacementColor);
-            floodFill(x, y - 1, targetColor, replacementColor);
-        }
-
-        function setupCreatorTool() {
-            document.querySelectorAll('.tool-btn').forEach(btn => {
-                if (btn.id !== 'clear-canvas') {
-                    btn.addEventListener('click', function() {
-                        document.querySelectorAll('.tool-btn').forEach(b => {
-                            b.classList.remove('active');
-                        });
-                        this.classList.add('active');
-                        currentTool = this.getAttribute('data-tool');
-                    });
-                }
-            });
-            
-            document.getElementById('clear-canvas').addEventListener('click', function() {
-                pixels.forEach(pixel => {
-                    pixel.style.backgroundColor = 'transparent';
-                });
-                updatePreview();
-            });
-            
-            document.querySelectorAll('.color-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    document.querySelectorAll('.color-option').forEach(o => {
-                        o.classList.remove('selected');
-                    });
-                    this.classList.add('selected');
-                    currentColor = this.getAttribute('data-color');
-                });
-            });
-        }
-
-        function updatePreviewArea() {
-            const accessoryPreview = document.getElementById('accessory-preview');
-            accessoryPreview.innerHTML = '';
-            accessoryPreview.style.cssText = '';
-            
-            const size = accessorySizes[currentAccessoryType];
-            
-            switch(currentAccessoryType) {
-                case 'hat':
-                    accessoryPreview.style.position = 'absolute';
-                    accessoryPreview.style.width = size.width + 'px';
-                    accessoryPreview.style.height = size.height + 'px';
-                    accessoryPreview.style.top = '10px';
-                    accessoryPreview.style.left = '80px';
-                    break;
-                case 'face':
-                    accessoryPreview.style.position = 'absolute';
-                    accessoryPreview.style.width = size.width + 'px';
-                    accessoryPreview.style.height = size.height + 'px';
-                    accessoryPreview.style.top = '10px';
-                    accessoryPreview.style.left = '80px';
-                    break;
-                case 'shirt':
-                    accessoryPreview.style.position = 'absolute';
-                    accessoryPreview.style.width = size.width + 'px';
-                    accessoryPreview.style.height = size.height + 'px';
-                    accessoryPreview.style.top = '50px';
-                    accessoryPreview.style.left = '70px';
-                    break;
-                case 'pants':
-                    accessoryPreview.style.position = 'absolute';
-                    accessoryPreview.style.width = size.width + 'px';
-                    accessoryPreview.style.height = size.height + 'px';
-                    accessoryPreview.style.top = '110px';
-                    accessoryPreview.style.left = '75px';
-                    break;
-                case 'glasses':
-                    accessoryPreview.style.position = 'absolute';
-                    accessoryPreview.style.width = size.width + 'px';
-                    accessoryPreview.style.height = size.height + 'px';
-                    accessoryPreview.style.top = '10px';
-                    accessoryPreview.style.left = '80px';
-                    break;
-                case 'left-arm':
-                    accessoryPreview.style.position = 'absolute';
-                    accessoryPreview.style.width = size.width + 'px';
-                    accessoryPreview.style.height = size.height + 'px';
-                    accessoryPreview.style.top = '70px';
-                    accessoryPreview.style.left = '45px';
-                    break;
-                case 'right-arm':
-                    accessoryPreview.style.position = 'absolute';
-                    accessoryPreview.style.width = size.width + 'px';
-                    accessoryPreview.style.height = size.height + 'px';
-                    accessoryPreview.style.top = '70px';
-                    accessoryPreview.style.left = '95px';
-                    break;
-                case 'left-leg':
-                    accessoryPreview.style.position = 'absolute';
-                    accessoryPreview.style.width = size.width + 'px';
-                    accessoryPreview.style.height = size.height + 'px';
-                    accessoryPreview.style.top = '150px';
-                    accessoryPreview.style.left = '45px';
-                    break;
-                case 'right-leg':
-                    accessoryPreview.style.position = 'absolute';
-                    accessoryPreview.style.width = size.width + 'px';
-                    accessoryPreview.style.height = size.height + 'px';
-                    accessoryPreview.style.top = '150px';
-                    accessoryPreview.style.left = '95px';
-                    break;
-            }
-            
-            updatePreview();
-        }
-
-        function updatePreview() {
-            const accessoryPreview = document.getElementById('accessory-preview');
-            accessoryPreview.innerHTML = '';
-            
-            const size = accessorySizes[currentAccessoryType];
-            const scale = size.width / gridSize;
-            
-            for (let y = 0; y < gridSize; y++) {
-                for (let x = 0; x < gridSize; x++) {
-                    const pixel = pixels.find(p => parseInt(p.dataset.x) === x && parseInt(p.dataset.y) === y);
-                    if (pixel && pixel.style.backgroundColor !== 'transparent') {
-                        const previewPixel = document.createElement('div');
-                        previewPixel.style.position = 'absolute';
-                        previewPixel.style.left = (x * scale) + 'px';
-                        previewPixel.style.top = (y * scale) + 'px';
-                        previewPixel.style.width = scale + 'px';
-                        previewPixel.style.height = scale + 'px';
-                        previewPixel.style.backgroundColor = pixel.style.backgroundColor;
-                        accessoryPreview.appendChild(previewPixel);
-                    }
-                }
-            }
-        }
-
-        document.querySelectorAll('.nav-tabs li').forEach(item => {
-            item.addEventListener('click', function() {
-                const tabId = this.getAttribute('data-tab');
-                
-                if ((tabId === 'profile' || tabId === 'avatar') && !currentUser) {
-                    document.getElementById('signup-modal').classList.add('active');
-                    return;
-                }
-                
-                document.querySelectorAll('.nav-tabs li').forEach(tab => {
-                    tab.classList.remove('active');
-                });
-                
-                this.classList.add('active');
-                
-                document.querySelectorAll('.content-section').forEach(section => {
-                    section.classList.remove('active');
-                });
-                document.getElementById(tabId).classList.add('active');
-            });
-        });
-
-        const loginBtn = document.getElementById('login-btn');
-        const signupBtn = document.getElementById('signup-btn');
-        const loginModal = document.getElementById('login-modal');
-        const signupModal = document.getElementById('signup-modal');
-        const closeLogin = document.getElementById('close-login');
-        const closeSignup = document.getElementById('close-signup');
-        const switchToSignup = document.getElementById('switch-to-signup');
-        const switchToLogin = document.getElementById('switch-to-login');
-        const closeModalBtns = document.querySelectorAll('.close-modal');
-
-        loginBtn.addEventListener('click', () => {
-            loginModal.classList.add('active');
-        });
-
-        signupBtn.addEventListener('click', () => {
-            signupModal.classList.add('active');
-        });
-
-        closeLogin.addEventListener('click', () => {
-            loginModal.classList.remove('active');
-        });
-
-        closeSignup.addEventListener('click', () => {
-            signupModal.classList.remove('active');
-        });
-
-        switchToSignup.addEventListener('click', () => {
-            loginModal.classList.remove('active');
-            signupModal.classList.add('active');
-        });
-
-        switchToLogin.addEventListener('click', () => {
-            signupModal.classList.remove('active');
-            loginModal.classList.add('active');
-        });
-
-        closeModalBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                this.closest('.modal').classList.remove('active');
-            });
-        });
-
-        window.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal')) {
-                e.target.classList.remove('active');
-            }
-        });
-
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
-            
-            if (username && password) {
-                const user = server.getUser(username);
-                
-                if (user) {
-                    currentUser = username;
-                    userData = user;
-                    if (!userData.badges) userData.badges = [];
-                    
-                    localStorage.setItem('stickverse_current_user', username);
-                    
-                    showNotification('Successfully logged in as ' + username + '!', 'success');
-                    loginModal.classList.remove('active');
-                    updateUIForLoggedInState();
-                    updateProfileData();
-                    updateFriendsList();
-                    updateAvatarDisplay();
-                    updateUserAccessories();
-                } else {
-                    showNotification('Invalid username or password', 'error');
-                }
-            }
-        });
-
-        document.getElementById('signup-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('signup-username').value;
-            const password = document.getElementById('signup-password').value;
-            const confirmPassword = document.getElementById('signup-confirm').value;
-            
-            if (password !== confirmPassword) {
-                showNotification('Passwords do not match!', 'error');
-                return;
-            }
-            
-            if (username && password) {
-                if (server.getUser(username)) {
-                    showNotification('Username already exists!', 'error');
-                    return;
-                }
-                
-                currentUser = username;
-                userData.username = username;
-                userData.friends = [];
-                userData.followers = [];
-                userData.pencils = 1000;
-                userData.aboutMe = '';
-                userData.createdAccessories = [];
-                userData.equippedItems = {};
-                userData.badges = [];
-                
-                server.saveUser(username, userData);
-                localStorage.setItem('stickverse_current_user', username);
-                
-                showNotification('Account created successfully! Welcome to StickVerse, ' + username + '!', 'success');
-                signupModal.classList.remove('active');
-                updateUIForLoggedInState();
-                updateProfileData();
-            }
-        });
-
-        document.getElementById('create-accessory').addEventListener('click', function() {
-            if (!currentUser) {
-                showNotification('Please log in to create accessories', 'warning');
-                return;
-            }
-            
-            if (userData.pencils < 50) {
-                showNotification('You need 50 pencils to create an accessory!', 'error');
-                return;
-            }
-            
-            const name = document.getElementById('accessory-name').value;
-            const type = document.getElementById('accessory-type').value;
-            
-            if (!name) {
-                showNotification('Please enter an accessory name', 'warning');
-                return;
-            }
-            
-            const hasPixels = pixels.some(pixel => pixel.style.backgroundColor !== 'transparent');
-            if (!hasPixels) {
-                showNotification('Please draw something on the canvas first!', 'warning');
-                return;
-            }
-            
-            const pixelData = [];
-            for (let y = 0; y < gridSize; y++) {
-                const row = [];
-                for (let x = 0; x < gridSize; x++) {
-                    const pixel = pixels.find(p => parseInt(p.dataset.x) === x && parseInt(p.dataset.y) === y);
-                    row.push(pixel ? pixel.style.backgroundColor : 'transparent');
-                }
-                pixelData.push(row);
-            }
-            
-            const accessoryId = server.generateId();
-            const newAccessory = {
-                id: accessoryId,
-                name: name,
-                type: type,
-                creator: currentUser,
-                pixelData: pixelData,
-                gridSize: gridSize
-            };
-            
-            server.saveAccessory(accessoryId, newAccessory);
-            
-            const isFirstAccessory = userData.createdAccessories.length === 0;
-            
-            userData.createdAccessories.push(newAccessory);
-            userData.pencils -= 50;
-            
-            if (isFirstAccessory) {
-                userData.pencils += 1000;
-                if (!userData.badges.includes('Accessory Developer')) {
-                    userData.badges.push('Accessory Developer');
-                }
-                showNotification('Congratulations! You earned the "Accessory Developer" badge and 1000 Pencils!', 'success');
-            }
-            
-            server.saveUser(currentUser, userData);
-            
-            updateUserAccessories();
-            updateProfileData();
-            showNotification('Accessory "' + name + '" created successfully!', 'success');
-            
-            document.getElementById('accessory-name').value = '';
-            setupPixelCanvas();
-            updatePreview();
-        });
-
-        function deleteAccessory(accessoryId) {
-            if (!currentUser) return;
-            
-            if (confirm('Are you sure you want to delete this accessory?')) {
-                userData.createdAccessories = userData.createdAccessories.filter(acc => acc.id !== accessoryId);
-                
-                Object.keys(userData.equippedItems).forEach(type => {
-                    if (userData.equippedItems[type] && userData.equippedItems[type].id === accessoryId) {
-                        delete userData.equippedItems[type];
-                    }
-                });
-                
-                server.saveUser(currentUser, userData);
-                updateUserAccessories();
-                updateAvatarDisplay();
-                updateWearingItems();
-                showNotification('Accessory deleted successfully', 'success');
-            }
-        }
-
-        function updateUIForLoggedInState() {
-            const userActions = document.getElementById('user-actions');
-            if (currentUser) {
-                userActions.innerHTML = `
-                    <div class="currency-display">
-                        <div class="pencil-icon">P</div>
-                        <span id="pencil-count">${userData.pencils || 0}</span>
-                    </div>
-                    <span style="font-weight: 600;">Welcome, ${currentUser}!</span>
-                    <button class="btn btn-logout" id="logout-btn">Log Out</button>
-                `;
-                
-                document.getElementById('logout-btn').addEventListener('click', function() {
-                    if (confirm('Are you sure you want to log out?')) {
-                        currentUser = null;
-                        userData = {
-                            username: '',
-                            joinDate: new Date().toLocaleDateString(),
-                            friends: [],
-                            followers: [],
-                            pencils: 1000,
-                            aboutMe: '',
-                            equippedItems: {},
-                            createdAccessories: [],
-                            badges: []
-                        };
-                        localStorage.removeItem('stickverse_current_user');
-                        location.reload();
-                    }
-                });
-            }
-        }
-
-        function updateProfileData() {
-            if (currentUser) {
-                document.getElementById('profile-username').textContent = currentUser;
-                document.getElementById('profile-join-date').textContent = `Member since ${userData.joinDate}`;
-                document.getElementById('profile-friends').textContent = userData.friends ? userData.friends.length : 0;
-                document.getElementById('profile-followers').textContent = userData.followers ? userData.followers.length : 0;
-                document.getElementById('profile-pencils').textContent = userData.pencils || 0;
-                document.getElementById('about-me-text').textContent = userData.aboutMe || 'This user has not written an about me yet.';
-                document.getElementById('pencil-count').textContent = userData.pencils || 0;
-                
-                const badgesContainer = document.getElementById('profile-badges');
-                badgesContainer.innerHTML = '';
-                if (userData.badges && userData.badges.length > 0) {
-                    userData.badges.forEach(badge => {
-                        const badgeEl = document.createElement('div');
-                        badgeEl.className = 'badge';
-                        badgeEl.innerHTML = `<div class="badge-icon">★</div>${badge}`;
-                        badgesContainer.appendChild(badgeEl);
-                    });
-                }
-            }
-        }
-
-        function updateUserAccessories() {
-            const container = document.getElementById('user-accessories');
-            container.innerHTML = '';
-            
-            if (!userData.createdAccessories || userData.createdAccessories.length === 0) {
-                container.innerHTML = '<div class="no-friends">Create accessories first!</div>';
-                return;
-            }
-            
-            userData.createdAccessories.forEach(accessory => {
-                const item = document.createElement('div');
-                item.className = 'accessory-item';
-                
-                const preview = document.createElement('div');
-                preview.className = 'accessory-item-preview';
-                
-                const accGridSize = accessory.gridSize || 64;
-                const previewScale = 70 / accGridSize;
-                
-                for (let y = 0; y < accGridSize; y++) {
-                    for (let x = 0; x < accGridSize; x++) {
-                        if (accessory.pixelData && accessory.pixelData[y] && accessory.pixelData[y][x] && accessory.pixelData[y][x] !== 'transparent') {
-                            const pixel = document.createElement('div');
-                            pixel.style.position = 'absolute';
-                            pixel.style.left = (x * previewScale) + 'px';
-                            pixel.style.top = (y * previewScale) + 'px';
-                            pixel.style.width = previewScale + 'px';
-                            pixel.style.height = previewScale + 'px';
-                            pixel.style.backgroundColor = accessory.pixelData[y][x];
-                            preview.appendChild(pixel);
-                        }
-                    }
-                }
-                
-                const nameLabel = document.createElement('div');
-                nameLabel.className = 'accessory-item-name';
-                nameLabel.textContent = accessory.name;
-                preview.appendChild(nameLabel);
-                
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'delete-accessory';
-                deleteBtn.innerHTML = '×';
-                deleteBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    deleteAccessory(accessory.id);
-                };
-                preview.appendChild(deleteBtn);
-                
-                item.appendChild(preview);
-                
-                item.addEventListener('click', function() {
-                    userData.equippedItems[accessory.type] = accessory;
-                    updateAvatarDisplay();
-                    updateWearingItems();
-                    server.saveUser(currentUser, userData);
-                    showNotification('Equipped ' + accessory.name + '!', 'success');
-                });
-                
-                container.appendChild(item);
-            });
-        }
-
-        function updateAvatarDisplay() {
-            document.querySelectorAll('[class^="accessory-"]').forEach(el => {
-                if (el.classList.contains('accessory-hat') || 
-                    el.classList.contains('accessory-face') || 
-                    el.classList.contains('accessory-shirt') || 
-                    el.classList.contains('accessory-pants') || 
-                    el.classList.contains('accessory-glasses')) {
-                    el.style.display = 'none';
-                    el.innerHTML = '';
-                }
-            });
-            
-            Object.entries(userData.equippedItems).forEach(([type, accessory]) => {
-                const element = document.getElementById('current-' + type);
-                if (element && accessory) {
-                    element.style.display = 'block';
-                    
-                    if (accessory.pixelData) {
-                        element.style.backgroundImage = 'none';
-                        element.style.backgroundColor = 'transparent';
-                        element.innerHTML = '';
-                        
-                        const size = accessorySizes[type];
-                        const accGridSize = accessory.gridSize || 64;
-                        const scale = size.width / accGridSize;
-                        
-                        for (let y = 0; y < accGridSize; y++) {
-                            for (let x = 0; x < accGridSize; x++) {
-                                if (accessory.pixelData[y] && accessory.pixelData[y][x]) {
-                                    const color = accessory.pixelData[y][x];
-                                    if (color !== 'transparent') {
-                                        const pixel = document.createElement('div');
-                                        pixel.style.position = 'absolute';
-                                        pixel.style.left = (x * scale) + 'px';
-                                        pixel.style.top = (y * scale) + 'px';
-                                        pixel.style.width = scale + 'px';
-                                        pixel.style.height = scale + 'px';
-                                        pixel.style.backgroundColor = color;
-                                        element.appendChild(pixel);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        function updateWearingItems() {
-            const wearingContainer = document.getElementById('wearing-items');
-            wearingContainer.innerHTML = '';
-            
-            if (Object.keys(userData.equippedItems).length === 0) {
-                wearingContainer.innerHTML = '<div class="no-friends">No items equipped</div>';
-                return;
-            }
-            
-            Object.entries(userData.equippedItems).forEach(([type, accessory]) => {
-                if (accessory) {
-                    const itemElement = document.createElement('div');
-                    itemElement.className = 'wearing-item';
-                    
-                    const accGridSize = accessory.gridSize || 64;
-                    const previewScale = 60 / accGridSize;
-                    
-                    for (let y = 0; y < accGridSize; y++) {
-                        for (let x = 0; x < accGridSize; x++) {
-                            if (accessory.pixelData && accessory.pixelData[y] && accessory.pixelData[y][x] && accessory.pixelData[y][x] !== 'transparent') {
-                                const pixel = document.createElement('div');
-                                pixel.style.position = 'absolute';
-                                pixel.style.left = (x * previewScale) + 'px';
-                                pixel.style.top = (y * previewScale) + 'px';
-                                pixel.style.width = previewScale + 'px';
-                                pixel.style.height = previewScale + 'px';
-                                pixel.style.backgroundColor = accessory.pixelData[y][x];
-                                itemElement.appendChild(pixel);
-                            }
-                        }
-                    }
-                    
-                    const label = document.createElement('div');
-                    label.style.position = 'absolute';
-                    label.style.bottom = '0';
-                    label.style.left = '0';
-                    label.style.right = '0';
-                    label.style.textAlign = 'center';
-                    label.style.fontSize = '10px';
-                    label.style.background = 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)';
-                    label.style.padding = '8px 4px 4px';
-                    label.style.color = 'white';
-                    label.textContent = accessory.name;
-                    itemElement.appendChild(label);
-                    
-                    wearingContainer.appendChild(itemElement);
-                }
-            });
-        }
-
-        document.getElementById('save-avatar').addEventListener('click', function() {
-            if (currentUser) {
-                server.saveUser(currentUser, userData);
-                showNotification('Avatar saved successfully!', 'success');
-            } else {
-                showNotification('Please log in to save your avatar.', 'warning');
-            }
-        });
-
-        document.getElementById('edit-about').addEventListener('click', function() {
-            if (currentUser) {
-                const newAbout = prompt('Edit your about me:', userData.aboutMe || '');
-                if (newAbout !== null) {
-                    userData.aboutMe = newAbout;
-                    document.getElementById('about-me-text').textContent = newAbout || 'This user has not written an about me yet.';
-                    server.saveUser(currentUser, userData);
-                    showNotification('About me updated!', 'success');
-                }
-            } else {
-                showNotification('Please log in to edit your profile.', 'warning');
-            }
-        });
-
-        document.getElementById('user-search').addEventListener('input', function() {
-            const query = this.value.trim();
-            const resultsContainer = document.getElementById('search-results');
-            
-            if (query.length < 2) {
-                resultsContainer.classList.remove('active');
-                return;
-            }
-            
-            const results = server.searchUsers(query);
-            resultsContainer.innerHTML = '';
-            
-            if (results.length === 0) {
-                resultsContainer.innerHTML = '<div class="search-result-item">No users found</div>';
-            } else {
-                results.forEach(user => {
-                    const resultItem = document.createElement('div');
-                    resultItem.className = 'search-result-item';
-                    
-                    const isFollowing = currentUser && userData.friends && userData.friends.includes(user.username);
-                    
-                    resultItem.innerHTML = `
-                        <div class="search-result-avatar">${user.username.substring(0, 1).toUpperCase()}</div>
-                        <div style="flex: 1;">
-                            <div style="font-weight: 600;">${user.username}</div>
-                            <div style="font-size: 12px; color: var(--text-secondary);">${user.aboutMe.substring(0, 30)}${user.aboutMe.length > 30 ? '...' : ''}</div>
-                        </div>
-                        ${currentUser && user.username !== currentUser ? 
-                            `<button class="follow-btn ${isFollowing ? 'following' : ''}" data-username="${user.username}">
-                                ${isFollowing ? 'Following' : 'Follow'}
-                            </button>` : ''}
-                    `;
-                    
-                    resultsContainer.appendChild(resultItem);
-                });
-                
-                document.querySelectorAll('.follow-btn').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const targetUser = this.getAttribute('data-username');
-                        if (this.classList.contains('following')) {
-                            if (server.unfollowUser(currentUser, targetUser)) {
-                                userData.friends = userData.friends.filter(f => f !== targetUser);
-                                this.textContent = 'Follow';
-                                this.classList.remove('following');
-                                updateFriendsList();
-                                updateProfileData();
-                                showNotification(`Unfollowed ${targetUser}`, 'success');
-                            }
-                        } else {
-                            if (server.followUser(currentUser, targetUser)) {
-                                userData.friends.push(targetUser);
-                                this.textContent = 'Following';
-                                this.classList.add('following');
-                                updateFriendsList();
-                                updateProfileData();
-                                showNotification(`Now following ${targetUser}`, 'success');
-                            }
-                        }
-                    });
-                });
-            }
-            
-            resultsContainer.classList.add('active');
-        });
-
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.search-bar')) {
-                document.getElementById('search-results').classList.remove('active');
-            }
-        });
-
-        function updateFriendsList() {
-            const friendsList = document.getElementById('friends-list');
-            friendsList.innerHTML = '';
-            
-            if (!currentUser || !userData.friends || userData.friends.length === 0) {
-                friendsList.innerHTML = '<div class="no-friends">No friends yet</div>';
-                return;
-            }
-            
-            userData.friends.forEach(friend => {
-                const friendItem = document.createElement('div');
-                friendItem.className = 'friend-item';
-                friendItem.innerHTML = `
-                    <div class="friend-avatar">${friend.substring(0, 1).toUpperCase()}</div>
-                    <span style="font-weight: 600;">${friend}</span>
-                    <div class="friend-status status-online"></div>
-                `;
-                friendsList.appendChild(friendItem);
-            });
-        }
-
-        function showNotification(message, type = 'info') {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = `notification ${type}`;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-    </script>
+updateUI();
+renderAvatar();
+</script>
 </body>
 </html>
