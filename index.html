@@ -703,6 +703,97 @@
             cursor: pointer;
         }
 
+        /* Notification System */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            max-width: 300px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left-color: #00ff88;
+        }
+
+        .notification.error {
+            border-left-color: #ff4444;
+        }
+
+        .notification.warning {
+            border-left-color: #ffaa00;
+        }
+
+        /* Search Results */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: var(--secondary);
+            border: 1px solid #3a3a3a;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 10;
+            display: none;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #3a3a3a;
+        }
+
+        .search-result-item:hover {
+            background-color: #3a3a3a;
+        }
+
+        .search-result-avatar {
+            width: 30px;
+            height: 30px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Follow/Unfollow buttons */
+        .follow-btn {
+            padding: 5px 10px;
+            background-color: var(--primary);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: auto;
+        }
+
+        .follow-btn.following {
+            background-color: #3a3a3a;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .container {
@@ -733,6 +824,9 @@
     </style>
 </head>
 <body>
+    <!-- Notification System -->
+    <div class="notification" id="notification"></div>
+
     <!-- Header -->
     <header>
         <div class="logo">
@@ -740,7 +834,8 @@
             <h1>StickVerse</h1>
         </div>
         <div class="search-bar">
-            <input type="text" placeholder="Search experiences...">
+            <input type="text" id="user-search" placeholder="Search users...">
+            <div class="search-results" id="search-results"></div>
         </div>
         <div class="user-actions">
             <button class="btn btn-secondary" id="login-btn">Log In</button>
@@ -768,12 +863,7 @@
                 </div>
             </div>
             
-            <div class="sidebar-section">
-                <h3>Community Accessories</h3>
-                <div id="community-accessories">
-                    <div class="no-friends">No accessories created yet</div>
-                </div>
-            </div>
+            <!-- Removed Community Accessories section as requested -->
         </div>
 
         <!-- Main Content Area -->
@@ -882,7 +972,6 @@
                                 </select>
                             </div>
                             <button class="btn btn-primary" id="create-accessory">Create Accessory</button>
-                            <button class="btn btn-secondary" id="share-accessory">Share with Community</button>
                         </div>
                     </div>
                 </div>
@@ -987,12 +1076,103 @@
     </div>
 
     <script>
+        // Server-side simulation
+        const server = {
+            users: {},
+            accessories: {},
+            sessions: {},
+            
+            // Generate a unique ID
+            generateId: function() {
+                return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            },
+            
+            // Save user data
+            saveUser: function(username, userData) {
+                this.users[username] = userData;
+                // In a real server, this would be saved to a database
+                localStorage.setItem('stickverse_users', JSON.stringify(this.users));
+            },
+            
+            // Get user data
+            getUser: function(username) {
+                if (!this.users[username]) {
+                    const savedUsers = localStorage.getItem('stickverse_users');
+                    if (savedUsers) {
+                        this.users = JSON.parse(savedUsers);
+                    }
+                }
+                return this.users[username];
+            },
+            
+            // Save accessory data
+            saveAccessory: function(accessoryId, accessoryData) {
+                this.accessories[accessoryId] = accessoryData;
+                localStorage.setItem('stickverse_accessories', JSON.stringify(this.accessories));
+            },
+            
+            // Get accessory data
+            getAccessory: function(accessoryId) {
+                if (!this.accessories[accessoryId]) {
+                    const savedAccessories = localStorage.getItem('stickverse_accessories');
+                    if (savedAccessories) {
+                        this.accessories = JSON.parse(savedAccessories);
+                    }
+                }
+                return this.accessories[accessoryId];
+            },
+            
+            // Search users
+            searchUsers: function(query) {
+                const results = [];
+                for (const username in this.users) {
+                    if (username.toLowerCase().includes(query.toLowerCase())) {
+                        results.push({
+                            username: username,
+                            avatar: this.users[username].avatar || '?',
+                            friends: this.users[username].friends || [],
+                            aboutMe: this.users[username].aboutMe || ''
+                        });
+                    }
+                }
+                return results;
+            },
+            
+            // Follow user
+            followUser: function(follower, target) {
+                if (!this.users[follower] || !this.users[target]) return false;
+                
+                if (!this.users[follower].friends) {
+                    this.users[follower].friends = [];
+                }
+                
+                if (!this.users[follower].friends.includes(target)) {
+                    this.users[follower].friends.push(target);
+                    this.saveUser(follower, this.users[follower]);
+                    return true;
+                }
+                return false;
+            },
+            
+            // Unfollow user
+            unfollowUser: function(follower, target) {
+                if (!this.users[follower] || !this.users[target]) return false;
+                
+                if (this.users[follower].friends && this.users[follower].friends.includes(target)) {
+                    this.users[follower].friends = this.users[follower].friends.filter(f => f !== target);
+                    this.saveUser(follower, this.users[follower]);
+                    return true;
+                }
+                return false;
+            }
+        };
+
         // User data storage
         let currentUser = null;
         let userData = {
             username: '',
             joinDate: new Date().toLocaleDateString(),
-            friends: 0,
+            friends: [],
             visits: 0,
             accessoriesCreated: 0,
             aboutMe: 'Hello! I\'m a passionate stickman gamer who loves creating and playing exciting stickman adventures.',
@@ -1000,14 +1180,24 @@
             createdAccessories: []
         };
 
-        // Community accessories storage
-        let communityAccessories = [];
-
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
             updateUIForLoggedInState();
             updateWearingItems();
             setupCreatorTool();
+            
+            // Check if user is already logged in
+            const savedUser = localStorage.getItem('stickverse_current_user');
+            if (savedUser) {
+                currentUser = savedUser;
+                const savedData = server.getUser(savedUser);
+                if (savedData) {
+                    userData = savedData;
+                    updateUIForLoggedInState();
+                    updateProfileData();
+                    updateFriendsList();
+                }
+            }
         });
 
         // Setup creator tool
@@ -1018,7 +1208,7 @@
 
             canvas.addEventListener('mousedown', function(e) {
                 if (!currentUser) {
-                    alert('Please log in to create accessories');
+                    showNotification('Please log in to create accessories', 'warning');
                     return;
                 }
                 isDrawing = true;
@@ -1136,16 +1326,24 @@
             const password = document.getElementById('login-password').value;
             
             if (username && password) {
-                currentUser = username;
-                userData.username = username;
-                userData.friends = 0; // Start with 0 friends
-                userData.visits = 1;
-                userData.accessoriesCreated = 0;
+                // Server-side authentication
+                const user = server.getUser(username);
                 
-                alert('Successfully logged in as ' + username + '!');
-                loginModal.classList.remove('active');
-                updateUIForLoggedInState();
-                updateProfileData();
+                if (user) {
+                    currentUser = username;
+                    userData = user;
+                    
+                    // Save session
+                    localStorage.setItem('stickverse_current_user', username);
+                    
+                    showNotification('Successfully logged in as ' + username + '!', 'success');
+                    loginModal.classList.remove('active');
+                    updateUIForLoggedInState();
+                    updateProfileData();
+                    updateFriendsList();
+                } else {
+                    showNotification('Invalid username or password', 'error');
+                }
             }
         });
 
@@ -1156,18 +1354,28 @@
             const confirmPassword = document.getElementById('signup-confirm').value;
             
             if (password !== confirmPassword) {
-                alert('Passwords do not match!');
+                showNotification('Passwords do not match!', 'error');
                 return;
             }
             
             if (username && password) {
+                // Check if user already exists
+                if (server.getUser(username)) {
+                    showNotification('Username already exists!', 'error');
+                    return;
+                }
+                
                 currentUser = username;
                 userData.username = username;
-                userData.friends = 0; // Start with 0 friends
+                userData.friends = [];
                 userData.visits = 1;
                 userData.accessoriesCreated = 0;
                 
-                alert('Account created successfully! Welcome to StickVerse, ' + username + '!');
+                // Save to server
+                server.saveUser(username, userData);
+                localStorage.setItem('stickverse_current_user', username);
+                
+                showNotification('Account created successfully! Welcome to StickVerse, ' + username + '!', 'success');
                 signupModal.classList.remove('active');
                 updateUIForLoggedInState();
                 updateProfileData();
@@ -1177,7 +1385,7 @@
         // Create accessory
         document.getElementById('create-accessory').addEventListener('click', function() {
             if (!currentUser) {
-                alert('Please log in to create accessories');
+                showNotification('Please log in to create accessories', 'warning');
                 return;
             }
             
@@ -1185,49 +1393,35 @@
             const type = document.getElementById('accessory-type').value;
             
             if (!name) {
-                alert('Please enter an accessory name');
+                showNotification('Please enter an accessory name', 'warning');
                 return;
             }
             
             // Create new accessory
+            const accessoryId = server.generateId();
             const newAccessory = {
-                id: Date.now(),
+                id: accessoryId,
                 name: name,
                 type: type,
                 creator: currentUser,
                 color: getRandomColor()
             };
             
+            // Save to server
+            server.saveAccessory(accessoryId, newAccessory);
+            
+            // Update user data
             userData.createdAccessories.push(newAccessory);
             userData.accessoriesCreated++;
+            server.saveUser(currentUser, userData);
             
             // Update UI
             updateUserAccessories();
             updateProfileData();
-            alert('Accessory "' + name + '" created successfully!');
+            showNotification('Accessory "' + name + '" created successfully!', 'success');
             
             // Clear form
             document.getElementById('accessory-name').value = '';
-        });
-
-        // Share accessory with community
-        document.getElementById('share-accessory').addEventListener('click', function() {
-            if (!currentUser) {
-                alert('Please log in to share accessories');
-                return;
-            }
-            
-            if (userData.createdAccessories.length === 0) {
-                alert('Create an accessory first!');
-                return;
-            }
-            
-            // Get the last created accessory
-            const lastAccessory = userData.createdAccessories[userData.createdAccessories.length - 1];
-            communityAccessories.push(lastAccessory);
-            
-            updateCommunityAccessories();
-            alert('Accessory shared with the community!');
         });
 
         // Update UI based on login state
@@ -1236,11 +1430,6 @@
                 document.getElementById('login-btn').style.display = 'none';
                 document.getElementById('signup-btn').style.display = 'none';
                 document.querySelector('.user-actions').innerHTML = `<span>Welcome, ${currentUser}!</span>`;
-                
-                // Update friends list to show actual friends count
-                if (userData.friends === 0) {
-                    document.getElementById('friends-list').innerHTML = '<div class="no-friends">No friends yet</div>';
-                }
             }
         }
 
@@ -1250,7 +1439,7 @@
                 document.getElementById('profile-username').textContent = currentUser;
                 document.getElementById('profile-avatar-display').textContent = currentUser.substring(0, 1).toUpperCase();
                 document.getElementById('profile-join-date').textContent = `Member since ${userData.joinDate} | Last online: Today`;
-                document.getElementById('profile-friends').textContent = userData.friends;
+                document.getElementById('profile-friends').textContent = userData.friends ? userData.friends.length : 0;
                 document.getElementById('profile-visits').textContent = userData.visits;
                 document.getElementById('profile-accessories').textContent = userData.accessoriesCreated;
                 document.getElementById('about-me-text').textContent = userData.aboutMe;
@@ -1277,39 +1466,8 @@
                     userData.equippedItems[accessory.type] = accessory;
                     updateAvatarDisplay();
                     updateWearingItems();
-                    alert('Equipped ' + accessory.name + '!');
-                });
-                container.appendChild(item);
-            });
-        }
-
-        // Update community accessories
-        function updateCommunityAccessories() {
-            const container = document.getElementById('community-accessories');
-            container.innerHTML = '';
-            
-            if (communityAccessories.length === 0) {
-                container.innerHTML = '<div class="no-friends">No accessories created yet</div>';
-                return;
-            }
-            
-            communityAccessories.forEach(accessory => {
-                const item = document.createElement('div');
-                item.className = 'friend-item';
-                item.innerHTML = `
-                    <div class="friend-avatar" style="background-color: ${accessory.color}">${accessory.name.charAt(0)}</div>
-                    <span>${accessory.name} by ${accessory.creator}</span>
-                `;
-                item.addEventListener('click', function() {
-                    if (!currentUser) {
-                        alert('Please log in to use community accessories');
-                        return;
-                    }
-                    // Equip this community accessory
-                    userData.equippedItems[accessory.type] = accessory;
-                    updateAvatarDisplay();
-                    updateWearingItems();
-                    alert('Equipped ' + accessory.name + ' by ' + accessory.creator + '!');
+                    server.saveUser(currentUser, userData);
+                    showNotification('Equipped ' + accessory.name + '!', 'success');
                 });
                 container.appendChild(item);
             });
@@ -1362,9 +1520,10 @@
         // Save avatar
         document.getElementById('save-avatar').addEventListener('click', function() {
             if (currentUser) {
-                alert('Avatar saved successfully!');
+                server.saveUser(currentUser, userData);
+                showNotification('Avatar saved successfully!', 'success');
             } else {
-                alert('Please log in to save your avatar.');
+                showNotification('Please log in to save your avatar.', 'warning');
             }
         });
 
@@ -1375,9 +1534,11 @@
                 if (newAbout !== null) {
                     userData.aboutMe = newAbout;
                     document.getElementById('about-me-text').textContent = newAbout;
+                    server.saveUser(currentUser, userData);
+                    showNotification('About me updated!', 'success');
                 }
             } else {
-                alert('Please log in to edit your profile.');
+                showNotification('Please log in to edit your profile.', 'warning');
             }
         });
 
@@ -1390,6 +1551,114 @@
                 this.classList.add('active');
             });
         });
+
+        // User search functionality
+        document.getElementById('user-search').addEventListener('input', function() {
+            const query = this.value.trim();
+            const resultsContainer = document.getElementById('search-results');
+            
+            if (query.length < 2) {
+                resultsContainer.classList.remove('active');
+                return;
+            }
+            
+            const results = server.searchUsers(query);
+            resultsContainer.innerHTML = '';
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<div class="search-result-item">No users found</div>';
+            } else {
+                results.forEach(user => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-result-item';
+                    
+                    const isFollowing = currentUser && userData.friends && userData.friends.includes(user.username);
+                    
+                    resultItem.innerHTML = `
+                        <div class="search-result-avatar">${user.avatar}</div>
+                        <div>
+                            <div>${user.username}</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">${user.aboutMe.substring(0, 30)}${user.aboutMe.length > 30 ? '...' : ''}</div>
+                        </div>
+                        ${currentUser && user.username !== currentUser ? 
+                            `<button class="follow-btn ${isFollowing ? 'following' : ''}" data-username="${user.username}">
+                                ${isFollowing ? 'Following' : 'Follow'}
+                            </button>` : ''}
+                    `;
+                    
+                    resultsContainer.appendChild(resultItem);
+                });
+                
+                // Add event listeners to follow buttons
+                document.querySelectorAll('.follow-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const targetUser = this.getAttribute('data-username');
+                        if (this.classList.contains('following')) {
+                            // Unfollow
+                            if (server.unfollowUser(currentUser, targetUser)) {
+                                userData.friends = userData.friends.filter(f => f !== targetUser);
+                                this.textContent = 'Follow';
+                                this.classList.remove('following');
+                                updateFriendsList();
+                                showNotification(`Unfollowed ${targetUser}`, 'success');
+                            }
+                        } else {
+                            // Follow
+                            if (server.followUser(currentUser, targetUser)) {
+                                userData.friends.push(targetUser);
+                                this.textContent = 'Following';
+                                this.classList.add('following');
+                                updateFriendsList();
+                                showNotification(`Now following ${targetUser}`, 'success');
+                            }
+                        }
+                    });
+                });
+            }
+            
+            resultsContainer.classList.add('active');
+        });
+
+        // Close search results when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-bar')) {
+                document.getElementById('search-results').classList.remove('active');
+            }
+        });
+
+        // Update friends list
+        function updateFriendsList() {
+            const friendsList = document.getElementById('friends-list');
+            friendsList.innerHTML = '';
+            
+            if (!currentUser || !userData.friends || userData.friends.length === 0) {
+                friendsList.innerHTML = '<div class="no-friends">No friends yet</div>';
+                return;
+            }
+            
+            userData.friends.forEach(friend => {
+                const friendItem = document.createElement('div');
+                friendItem.className = 'friend-item';
+                friendItem.innerHTML = `
+                    <div class="friend-avatar">${friend.substring(0, 1).toUpperCase()}</div>
+                    <span>${friend}</span>
+                    <div class="friend-status status-online"></div>
+                `;
+                friendsList.appendChild(friendItem);
+            });
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
     </script>
 </body>
 </html>
