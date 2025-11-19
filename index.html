@@ -3,581 +3,2100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StickVerse - Old Roblox Style</title>
+    <title>StickVerse - 3D Stickman Gaming Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap');
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Comic Neue', cursive;
         }
-        
+        :root {
+            --primary: #00b4ff;
+            --primary-hover: #0094d6;
+            --secondary: #191919;
+            --accent: #ff6b35;
+            --success: #00d26a;
+            --dark: #0a0a0a;
+            --card-bg: #232527;
+            --card-hover: #2a2d30;
+            --border: #393b3d;
+            --text: #ffffff;
+            --text-secondary: #9da1a6;
+            --shadow: rgba(0, 0, 0, 0.4);
+        }
         body {
-            background: #ccc;
-            font-family: 'Source Sans Pro', Arial, sans-serif;
-            image-rendering: pixelated;
-            overflow: hidden;
+            background-color: var(--dark);
+            color: var(--text);
+            overflow-x: hidden;
+            font-family: 'Comic Neue', cursive;
         }
-        
-        /* Classic Roblox Doodle Font Effect */
-        .doodle-text {
-            font-weight: bold;
-            color: white;
-            text-shadow: 
-                -2px -2px 0 #000,
-                2px -2px 0 #000,
-                -2px 2px 0 #000,
-                2px 2px 0 #000,
-                0 0 10px #000;
-            letter-spacing: 1px;
+        ::-webkit-scrollbar {
+            width: 10px;
         }
-        
+        ::-webkit-scrollbar-track {
+            background: var(--secondary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
         header {
-            background: #02b875;
-            height: 36px;
-            border-bottom: 3px solid #000;
+            background-color: var(--secondary);
+            padding: 12px 24px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 0 10px;
-            box-shadow: 0 4px 0 #028048;
-            position: relative;
+            box-shadow: 0 4px 12px var(--shadow);
+            position: sticky;
+            top: 0;
             z-index: 100;
+            border-bottom: 1px solid var(--border);
         }
-        
         .logo {
-            background: #fff;
-            color: #02b875;
-            padding: 4px 12px;
-            font-size: 20px;
-            font-weight: bold;
-            border: 3px solid #000;
-            margin-right: 20px;
-            box-shadow: 3px 3px 0 #000;
-        }
-        
-        .topbar-btn {
-            background: #ff5454;
-            color: white;
-            border: 3px solid #000;
-            padding: 6px 16px;
-            margin-left: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 3px 3px 0 #000;
-        }
-        
-        .topbar-btn:hover {
-            background: #ff4040;
-        }
-        
-        .topbar-btn:active {
-            box-shadow: inset 3px 3px 0 #000;
-            transform: translate(1px, 1px);
-        }
-        
-        .currency {
-            background: yellow;
-            color: black;
-            border: 3px solid #000;
-            padding: 4px 12px;
-            margin-left: auto;
-            margin-right: 10px;
-            font-weight: bold;
-            box-shadow: 3px 3px 0 #000;
-        }
-        
-        nav {
-            background: #1e1e1e;
-            height: 40px;
-            border-bottom: 4px solid #000;
             display: flex;
             align-items: center;
-            padding-left: 10px;
-            gap: 4px;
+            gap: 12px;
         }
-        
-        .nav-btn {
-            background: #888;
-            color: white;
-            border: 3px solid #000;
-            padding: 8px 20px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 3px 3px 0 #000;
-        }
-        
-        .nav-btn.active {
-            background: #02b875;
-            box-shadow: inset 3px 3px 0 #028048;
-        }
-        
-        .container {
-            display: flex;
-            height: calc(100vh - 80px);
-        }
-        
-        .sidebar {
-            width: 200px;
-            background: #aaa;
-            border-right: 4px solid #000;
-            padding: 10px;
-        }
-        
-        .sidebar h3 {
-            background: #666;
-            color: white;
-            padding: 8px;
-            border: 3px solid #000;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        
-        .friend {
-            background: white;
-            border: 3px solid #000;
-            padding: 8px;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .friend-avatar {
-            width: 30px;
-            height: 30px;
-            background: #02b875;
-            border: 2px solid #000;
+        .logo-img {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), #0094d6);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
             font-weight: bold;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 180, 255, 0.3);
         }
-        
-        .main {
+        .logo h1 {
+            font-size: 26px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Comic Neue', cursive;
+        }
+        .search-bar {
             flex: 1;
-            padding: 20px;
-            background: #ddd;
-            overflow-y: auto;
-        }
-        
-        .panel {
-            background: white;
-            border: 4px solid #000;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .avatar-viewer {
-            width: 300px;
-            height: 400px;
-            background: #02b875;
-            border: 6px solid #000;
+            max-width: 500px;
+            margin: 0 24px;
             position: relative;
-            float: left;
-            margin-right: 20px;
         }
-        
-        .stickman-avatar {
-            position: absolute;
+        .search-bar input {
             width: 100%;
-            height: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            background-color: var(--card-bg);
+            color: var(--text);
+            font-family: 'Comic Neue', cursive;
         }
-        
-        .stickman-head { width: 60px; height: 60px; background: white; position: absolute; top: 40px; left: 120px; border: 4px solid #000; }
-        .stickman-body { width: 12px; height: 140px; background: white; position: absolute; top: 100px; left: 144px; border-left: 4px solid #000; border-right: 4px solid #000; }
-        .stickman-arm-left { width: 80px; height: 12px; background: white; position: absolute; top: 120px; left: 80px; transform: rotate(30deg); border: 4px solid #000; }
-        .stickman-arm-right { width: 80px; height: 12px; background: white; position: absolute; top: 120px; left: 140px; transform: rotate(-30deg); border: 4px solid #000; }
-        .stickman-leg-left { width: 80px; height: 12px; background: white; position: absolute; top: 240px; left: 100px; transform: rotate(-40deg); border: 4px solid #000; }
-        .stickman-leg-right { width: 80px; height: 12px; background: white; position: absolute; top: 240px; left: 140px; transform: rotate(40deg); border: 4px solid #000; }
-        
-        /* Accessory Layers - Exact Size Match */
-        .acc-hat, .acc-face, .acc-glasses { width: 60px; height: 60px; position: absolute; top: 40px; left: 120px; image-rendering: pixelated; }
-        .acc-shirt { width: 100px; height: 100px; position: absolute; top: 90px; left: 100px; image-rendering: pixelated; }
-        .acc-pants { width: 90px; height: 120px; position: absolute; top: 200px; left: 105px; image-rendering: pixelated; }
-        
-        .creator-tool {
-            background: #e0e0e0;
-            border: 4px solid #000;
-            padding: 15px;
-            clear: both;
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary);
         }
-        
-        .tool-buttons {
+        .user-actions {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 12px;
+            align-items: center;
         }
-        
-        .tool-btn {
-            background: #888;
-            color: white;
-            border: 3px solid #000;
+        .btn {
             padding: 10px 20px;
+            border: none;
             cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Comic Neue', cursive;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #0094d6);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 180, 255, 0.3);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0094d6, var(--primary));
+        }
+        .btn-secondary {
+            background-color: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover {
+            background-color: var(--card-hover);
+            border-color: var(--primary);
+        }
+        .btn-logout {
+            background-color: var(--accent);
+            color: white;
+        }
+        .btn-logout:hover {
+            background-color: #e55a2b;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        nav {
+            background-color: var(--secondary);
+            padding: 0 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-tabs {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+        }
+        .nav-tabs li {
+            padding: 16px 24px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .nav-tabs li.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            background-color: rgba(0, 180, 255, 0.1);
+        }
+        .nav-tabs li:hover {
+            background-color: var(--card-bg);
+            color: var(--text);
+        }
+        .container {
+            display: flex;
+            min-height: calc(100vh - 130px);
+        }
+        .sidebar {
+            width: 280px;
+            background-color: var(--secondary);
+            padding: 24px;
+            border-right: 1px solid var(--border);
+        }
+        .sidebar-section {
+            margin-bottom: 32px;
+        }
+        .sidebar-section h3 {
+            margin-bottom: 16px;
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Comic Neue', cursive;
+        }
+        .friend-item {
+            padding: 12px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            background-color: var(--card-bg);
+        }
+        .friend-item:hover {
+            background-color: var(--card-hover);
+        }
+        .friend-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), #0094d6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
             font-weight: bold;
         }
-        
-        .tool-btn.active {
-            background: #02b875;
+        .friend-status {
+            width: 10px;
+            height: 10px;
+            margin-left: auto;
+            border: 2px solid var(--secondary);
         }
-        
-        .color-palette {
+        .status-online {
+            background-color: var(--success);
+            box-shadow: 0 0 8px var(--success);
+        }
+        .main-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            background-color: var(--dark);
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .hero-banner {
+            background: linear-gradient(135deg, #00b4ff, #0061ff);
+            padding: 48px;
+            margin-bottom: 24px;
+            text-align: center;
+            border: 2px solid var(--border);
+        }
+        .hero-banner h2 {
+            font-size: 42px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            font-family: 'Comic Neue', cursive;
+        }
+        .hero-banner p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 24px;
+            opacity: 0.95;
+            font-family: 'Comic Neue', cursive;
+        }
+        .events-grid {
             display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 6px;
-            margin: 15px 0;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
         }
-        
-        .color {
+        .event-card {
+            background-color: var(--card-bg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .event-card:hover {
+            border-color: var(--primary);
+        }
+        .event-card-content {
+            padding: 20px;
+        }
+        .event-card h3 {
+            margin-bottom: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            font-family: 'Comic Neue', cursive;
+        }
+        .event-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+            font-family: 'Comic Neue', cursive;
+        }
+        .avatar-container {
+            display: flex;
+            gap: 24px;
+            margin-top: 24px;
+        }
+        .avatar-viewer {
+            flex: 1;
+            background-color: var(--card-bg);
+            padding: 32px;
+            text-align: center;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+        .stickman-avatar {
+            width: 200px;
+            height: 300px;
+            position: relative;
+            margin-bottom: 32px;
+            image-rendering: pixelated;
+        }
+        .stickman-body {
+            position: absolute;
+            width: 6px;
+            height: 100px;
+            background-color: white;
+            top: 50px;
+            left: 97px;
+        }
+        .stickman-head {
+            position: absolute;
             width: 40px;
             height: 40px;
-            border: 4px solid #000;
-            cursor: pointer;
-            box-shadow: 3px 3px 0 #000;
+            background-color: white;
+            top: 10px;
+            left: 80px;
         }
-        
-        .color.selected {
-            border: 6px solid yellow;
+        .stickman-arm-left {
+            position: absolute;
+            width: 60px;
+            height: 6px;
+            background-color: white;
+            top: 70px;
+            left: 45px;
+            transform: rotate(30deg);
         }
-        
-        .canvas-area {
+        .stickman-arm-right {
+            position: absolute;
+            width: 60px;
+            height: 6px;
+            background-color: white;
+            top: 70px;
+            left: 95px;
+            transform: rotate(-30deg);
+        }
+        .stickman-leg-left {
+            position: absolute;
+            width: 60px;
+            height: 6px;
+            background-color: white;
+            top: 150px;
+            left: 45px;
+            transform: rotate(-30deg);
+            transform-origin: right center;
+        }
+        .stickman-leg-right {
+            position: absolute;
+            width: 60px;
+            height: 6px;
+            background-color: white;
+            top: 150px;
+            left: 95px;
+            transform: rotate(30deg);
+            transform-origin: left center;
+        }
+        .accessory-hat {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 10px;
+            left: 80px;
+            display: none;
+        }
+        .accessory-face {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 10px;
+            left: 80px;
+            display: none;
+        }
+        .accessory-shirt {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            top: 50px;
+            left: 70px;
+            display: none;
+        }
+        .accessory-pants {
+            position: absolute;
+            width: 50px;
+            height: 60px;
+            top: 110px;
+            left: 75px;
+            display: none;
+        }
+        .accessory-glasses {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: 10px;
+            left: 80px;
+            display: none;
+        }
+        .accessories-panel {
+            width: 380px;
+            background-color: var(--card-bg);
+            padding: 24px;
+            max-height: 800px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+        .accessory-category {
+            margin-bottom: 24px;
+        }
+        .accessory-category h4 {
+            margin-bottom: 16px;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Comic Neue', cursive;
+        }
+        .accessory-items {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        .accessory-item {
+            width: 100%;
+            aspect-ratio: 1;
+            background-color: var(--secondary);
             display: flex;
-            gap: 30px;
-            margin-top: 20px;
-            align-items: flex-start;
-        }
-        
-        .creator-canvas, .preview-area {
-            border: 6px solid #000;
-            background: #aaa;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid var(--border);
             position: relative;
+            overflow: hidden;
         }
-        
-        /* GRID SIZES NOW MATCH EXACT ACCESSORY DIMENSIONS */
-        #canvas-hat, #canvas-face, #canvas-glasses { width: 300px; height: 300px; }
-        #canvas-shirt { width: 400px; height: 400px; }
-        #canvas-pants { width: 380px; height: 480px; }
-        
-        .grid-pixel {
-            position: absolute;
-            background: transparent;
-            border: 1px solid rgba(0,0,0,0.1);
-            cursor: crosshair;
+        .accessory-item:hover {
+            border-color: var(--primary);
         }
-        
-        .preview-stickman {
-            position: absolute;
+        .accessory-item.selected {
+            border-color: var(--accent);
+            background-color: rgba(255, 107, 53, 0.2);
+        }
+        .accessory-item-preview {
             width: 100%;
             height: 100%;
-            pointer-events: none;
+            position: relative;
         }
-        
-        .btn-big {
-            background: #ff5454;
+        .accessory-item-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 4px;
+            font-size: 10px;
+            text-align: center;
             color: white;
-            border: 4px solid #000;
-            padding: 15px 30px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 5px 5px 0 #000;
-            margin-top: 20px;
-            display: inline-block;
+            font-family: 'Comic Neue', cursive;
         }
-        
-        .btn-big:hover {
-            background: #ff4040;
+        .delete-accessory {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(220, 53, 69, 0.9);
+            border: none;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .accessory-item:hover .delete-accessory {
+            display: flex;
+        }
+        .delete-accessory:hover {
+            background-color: #c82333;
+        }
+        .creator-tool {
+            background-color: var(--card-bg);
+            padding: 24px;
+            margin-top: 24px;
+            border: 1px solid var(--border);
+        }
+        .creator-tool h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Comic Neue', cursive;
+        }
+        .tool-options {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tool-btn {
+            padding: 10px 16px;
+            background-color: var(--secondary);
+            border: 1px solid var(--border);
+            color: var(--text);
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Comic Neue', cursive;
+        }
+        .tool-btn:hover {
+            border-color: var(--primary);
+            background-color: var(--card-hover);
+        }
+        .tool-btn.active {
+            background: linear-gradient(135deg, var(--primary), #0094d6);
+            border-color: var(--primary);
+            color: white;
+        }
+        .creator-canvas-container {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 20px;
+        }
+        .canvas-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .canvas-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: center;
+            font-family: 'Comic Neue', cursive;
+        }
+        .creator-canvas {
+            width: 100%;
+            aspect-ratio: 1;
+            background-color: var(--secondary);
+            border: 2px solid var(--border);
+            position: relative;
+            cursor: crosshair;
+            image-rendering: pixelated;
+        }
+        .preview-area {
+            width: 100%;
+            aspect-ratio: 1;
+            background-color: var(--secondary);
+            border: 2px solid var(--border);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pixel {
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .color-picker {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .color-option {
+            aspect-ratio: 1;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        .color-option.selected {
+            border-color: white;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+        }
+        .profile-header {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 32px;
+            background-color: var(--card-bg);
+            padding: 32px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+        .profile-avatar {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, var(--secondary), var(--card-bg));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid var(--border);
+        }
+        .profile-stickman {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform: scale(0.8);
+        }
+        .profile-info {
+            flex: 1;
+        }
+        .profile-info h2 {
+            margin-bottom: 8px;
+            font-size: 32px;
+            font-weight: 700;
+            font-family: 'Comic Neue', cursive;
+        }
+        .profile-badges {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .badge {
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+            font-family: 'Comic Neue', cursive;
+        }
+        .badge-icon {
+            width: 16px;
+            height: 16px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #ffd700;
+        }
+        .profile-info p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-family: 'Comic Neue', cursive;
+        }
+        .profile-stats {
+            display: flex;
+            gap: 32px;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Comic Neue', cursive;
+        }
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Comic Neue', cursive;
+        }
+        .profile-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+        .about-section, .wearing-section {
+            background-color: var(--card-bg);
+            padding: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+        .about-section h3, .wearing-section h3 {
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Comic Neue', cursive;
+        }
+        .edit-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 6px 12px;
+            font-family: 'Comic Neue', cursive;
+        }
+        .edit-btn:hover {
+            background-color: rgba(0, 180, 255, 0.1);
+        }
+        .wearing-items {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .wearing-item {
+            aspect-ratio: 1;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 2px solid var(--border);
+        }
+        .no-friends {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 32px;
+            font-size: 14px;
+            font-family: 'Comic Neue', cursive;
+        }
+        .currency-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--card-bg);
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            font-weight: 600;
+            font-family: 'Comic Neue', cursive;
+        }
+        .pencil-icon {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #000;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background-color: var(--card-bg);
+            width: 420px;
+            max-width: 90%;
+            padding: 32px;
+            position: relative;
+            border: 1px solid var(--border);
+            box-shadow: 0 12px 48px var(--shadow);
+        }
+        .close-modal {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+        }
+        .close-modal:hover {
+            background-color: var(--secondary);
+            color: var(--text);
+        }
+        .modal h2 {
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'Comic Neue', cursive;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 14px;
+            font-family: 'Comic Neue', cursive;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            background-color: var(--secondary);
+            color: var(--text);
+            font-size: 14px;
+            font-family: 'Comic Neue', cursive;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .form-actions .btn {
+            flex: 1;
+        }
+        .switch-auth {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-family: 'Comic Neue', cursive;
+        }
+        .switch-auth a {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .switch-auth a:hover {
+            text-decoration: underline;
+        }
+        .notification {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background-color: var(--card-bg);
+            padding: 16px 20px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 8px 24px var(--shadow);
+            z-index: 1001;
+            max-width: 320px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+            font-family: 'Comic Neue', cursive;
+        }
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .notification.success {
+            border-left-color: var(--success);
+        }
+        .notification.error {
+            border-left-color: #dc3545;
+        }
+        .notification.warning {
+            border-left-color: #ffc107;
+        }
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            margin-top: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 10;
+            display: none;
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+        .search-results.active {
+            display: block;
+        }
+        .search-result-item {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border);
+        }
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        .search-result-item:hover {
+            background-color: var(--secondary);
+        }
+        .search-result-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), #0094d6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .follow-btn {
+            padding: 6px 16px;
+            background: linear-gradient(135deg, var(--primary), #0094d6);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: auto;
+            font-family: 'Comic Neue', cursive;
+        }
+        .follow-btn:hover {
+            transform: scale(1.05);
+        }
+        .follow-btn.following {
+            background: var(--secondary);
+            border: 1px solid var(--border);
+        }
+        .preview-stickman {
+            width: 200px;
+            height: 300px;
+            position: relative;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+           
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+           
+            .avatar-container {
+                flex-direction: column;
+            }
+           
+            .accessories-panel {
+                width: 100%;
+            }
+           
+            .profile-content {
+                grid-template-columns: 1fr;
+            }
+           
+            .nav-tabs {
+                overflow-x: auto;
+            }
+           
+            .creator-canvas-container {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-
-<header>
-    <div class="logo doodle-text">STICKVERSE</div>
-    <div class="currency doodle-text">PENCILS: <span id="pencils">1000</span></div>
-    <button class="topbar-btn" id="login-btn">LOG IN</button>
-    <button class="topbar-btn" id="signup-btn">SIGN UP</button>
-    <button class="topbar-btn" id="logout-btn" style="display:none">LOG OUT</button>
-</header>
-
-<nav>
-    <button class="nav-btn active" data-tab="home">Home</button>
-    <button class="nav-btn" data-tab="avatar">Avatar</button>
-    <button class="nav-btn" data-tab="profile">Profile</button>
-</nav>
-
-<div class="container">
-    <div class="sidebar">
-        <h3 class="doodle-text">FRIENDS</h3>
-        <div id="friends-list">No friends yet :(</div>
-    </div>
-    
-    <div class="main">
-        <div id="home" class="tab">
-            <div class="panel">
-                <h1 class="doodle-text" style="font-size:48px;text-align:center;">WELCOME TO STICKVERSE</h1>
-                <p style="text-align:center;margin:20px;font-size:20px;">The #1 place to make stickman games and accessories!</p>
-                <div style="text-align:center;">
-                    <div style="display:inline-block;background:#ff5454;color:white;padding:20px;border:6px solid #000;font-size:24px;font-weight:bold;">
-                        ACCESSORY CREATOR EVENT - WIN 1000 PENCILS!
-                    </div>
+    <div class="notification" id="notification"></div>
+    <header>
+        <div class="logo">
+            <div class="logo-img">S</div>
+            <h1>StickVerse</h1>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="user-search" placeholder="Search users...">
+            <div class="search-results" id="search-results"></div>
+        </div>
+        <div class="user-actions" id="user-actions">
+            <button class="btn btn-secondary" id="login-btn">Log In</button>
+            <button class="btn btn-primary" id="signup-btn">Sign Up</button>
+        </div>
+    </header>
+    <nav>
+        <ul class="nav-tabs">
+            <li class="active" data-tab="home">Home</li>
+            <li data-tab="avatar">Avatar</li>
+            <li data-tab="profile">Profile</li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <h3>Friends</h3>
+                <div id="friends-list">
+                    <div class="no-friends">No friends yet</div>
                 </div>
             </div>
         </div>
-        
-        <div id="avatar" class="tab" style="display:none">
-            <h2 class="doodle-text" style="font-size:36px;margin-bottom:20px;">AVATAR EDITOR</h2>
-            
-            <div class="avatar-viewer">
-                <div class="stickman-avatar">
-                    <div class="stickman-head"></div>
-                    <div class="stickman-body"></div>
-                    <div class="stickman-arm-left"></div>
-                    <div class="stickman-arm-right"></div>
-                    <div class="stickman-leg-left"></div>
-                    <div class="stickman-leg-right"></div>
-                    
-                    <div class="acc-hat" id="worn-hat"></div>
-                    <div class="acc-face" id="worn-face"></div>
-                    <div class="acc-shirt" id="worn-shirt"></div>
-                    <div class="acc-pants" id="worn-pants"></div>
-                    <div class="acc-glasses" id="worn-glasses"></div>
+        <div class="main-content">
+            <div class="content-section active" id="home">
+                <div class="hero-banner">
+                    <h2>Welcome to StickVerse</h2>
+                    <p>The ultimate 3D stickman gaming platform where creativity meets adventure!</p>
+                    <button class="btn btn-primary">Play Now</button>
+                </div>
+               
+                <h2 style="margin-bottom: 16px; font-size: 28px; font-weight: 700;">Current Event</h2>
+                <div class="events-grid">
+                    <div class="event-card">
+                        <div style="background: linear-gradient(135deg, #ff6b35, #ff8c42); height: 180px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold;">
+                            Accessory Creator Challenge
+                        </div>
+                        <div class="event-card-content">
+                            <h3>Design Your Own Accessories</h3>
+                            <p>Create unique accessories for your stickman avatar and earn exclusive rewards!</p>
+                            <p style="margin-top: 12px; color: #ffd700; font-weight: 600;">Prize: 1000 Pencils + First Creator Badge</p>
+                        </div>
+                    </div>
+                </div>
+               
+                <h2 style="margin-top: 40px; margin-bottom: 16px; font-size: 28px; font-weight: 700;">What is StickVerse?</h2>
+                <div style="background-color: var(--card-bg); padding: 24px; border: 1px solid var(--border);">
+                    <p style="line-height: 1.8; margin-bottom: 16px;">StickVerse is a revolutionary 3D gaming platform where players can create, share, and play stickman-based games. Our platform offers:</p>
+                    <ul style="margin: 20px 0 20px 24px; line-height: 2;">
+                        <li>Advanced avatar customization with player-created accessories</li>
+                        <li>A growing library of user-created stickman games</li>
+                        <li>Social features to connect with friends and other players</li>
+                        <li>Regular events with exclusive rewards</li>
+                    </ul>
+                    <p style="line-height: 1.8;">Whether you're into action, adventure, or creative games, StickVerse has something for everyone!</p>
                 </div>
             </div>
-            
-            <div class="creator-tool">
-                <h3 class="doodle-text">CREATE ACCESSORY (50 PENCILS)</h3>
-                
-                <div class="tool-buttons">
-                    <button class="tool-btn active" data-tool="draw">DRAW</button>
-                    <button class="tool-btn" data-tool="erase">ERASE</button>
-                    <button class="tool-btn" data-tool="fill">FILL</button>
-                    <button class="tool-btn" id="clear">CLEAR</button>
-                </div>
-                
-                <div class="color-palette">
-                    <div class="color selected" style="background:#ff0000" data-color="#ff0000"></div>
-                    <div class="color" style="background:#00ff00" data-color="#00ff00"></div>
-                    <div class="color" style="background:#0000ff" data-color="#0000ff"></div>
-                    <div class="color" style="background:#ffff00" data-color="#ffff00"></div>
-                    <div class="color" style="background:#ff00ff" data-color="#ff00ff"></div>
-                    <div class="color" style="background:#00ffff" data-color="#00ffff"></div>
-                    <div class="color" style="background:#ffffff" data-color="#ffffff"></div>
-                    <div class="color" style="background:#000000" data-color="#000000"></div>
-                    <div class="color" style="background:#ff6b35" data-color="#ff6b35"></div>
-                    <div class="color" style="background:#02b875" data-color="#02b875"></div>
-                </div>
-                
-                <select id="acc-type" style="padding:10px;font-size:18px;border:4px solid #000;margin-bottom:15px;">
-                    <option value="hat">Hat (60x60)</option>
-                    <option value="face">Face (60x60)</option>
-                    <option value="shirt">Shirt (100x100)</option>
-                    <option value="pants">Pants (90x120)</option>
-                    <option value="glasses">Glasses (60x60)</option>
-                </select>
-                
-                <input type="text" id="acc-name" placeholder="Accessory Name" style="width:100%;padding:12px;font-size:18px;border:4px solid #000;margin-bottom:15px;">
-                
-                <div class="canvas-area">
-                    <div>
-                        <h4 class="doodle-text">DRAW HERE</h4>
-                        <div id="creator-canvas" class="creator-canvas"></div>
+            <div class="content-section" id="avatar">
+                <h2 style="margin-bottom: 24px; font-size: 28px; font-weight: 700;">Avatar Editor</h2>
+                <div class="avatar-container">
+                    <div class="avatar-viewer">
+                        <div class="stickman-avatar">
+                            <div class="stickman-head"></div>
+                            <div class="stickman-body"></div>
+                            <div class="stickman-arm-left"></div>
+                            <div class="stickman-arm-right"></div>
+                            <div class="stickman-leg-left"></div>
+                            <div class="stickman-leg-right"></div>
+                           
+                            <div class="accessory-hat" id="current-hat"></div>
+                            <div class="accessory-face" id="current-face"></div>
+                            <div class="accessory-shirt" id="current-shirt"></div>
+                            <div class="accessory-pants" id="current-pants"></div>
+                            <div class="accessory-glasses" id="current-glasses"></div>
+                        </div>
+                        <button class="btn btn-primary" id="save-avatar">Save Avatar</button>
                     </div>
-                    <div>
-                        <h4 class="doodle-text">LIVE PREVIEW</h4>
-                        <div class="preview-area" style="width:300px;height:400px;background:#02b875;border:6px solid #000;position:relative;">
-                            <div class="preview-stickman">
-                                <div class="stickman-head"></div>
-                                <div class="stickman-body"></div>
-                                <div class="stickman-arm-left"></div>
-                                <div class="stickman-arm-right"></div>
-                                <div class="stickman-leg-left"></div>
-                                <div class="stickman-leg-right"></div>
-                                <div id="preview-acc"></div>
+                    <div class="accessories-panel">
+                        <div class="accessory-category">
+                            <h4>Your Accessories</h4>
+                            <div class="accessory-items" id="user-accessories">
+                                <div class="no-friends">Create accessories first!</div>
+                            </div>
+                        </div>
+                       
+                        <div class="creator-tool">
+                            <h3>Create New Accessory</h3>
+                            <div class="tool-options">
+                                <button class="tool-btn active" data-tool="draw">Draw</button>
+                                <button class="tool-btn" data-tool="erase">Erase</button>
+                                <button class="tool-btn" data-tool="fill">Fill</button>
+                                <button class="tool-btn" id="clear-canvas">Clear</button>
+                            </div>
+                            <div class="color-picker">
+                                <div class="color-option selected" style="background-color: #ff0000;" data-color="#ff0000"></div>
+                                <div class="color-option" style="background-color: #00ff00;" data-color="#00ff00"></div>
+                                <div class="color-option" style="background-color: #0000ff;" data-color="#0000ff"></div>
+                                <div class="color-option" style="background-color: #ffff00;" data-color="#ffff00"></div>
+                                <div class="color-option" style="background-color: #ff00ff;" data-color="#ff00ff"></div>
+                                <div class="color-option" style="background-color: #00ffff;" data-color="#00ffff"></div>
+                                <div class="color-option" style="background-color: #ffffff;" data-color="#ffffff"></div>
+                                <div class="color-option" style="background-color: #000000;" data-color="#000000"></div>
+                                <div class="color-option" style="background-color: #ff6b35;" data-color="#ff6b35"></div>
+                                <div class="color-option" style="background-color: #00b4ff;" data-color="#00b4ff"></div>
+                            </div>
+                            <div class="creator-canvas-container">
+                                <div class="canvas-wrapper">
+                                    <div class="canvas-label">Drawing Canvas</div>
+                                    <div class="creator-canvas" id="creator-canvas"></div>
+                                </div>
+                                <div class="canvas-wrapper">
+                                    <div class="canvas-label">Live Preview</div>
+                                    <div class="preview-area" id="preview-area">
+                                        <div class="preview-stickman" id="preview-stickman">
+                                            <div class="stickman-head"></div>
+                                            <div class="stickman-body"></div>
+                                            <div class="stickman-arm-left"></div>
+                                            <div class="stickman-arm-right"></div>
+                                            <div class="stickman-leg-left"></div>
+                                            <div class="stickman-leg-right"></div>
+                                            <div class="accessory-preview" id="accessory-preview"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="accessory-name">Accessory Name</label>
+                                <input type="text" id="accessory-name" placeholder="Enter accessory name">
+                            </div>
+                            <div class="form-group">
+                                <label for="accessory-type">Accessory Type</label>
+                                <select id="accessory-type">
+                                    <option value="hat">Hat</option>
+                                    <option value="face">Face</option>
+                                    <option value="shirt">Shirt</option>
+                                    <option value="pants">Pants</option>
+                                    <option value="glasses">Glasses</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" id="create-accessory" style="width: 100%;">Create Accessory (Cost: 50 Pencils)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-section" id="profile">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profile-avatar-display">
+                        <div class="profile-stickman">
+                            <div class="stickman-head"></div>
+                            <div class="stickman-body"></div>
+                            <div class="stickman-arm-left"></div>
+                            <div class="stickman-arm-right"></div>
+                            <div class="stickman-leg-left"></div>
+                            <div class="stickman-leg-right"></div>
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <h2 id="profile-username">Not Logged In</h2>
+                        <div class="profile-badges" id="profile-badges"></div>
+                        <p id="profile-join-date">Create an account to get started!</p>
+                        <div class="profile-stats">
+                            <div class="stat">
+                                <div class="stat-value" id="profile-friends">0</div>
+                                <div class="stat-label">Friends</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value" id="profile-followers">0</div>
+                                <div class="stat-label">Followers</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value" id="profile-pencils">0</div>
+                                <div class="stat-label">Pencils</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div style="text-align:center;">
-                    <button class="btn-big" id="create-acc">CREATE ACCESSORY</button>
+               
+                <div class="profile-content">
+                    <div class="about-section">
+                        <h3>
+                            About Me
+                            <button class="edit-btn" id="edit-about">Edit</button>
+                        </h3>
+                        <p id="about-me-text">Create an account and tell us about yourself!</p>
+                    </div>
+                   
+                    <div class="wearing-section">
+                        <h3>Currently Wearing</h3>
+                        <div class="wearing-items" id="wearing-items">
+                            <div class="no-friends">No items equipped</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <div id="profile" class="tab" style="display:none">
-            <h2 class="doodle-text" style="font-size:40px;">PROFILE</h2>
-            <div class="panel" style="text-align:center;">
-                <h3 id="username" class="doodle-text" style="font-size:36px;">Not Logged In</h3>
-                <p>Pencils: <span id="profile-pencils">0</span></p>
-                <p>Friends: <span id="profile-friends">0</span></p>
+    </div>
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2>Log In to StickVerse</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="close-login">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Log In</button>
+                </div>
+            </form>
+            <div class="switch-auth">
+                Don't have an account? <a id="switch-to-signup">Sign Up</a>
             </div>
         </div>
     </div>
-</div>
-
-<script>
-    // Super simple old Roblox feel - no fancy stuff
-    let currentUser = localStorage.getItem('sv_user') || null;
-    let userData = currentUser ? JSON.parse(localStorage.getItem('sv_' + currentUser)) || {pencils:1000, items:[], equipped:{}} : {pencils:1000, items:[], equipped:{}};
-    let currentColor = "#ff0000";
-    let currentTool = "draw";
-    let pixels = [];
-    
-    const sizes = {
-        hat: {w:60, h:60, canvas:300},
-        face: {w:60, h:60, canvas:300},
-        glasses: {w:60, h:60, canvas:300},
-        shirt: {w:100, h:100, canvas:400},
-        pants: {w:90, h:120, canvas:380}
-    };
-    
-    function init() {
-        updateLoginState();
-        setupCanvas();
-        document.querySelectorAll('.nav-btn').forEach(b => b.onclick = () => switchTab(b.dataset.tab));
-        document.querySelectorAll('.color').forEach(c => c.onclick = () => {
-            document.querySelectorAll('.color').forEach(x => x.classList.remove('selected'));
-            c.classList.add('selected');
-            currentColor = c.dataset.color;
-        });
-        document.querySelectorAll('.tool-btn').forEach(b => b.onclick = () => {
-            document.querySelectorAll('.tool-btn').forEach(x => x.classList.remove('active'));
-            b.classList.add('active');
-            currentTool = b.dataset.tool || b.id;
-        });
-        document.getElementById('acc-type').onchange = setupCanvas;
-        document.getElementById('create-acc').onclick = createAccessory;
-        document.getElementById('login-btn').onclick = () => promptLogin();
-        document.getElementById('signup-btn').onclick = () => promptLogin(true);
-        document.getElementById('logout-btn').onclick = () => { currentUser = null; localStorage.removeItem('sv_user'); location.reload(); };
-    }
-    
-    function switchTab(tab) {
-        document.querySelectorAll('.tab').forEach(t => t.style.display = 'none');
-        document.getElementById(tab).style.display = 'block';
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.querySelector(`.nav-btn[data-tab="${tab}"]`).classList.add('active');
-    }
-    
-    function setupCanvas() {
-        const type = document.getElementById('acc-type').value;
-        const canvas = document.getElementById('creator-canvas');
-        canvas.innerHTML = '';
-        canvas.style.width = sizes[type].canvas + 'px';
-        canvas.style.height = (type === 'pants' ? 480 : sizes[type].canvas) + 'px';
-        
-        const pixelSize = sizes[type].canvas / sizes[type].w;
-        pixels = [];
-        
-        for (let y = 0; y < sizes[type].h; y++) {
-            for (let x = 0; x < sizes[type].w; x++) {
-                const p = document.createElement('div');
-                p.className = 'grid-pixel';
-                p.style.width = p.style.height = pixelSize + 'px';
-                p.style.left = x * pixelSize + 'px';
-                p.style.top = y * pixelSize + 'px';
-                p.dataset.x = x; p.dataset.y = y;
-                p.onmousedown = p.onmouseover = function(e) {
-                    if (e.buttons === 1) {
-                        if (currentTool === 'erase') p.style.background = 'transparent';
-                        else p.style.background = currentColor;
-                        updatePreview();
+    <div class="modal" id="signup-modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2>Create a StickVerse Account</h2>
+            <form id="signup-form">
+                <div class="form-group">
+                    <label for="signup-username">Username</label>
+                    <input type="text" id="signup-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm">Confirm Password</label>
+                    <input type="password" id="signup-confirm" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="close-signup">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </div>
+            </form>
+            <div class="switch-auth">
+                Already have an account? <a id="switch-to-login">Log In</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        const server = {
+            users: {},
+            accessories: {},
+           
+            generateId: function() {
+                return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            },
+           
+            saveUser: function(username, userData) {
+                this.users[username] = userData;
+                localStorage.setItem('stickverse_users', JSON.stringify(this.users));
+            },
+           
+            getUser: function(username) {
+                if (!this.users[username]) {
+                    const savedUsers = localStorage.getItem('stickverse_users');
+                    if (savedUsers) {
+                        this.users = JSON.parse(savedUsers);
                     }
+                }
+                return this.users[username];
+            },
+           
+            saveAccessory: function(accessoryId, accessoryData) {
+                this.accessories[accessoryId] = accessoryData;
+                localStorage.setItem('stickverse_accessories', JSON.stringify(this.accessories));
+            },
+           
+            getAccessory: function(accessoryId) {
+                if (!this.accessories[accessoryId]) {
+                    const savedAccessories = localStorage.getItem('stickverse_accessories');
+                    if (savedAccessories) {
+                        this.accessories = JSON.parse(savedAccessories);
+                    }
+                }
+                return this.accessories[accessoryId];
+            },
+           
+            searchUsers: function(query) {
+                const results = [];
+                for (const username in this.users) {
+                    if (username.toLowerCase().includes(query.toLowerCase())) {
+                        results.push({
+                            username: username,
+                            avatar: this.users[username].avatar || '?',
+                            friends: this.users[username].friends || [],
+                            followers: this.users[username].followers || [],
+                            aboutMe: this.users[username].aboutMe || ''
+                        });
+                    }
+                }
+                return results;
+            },
+           
+            followUser: function(follower, target) {
+                if (!this.users[follower] || !this.users[target] || follower === target) return false;
+               
+                if (!this.users[follower].friends) {
+                    this.users[follower].friends = [];
+                }
+               
+                if (!this.users[target].followers) {
+                    this.users[target].followers = [];
+                }
+               
+                if (!this.users[follower].friends.includes(target)) {
+                    this.users[follower].friends.push(target);
+                    this.saveUser(follower, this.users[follower]);
+                   
+                    if (!this.users[target].followers.includes(follower)) {
+                        this.users[target].followers.push(follower);
+                        this.saveUser(target, this.users[target]);
+                    }
+                   
+                    return true;
+                }
+                return false;
+            },
+           
+            unfollowUser: function(follower, target) {
+                if (!this.users[follower] || !this.users[target]) return false;
+               
+                if (this.users[follower].friends && this.users[follower].friends.includes(target)) {
+                    this.users[follower].friends = this.users[follower].friends.filter(f => f !== target);
+                    this.saveUser(follower, this.users[follower]);
+                   
+                    if (this.users[target].followers && this.users[target].followers.includes(follower)) {
+                        this.users[target].followers = this.users[target].followers.filter(f => f !== follower);
+                        this.saveUser(target, this.users[target]);
+                    }
+                   
+                    return true;
+                }
+                return false;
+            }
+        };
+        let currentUser = null;
+        let userData = {
+            username: '',
+            joinDate: new Date().toLocaleDateString(),
+            friends: [],
+            followers: [],
+            pencils: 1000,
+            aboutMe: '',
+            equippedItems: {},
+            createdAccessories: [],
+            badges: []
+        };
+        let currentTool = 'draw';
+        let currentColor = '#ff0000';
+        let pixels = [];
+        let currentAccessoryType = 'hat';
+        const accessorySizes = {
+            hat: { width: 40, height: 40 },
+            face: { width: 40, height: 40 },
+            shirt: { width: 60, height: 60 },
+            pants: { width: 50, height: 60 },
+            glasses: { width: 40, height: 40 }
+        };
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUIForLoggedInState();
+            updateWearingItems();
+            setupCreatorTool();
+            setupPixelCanvas();
+           
+            const savedUser = localStorage.getItem('stickverse_current_user');
+            if (savedUser) {
+                currentUser = savedUser;
+                const savedData = server.getUser(savedUser);
+                if (savedData) {
+                    userData = savedData;
+                    if (!userData.badges) userData.badges = [];
+                    updateUIForLoggedInState();
+                    updateProfileData();
+                    updateFriendsList();
+                    updateAvatarDisplay();
+                    updateUserAccessories();
+                }
+            }
+           
+            document.getElementById('accessory-type').addEventListener('change', function() {
+                currentAccessoryType = this.value;
+                setupPixelCanvas();
+                updatePreviewArea();
+            });
+           
+            updatePreviewArea();
+        });
+        function setupPixelCanvas() {
+            const canvas = document.getElementById('creator-canvas');
+            canvas.innerHTML = '';
+            pixels = [];
+           
+            const size = accessorySizes[currentAccessoryType];
+            const gridSize = Math.max(size.width, size.height);
+            const pixelSize = 300 / gridSize;
+           
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    const pixel = document.createElement('div');
+                    pixel.className = 'pixel';
+                    pixel.style.width = pixelSize + 'px';
+                    pixel.style.height = pixelSize + 'px';
+                    pixel.style.left = (x * pixelSize) + 'px';
+                    pixel.style.top = (y * pixelSize) + 'px';
+                    pixel.dataset.x = x;
+                    pixel.dataset.y = y;
+                    pixel.style.backgroundColor = 'transparent';
+                   
+                    pixel.addEventListener('mousedown', handlePixelClick);
+                    pixel.addEventListener('mouseover', handlePixelHover);
+                   
+                    canvas.appendChild(pixel);
+                    pixels.push(pixel);
+                }
+            }
+        }
+        function handlePixelClick(e) {
+            if (!currentUser) {
+                showNotification('Please log in to create accessories', 'warning');
+                return;
+            }
+           
+            const pixel = e.target;
+            if (currentTool === 'draw') {
+                pixel.style.backgroundColor = currentColor;
+            } else if (currentTool === 'erase') {
+                pixel.style.backgroundColor = 'transparent';
+            } else if (currentTool === 'fill') {
+                const targetX = parseInt(pixel.dataset.x);
+                const targetY = parseInt(pixel.dataset.y);
+                const targetColor = pixel.style.backgroundColor;
+                floodFill(targetX, targetY, targetColor, currentColor);
+            }
+           
+            updatePreview();
+        }
+        function handlePixelHover(e) {
+            if (e.buttons === 1) {
+                handlePixelClick(e);
+            }
+        }
+        function floodFill(x, y, targetColor, replacementColor) {
+            if (x < 0 || x >= accessorySizes[currentAccessoryType].width || 
+                y < 0 || y >= accessorySizes[currentAccessoryType].height) return;
+           
+            const pixel = pixels.find(p => parseInt(p.dataset.x) === x && parseInt(p.dataset.y) === y);
+            if (!pixel) return;
+           
+            if (pixel.style.backgroundColor !== targetColor) return;
+            if (pixel.style.backgroundColor === replacementColor) return;
+           
+            pixel.style.backgroundColor = replacementColor;
+           
+            floodFill(x + 1, y, targetColor, replacementColor);
+            floodFill(x - 1, y, targetColor, replacementColor);
+            floodFill(x, y + 1, targetColor, replacementColor);
+            floodFill(x, y - 1, targetColor, replacementColor);
+        }
+        function setupCreatorTool() {
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                if (btn.id !== 'clear-canvas') {
+                    btn.addEventListener('click', function() {
+                        document.querySelectorAll('.tool-btn').forEach(b => {
+                            b.classList.remove('active');
+                        });
+                        this.classList.add('active');
+                        currentTool = this.getAttribute('data-tool');
+                    });
+                }
+            });
+           
+            document.getElementById('clear-canvas').addEventListener('click', function() {
+                pixels.forEach(pixel => {
+                    pixel.style.backgroundColor = 'transparent';
+                });
+                updatePreview();
+            });
+           
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.color-option').forEach(o => {
+                        o.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    currentColor = this.getAttribute('data-color');
+                });
+            });
+        }
+        function updatePreviewArea() {
+            const accessoryPreview = document.getElementById('accessory-preview');
+            accessoryPreview.innerHTML = '';
+            accessoryPreview.style.cssText = '';
+           
+            const size = accessorySizes[currentAccessoryType];
+           
+            switch(currentAccessoryType) {
+                case 'hat':
+                    accessoryPreview.style.position = 'absolute';
+                    accessoryPreview.style.width = size.width + 'px';
+                    accessoryPreview.style.height = size.height + 'px';
+                    accessoryPreview.style.top = '10px';
+                    accessoryPreview.style.left = '80px';
+                    break;
+                case 'face':
+                    accessoryPreview.style.position = 'absolute';
+                    accessoryPreview.style.width = size.width + 'px';
+                    accessoryPreview.style.height = size.height + 'px';
+                    accessoryPreview.style.top = '10px';
+                    accessoryPreview.style.left = '80px';
+                    break;
+                case 'shirt':
+                    accessoryPreview.style.position = 'absolute';
+                    accessoryPreview.style.width = size.width + 'px';
+                    accessoryPreview.style.height = size.height + 'px';
+                    accessoryPreview.style.top = '50px';
+                    accessoryPreview.style.left = '70px';
+                    break;
+                case 'pants':
+                    accessoryPreview.style.position = 'absolute';
+                    accessoryPreview.style.width = size.width + 'px';
+                    accessoryPreview.style.height = size.height + 'px';
+                    accessoryPreview.style.top = '110px';
+                    accessoryPreview.style.left = '75px';
+                    break;
+                case 'glasses':
+                    accessoryPreview.style.position = 'absolute';
+                    accessoryPreview.style.width = size.width + 'px';
+                    accessoryPreview.style.height = size.height + 'px';
+                    accessoryPreview.style.top = '10px';
+                    accessoryPreview.style.left = '80px';
+                    break;
+            }
+           
+            updatePreview();
+        }
+        function updatePreview() {
+            const accessoryPreview = document.getElementById('accessory-preview');
+            accessoryPreview.innerHTML = '';
+           
+            const size = accessorySizes[currentAccessoryType];
+            const gridSize = Math.max(size.width, size.height);
+            const scale = size.width / gridSize;
+           
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    const pixel = pixels.find(p => parseInt(p.dataset.x) === x && parseInt(p.dataset.y) === y);
+                    if (pixel && pixel.style.backgroundColor !== 'transparent') {
+                        const previewPixel = document.createElement('div');
+                        previewPixel.style.position = 'absolute';
+                        previewPixel.style.left = (x * scale) + 'px';
+                        previewPixel.style.top = (y * scale) + 'px';
+                        previewPixel.style.width = scale + 'px';
+                        previewPixel.style.height = scale + 'px';
+                        previewPixel.style.backgroundColor = pixel.style.backgroundColor;
+                        accessoryPreview.appendChild(previewPixel);
+                    }
+                }
+            }
+        }
+        document.querySelectorAll('.nav-tabs li').forEach(item => {
+            item.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+               
+                if ((tabId === 'profile' || tabId === 'avatar') && !currentUser) {
+                    document.getElementById('signup-modal').classList.add('active');
+                    return;
+                }
+               
+                document.querySelectorAll('.nav-tabs li').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+               
+                this.classList.add('active');
+               
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        const loginBtn = document.getElementById('login-btn');
+        const signupBtn = document.getElementById('signup-btn');
+        const loginModal = document.getElementById('login-modal');
+        const signupModal = document.getElementById('signup-modal');
+        const closeLogin = document.getElementById('close-login');
+        const closeSignup = document.getElementById('close-signup');
+        const switchToSignup = document.getElementById('switch-to-signup');
+        const switchToLogin = document.getElementById('switch-to-login');
+        const closeModalBtns = document.querySelectorAll('.close-modal');
+        loginBtn.addEventListener('click', () => {
+            loginModal.classList.add('active');
+        });
+        signupBtn.addEventListener('click', () => {
+            signupModal.classList.add('active');
+        });
+        closeLogin.addEventListener('click', () => {
+            loginModal.classList.remove('active');
+        });
+        closeSignup.addEventListener('click', () => {
+            signupModal.classList.remove('active');
+        });
+        switchToSignup.addEventListener('click', () => {
+            loginModal.classList.remove('active');
+            signupModal.classList.add('active');
+        });
+        switchToLogin.addEventListener('click', () => {
+            signupModal.classList.remove('active');
+            loginModal.classList.add('active');
+        });
+        closeModalBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.closest('.modal').classList.remove('active');
+            });
+        });
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+           
+            if (username && password) {
+                const user = server.getUser(username);
+               
+                if (user) {
+                    currentUser = username;
+                    userData = user;
+                    if (!userData.badges) userData.badges = [];
+                   
+                    localStorage.setItem('stickverse_current_user', username);
+                   
+                    showNotification('Successfully logged in as ' + username + '!', 'success');
+                    loginModal.classList.remove('active');
+                    updateUIForLoggedInState();
+                    updateProfileData();
+                    updateFriendsList();
+                    updateAvatarDisplay();
+                    updateUserAccessories();
+                } else {
+                    showNotification('Invalid username or password', 'error');
+                }
+            }
+        });
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm').value;
+           
+            if (password !== confirmPassword) {
+                showNotification('Passwords do not match!', 'error');
+                return;
+            }
+           
+            if (username && password) {
+                if (server.getUser(username)) {
+                    showNotification('Username already exists!', 'error');
+                    return;
+                }
+               
+                currentUser = username;
+                userData.username = username;
+                userData.friends = [];
+                userData.followers = [];
+                userData.pencils = 1000;
+                userData.aboutMe = '';
+                userData.createdAccessories = [];
+                userData.equippedItems = {};
+                userData.badges = [];
+               
+                server.saveUser(username, userData);
+                localStorage.setItem('stickverse_current_user', username);
+               
+                showNotification('Account created successfully! Welcome to StickVerse, ' + username + '!', 'success');
+                signupModal.classList.remove('active');
+                updateUIForLoggedInState();
+                updateProfileData();
+            }
+        });
+        document.getElementById('create-accessory').addEventListener('click', function() {
+            if (!currentUser) {
+                showNotification('Please log in to create accessories', 'warning');
+                return;
+            }
+           
+            if (userData.pencils < 50) {
+                showNotification('You need 50 pencils to create an accessory!', 'error');
+                return;
+            }
+           
+            const name = document.getElementById('accessory-name').value;
+            const type = document.getElementById('accessory-type').value;
+           
+            if (!name) {
+                showNotification('Please enter an accessory name', 'warning');
+                return;
+            }
+           
+            const hasPixels = pixels.some(pixel => pixel.style.backgroundColor !== 'transparent');
+            if (!hasPixels) {
+                showNotification('Please draw something on the canvas first!', 'warning');
+                return;
+            }
+           
+            const pixelData = [];
+            const gridSize = Math.max(accessorySizes[type].width, accessorySizes[type].height);
+            for (let y = 0; y < gridSize; y++) {
+                const row = [];
+                for (let x = 0; x < gridSize; x++) {
+                    const pixel = pixels.find(p => parseInt(p.dataset.x) === x && parseInt(p.dataset.y) === y);
+                    row.push(pixel ? pixel.style.backgroundColor : 'transparent');
+                }
+                pixelData.push(row);
+            }
+           
+            const accessoryId = server.generateId();
+            const newAccessory = {
+                id: accessoryId,
+                name: name,
+                type: type,
+                creator: currentUser,
+                pixelData: pixelData,
+                gridSize: gridSize
+            };
+           
+            server.saveAccessory(accessoryId, newAccessory);
+           
+            const isFirstAccessory = userData.createdAccessories.length === 0;
+           
+            userData.createdAccessories.push(newAccessory);
+            userData.pencils -= 50;
+           
+            if (isFirstAccessory) {
+                userData.pencils += 1000;
+                if (!userData.badges.includes('First Creator')) {
+                    userData.badges.push('First Creator');
+                }
+                showNotification('Congratulations! You earned the "First Creator" badge and 1000 Pencils!', 'success');
+            }
+           
+            server.saveUser(currentUser, userData);
+           
+            updateUserAccessories();
+            updateProfileData();
+            showNotification('Accessory "' + name + '" created successfully!', 'success');
+           
+            document.getElementById('accessory-name').value = '';
+            setupPixelCanvas();
+            updatePreview();
+        });
+        function deleteAccessory(accessoryId) {
+            if (!currentUser) return;
+           
+            if (confirm('Are you sure you want to delete this accessory?')) {
+                userData.createdAccessories = userData.createdAccessories.filter(acc => acc.id !== accessoryId);
+               
+                Object.keys(userData.equippedItems).forEach(type => {
+                    if (userData.equippedItems[type] && userData.equippedItems[type].id === accessoryId) {
+                        delete userData.equippedItems[type];
+                    }
+                });
+               
+                server.saveUser(currentUser, userData);
+                updateUserAccessories();
+                updateAvatarDisplay();
+                updateWearingItems();
+                showNotification('Accessory deleted successfully', 'success');
+            }
+        }
+        function updateUIForLoggedInState() {
+            const userActions = document.getElementById('user-actions');
+            if (currentUser) {
+                userActions.innerHTML = `
+                    <div class="currency-display">
+                        <div class="pencil-icon">P</div>
+                        <span id="pencil-count">${userData.pencils || 0}</span>
+                    </div>
+                    <span style="font-weight: 600;">Welcome, ${currentUser}!</span>
+                    <button class="btn btn-logout" id="logout-btn">Log Out</button>
+                `;
+               
+                document.getElementById('logout-btn').addEventListener('click', function() {
+                    if (confirm('Are you sure you want to log out?')) {
+                        currentUser = null;
+                        userData = {
+                            username: '',
+                            joinDate: new Date().toLocaleDateString(),
+                            friends: [],
+                            followers: [],
+                            pencils: 1000,
+                            aboutMe: '',
+                            equippedItems: {},
+                            createdAccessories: [],
+                            badges: []
+                        };
+                        localStorage.removeItem('stickverse_current_user');
+                        location.reload();
+                    }
+                });
+            }
+        }
+        function updateProfileData() {
+            if (currentUser) {
+                document.getElementById('profile-username').textContent = currentUser;
+                document.getElementById('profile-join-date').textContent = `Member since ${userData.joinDate}`;
+                document.getElementById('profile-friends').textContent = userData.friends ? userData.friends.length : 0;
+                document.getElementById('profile-followers').textContent = userData.followers ? userData.followers.length : 0;
+                document.getElementById('profile-pencils').textContent = userData.pencils || 0;
+                document.getElementById('about-me-text').textContent = userData.aboutMe || 'This user has not written an about me yet.';
+                document.getElementById('pencil-count').textContent = userData.pencils || 0;
+               
+                const badgesContainer = document.getElementById('profile-badges');
+                badgesContainer.innerHTML = '';
+                if (userData.badges && userData.badges.length > 0) {
+                    userData.badges.forEach(badge => {
+                        const badgeEl = document.createElement('div');
+                        badgeEl.className = 'badge';
+                        badgeEl.innerHTML = `<div class="badge-icon">★</div>${badge}`;
+                        badgesContainer.appendChild(badgeEl);
+                    });
+                }
+            }
+        }
+        function updateUserAccessories() {
+            const container = document.getElementById('user-accessories');
+            container.innerHTML = '';
+           
+            if (!userData.createdAccessories || userData.createdAccessories.length === 0) {
+                container.innerHTML = '<div class="no-friends">Create accessories first!</div>';
+                return;
+            }
+           
+            userData.createdAccessories.forEach(accessory => {
+                const item = document.createElement('div');
+                item.className = 'accessory-item';
+               
+                const preview = document.createElement('div');
+                preview.className = 'accessory-item-preview';
+               
+                const accGridSize = accessory.gridSize || 40;
+                const previewScale = 70 / accGridSize;
+               
+                for (let y = 0; y < accGridSize; y++) {
+                    for (let x = 0; x < accGridSize; x++) {
+                        if (accessory.pixelData && accessory.pixelData[y] && accessory.pixelData[y][x] && accessory.pixelData[y][x] !== 'transparent') {
+                            const pixel = document.createElement('div');
+                            pixel.style.position = 'absolute';
+                            pixel.style.left = (x * previewScale) + 'px';
+                            pixel.style.top = (y * previewScale) + 'px';
+                            pixel.style.width = previewScale + 'px';
+                            pixel.style.height = previewScale + 'px';
+                            pixel.style.backgroundColor = accessory.pixelData[y][x];
+                            preview.appendChild(pixel);
+                        }
+                    }
+                }
+               
+                const nameLabel = document.createElement('div');
+                nameLabel.className = 'accessory-item-name';
+                nameLabel.textContent = accessory.name;
+                preview.appendChild(nameLabel);
+               
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-accessory';
+                deleteBtn.innerHTML = '×';
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    deleteAccessory(accessory.id);
                 };
-                canvas.appendChild(p);
-                pixels.push(p);
-            }
+                preview.appendChild(deleteBtn);
+               
+                item.appendChild(preview);
+               
+                item.addEventListener('click', function() {
+                    userData.equippedItems[accessory.type] = accessory;
+                    updateAvatarDisplay();
+                    updateWearingItems();
+                    server.saveUser(currentUser, userData);
+                    showNotification('Equipped ' + accessory.name + '!', 'success');
+                });
+               
+                container.appendChild(item);
+            });
         }
-        updatePreview();
-    }
-    
-    function updatePreview() {
-        const type = document.getElementById('acc-type').value;
-        const preview = document.getElementById('preview-acc');
-        preview.innerHTML = '';
-        preview.className = 'acc-' + type;
-        
-        const scale = sizes[type].w / sizes[type].canvas * 300;
-        pixels.forEach(p => {
-            if (p.style.background && p.style.background !== 'transparent') {
-                const px = document.createElement('div');
-                px.style.position = 'absolute';
-                px.style.background = p.style.background;
-                px.style.left = parseInt(p.style.left) * scale / sizes[type].canvas * 300 + 'px';
-                px.style.top = parseInt(p.style.top) * scale / sizes[type].canvas * 300 + 'px';
-                px.style.width = px.style.height = scale + 'px';
-                preview.appendChild(px);
+        function updateAvatarDisplay() {
+            document.querySelectorAll('[class^="accessory-"]').forEach(el => {
+                if (el.classList.contains('accessory-hat') ||
+                    el.classList.contains('accessory-face') ||
+                    el.classList.contains('accessory-shirt') ||
+                    el.classList.contains('accessory-pants') ||
+                    el.classList.contains('accessory-glasses')) {
+                    el.style.display = 'none';
+                    el.innerHTML = '';
+                }
+            });
+           
+            Object.entries(userData.equippedItems).forEach(([type, accessory]) => {
+                const element = document.getElementById('current-' + type);
+                if (element && accessory) {
+                    element.style.display = 'block';
+                   
+                    if (accessory.pixelData) {
+                        element.style.backgroundImage = 'none';
+                        element.style.backgroundColor = 'transparent';
+                        element.innerHTML = '';
+                       
+                        const size = accessorySizes[type];
+                        const accGridSize = accessory.gridSize || 40;
+                        const scale = size.width / accGridSize;
+                       
+                        for (let y = 0; y < accGridSize; y++) {
+                            for (let x = 0; x < accGridSize; x++) {
+                                if (accessory.pixelData[y] && accessory.pixelData[y][x]) {
+                                    const color = accessory.pixelData[y][x];
+                                    if (color !== 'transparent') {
+                                        const pixel = document.createElement('div');
+                                        pixel.style.position = 'absolute';
+                                        pixel.style.left = (x * scale) + 'px';
+                                        pixel.style.top = (y * scale) + 'px';
+                                        pixel.style.width = scale + 'px';
+                                        pixel.style.height = scale + 'px';
+                                        pixel.style.backgroundColor = color;
+                                        element.appendChild(pixel);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        function updateWearingItems() {
+            const wearingContainer = document.getElementById('wearing-items');
+            wearingContainer.innerHTML = '';
+           
+            if (Object.keys(userData.equippedItems).length === 0) {
+                wearingContainer.innerHTML = '<div class="no-friends">No items equipped</div>';
+                return;
             }
-        });
-    }
-    
-    function createAccessory() {
-        if (!currentUser) return alert("Log in first!");
-        if (userData.pencils < 50) return alert("Not enough pencils!");
-        
-        const name = document.getElementById('acc-name').value || "Cool Accessory";
-        const type = document.getElementById('acc-type').value;
-        const data = pixels.map(p => p.style.background || 'transparent');
-        
-        const acc = {id: Date.now(), name, type, data, size: sizes[type]};
-        userData.items.push(acc);
-        userData.pencils -= 50;
-        if (userData.items.length === 1) userData.pencils += 1000;
-        
-        localStorage.setItem('sv_' + currentUser, JSON.stringify(userData));
-        alert("Created " + name + "!");
-        equipAccessory(acc);
-    }
-    
-    function equipAccessory(acc) {
-        userData.equipped[acc.type] = acc;
-        document.getElementById('worn-' + acc.type).innerHTML = '';
-        const scale = sizes[acc.type].w / 60;
-        acc.data.forEach((color, i) => {
-            if (color !== 'transparent') {
-                const x = i % sizes[acc.type].w;
-                const y = Math.floor(i / sizes[acc.type].w);
-                const px = document.createElement('div');
-                px.style.position = 'absolute';
-                px.style.background = color;
-                px.style.left = x * scale + 'px';
-                px.style.top = y * scale + 'px';
-                px.style.width = px.style.height = scale + 'px';
-                document.getElementById('worn-' + acc.type).appendChild(px);
-            }
-        });
-    }
-    
-    function promptLogin(isSignup = false) {
-        const name = prompt(isSignup ? "Choose username:" : "Enter username:");
-        if (name) {
-            currentUser = name;
-            localStorage.setItem('sv_user', name);
-            if (!localStorage.getItem('sv_' + name)) {
-                userData = {pencils:1000, items:[], equipped:{}};
-                localStorage.setItem('sv_' + name, JSON.stringify(userData));
+           
+            Object.entries(userData.equippedItems).forEach(([type, accessory]) => {
+                if (accessory) {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'wearing-item';
+                   
+                    const accGridSize = accessory.gridSize || 40;
+                    const previewScale = 60 / accGridSize;
+                   
+                    for (let y = 0; y < accGridSize; y++) {
+                        for (let x = 0; x < accGridSize; x++) {
+                            if (accessory.pixelData && accessory.pixelData[y] && accessory.pixelData[y][x] && accessory.pixelData[y][x] !== 'transparent') {
+                                const pixel = document.createElement('div');
+                                pixel.style.position = 'absolute';
+                                pixel.style.left = (x * previewScale) + 'px';
+                                pixel.style.top = (y * previewScale) + 'px';
+                                pixel.style.width = previewScale + 'px';
+                                pixel.style.height = previewScale + 'px';
+                                pixel.style.backgroundColor = accessory.pixelData[y][x];
+                                itemElement.appendChild(pixel);
+                            }
+                        }
+                    }
+                   
+                    const label = document.createElement('div');
+                    label.style.position = 'absolute';
+                    label.style.bottom = '0';
+                    label.style.left = '0';
+                    label.style.right = '0';
+                    label.style.textAlign = 'center';
+                    label.style.fontSize = '10px';
+                    label.style.background = 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)';
+                    label.style.padding = '8px 4px 4px';
+                    label.style.color = 'white';
+                    label.textContent = accessory.name;
+                    itemElement.appendChild(label);
+                   
+                    wearingContainer.appendChild(itemElement);
+                }
+            });
+        }
+        document.getElementById('save-avatar').addEventListener('click', function() {
+            if (currentUser) {
+                server.saveUser(currentUser, userData);
+                showNotification('Avatar saved successfully!', 'success');
             } else {
-                userData = JSON.parse(localStorage.getItem('sv_' + name));
+                showNotification('Please log in to save your avatar.', 'warning');
             }
-            updateLoginState();
+        });
+        document.getElementById('edit-about').addEventListener('click', function() {
+            if (currentUser) {
+                const newAbout = prompt('Edit your about me:', userData.aboutMe || '');
+                if (newAbout !== null) {
+                    userData.aboutMe = newAbout;
+                    document.getElementById('about-me-text').textContent = newAbout || 'This user has not written an about me yet.';
+                    server.saveUser(currentUser, userData);
+                    showNotification('About me updated!', 'success');
+                }
+            } else {
+                showNotification('Please log in to edit your profile.', 'warning');
+            }
+        });
+        document.getElementById('user-search').addEventListener('input', function() {
+            const query = this.value.trim();
+            const resultsContainer = document.getElementById('search-results');
+           
+            if (query.length < 2) {
+                resultsContainer.classList.remove('active');
+                return;
+            }
+           
+            const results = server.searchUsers(query);
+            resultsContainer.innerHTML = '';
+           
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<div class="search-result-item">No users found</div>';
+            } else {
+                results.forEach(user => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-result-item';
+                   
+                    const isFollowing = currentUser && userData.friends && userData.friends.includes(user.username);
+                   
+                    resultItem.innerHTML = `
+                        <div class="search-result-avatar">${user.username.substring(0, 1).toUpperCase()}</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600;">${user.username}</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">${user.aboutMe.substring(0, 30)}${user.aboutMe.length > 30 ? '...' : ''}</div>
+                        </div>
+                        ${currentUser && user.username !== currentUser ?
+                            `<button class="follow-btn ${isFollowing ? 'following' : ''}" data-username="${user.username}">
+                                ${isFollowing ? 'Following' : 'Follow'}
+                            </button>` : ''}
+                    `;
+                   
+                    resultsContainer.appendChild(resultItem);
+                });
+               
+                document.querySelectorAll('.follow-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const targetUser = this.getAttribute('data-username');
+                        if (this.classList.contains('following')) {
+                            if (server.unfollowUser(currentUser, targetUser)) {
+                                userData.friends = userData.friends.filter(f => f !== targetUser);
+                                this.textContent = 'Follow';
+                                this.classList.remove('following');
+                                updateFriendsList();
+                                updateProfileData();
+                                showNotification(`Unfollowed ${targetUser}`, 'success');
+                            }
+                        } else {
+                            if (server.followUser(currentUser, targetUser)) {
+                                userData.friends.push(targetUser);
+                                this.textContent = 'Following';
+                                this.classList.add('following');
+                                updateFriendsList();
+                                updateProfileData();
+                                showNotification(`Now following ${targetUser}`, 'success');
+                            }
+                        }
+                    });
+                });
+            }
+           
+            resultsContainer.classList.add('active');
+        });
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-bar')) {
+                document.getElementById('search-results').classList.remove('active');
+            }
+        });
+        function updateFriendsList() {
+            const friendsList = document.getElementById('friends-list');
+            friendsList.innerHTML = '';
+           
+            if (!currentUser || !userData.friends || userData.friends.length === 0) {
+                friendsList.innerHTML = '<div class="no-friends">No friends yet</div>';
+                return;
+            }
+           
+            userData.friends.forEach(friend => {
+                const friendItem = document.createElement('div');
+                friendItem.className = 'friend-item';
+                friendItem.innerHTML = `
+                    <div class="friend-avatar">${friend.substring(0, 1).toUpperCase()}</div>
+                    <span style="font-weight: 600;">${friend}</span>
+                    <div class="friend-status status-online"></div>
+                `;
+                friendsList.appendChild(friendItem);
+            });
         }
-    }
-    
-    function updateLoginState() {
-        if (currentUser) {
-            document.getElementById('login-btn').style.display = 'none';
-            document.getElementById('signup-btn').style.display = 'none';
-            document.getElementById('logout-btn').style.display = 'block';
-            document.getElementById('username').textContent = currentUser;
-            document.getElementById('pencils').textContent = userData.pencils;
-            document.getElementById('profile-pencils').textContent = userData.pencils;
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+           
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
         }
-    }
-    
-    init();
-</script>
+    </script>
 </body>
 </html>
