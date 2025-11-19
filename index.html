@@ -341,7 +341,6 @@
             width: 24px;
             height: 24px;
             background-color: white;
-            border-radius: 50%;
             top: 6px;
             left: 48px;
         }
@@ -1731,7 +1730,7 @@
                 document.querySelector('.user-actions').innerHTML = `
                     <div class="currency-display">
                         <span class="pencil-icon">Pencils:</span>
-                        <span id="pencil-count">${userData.pencils}</span>
+                        <span id="pencil-count">${userData.pencils || 0}</span>
                     </div>
                     <span>Welcome, ${currentUser}!</span>
                 `;
@@ -1746,9 +1745,9 @@
                 document.getElementById('profile-join-date').textContent = `Member since ${userData.joinDate}`;
                 document.getElementById('profile-friends').textContent = userData.friends ? userData.friends.length : 0;
                 document.getElementById('profile-followers').textContent = userData.followers ? userData.followers.length : 0;
-                document.getElementById('profile-pencils').textContent = userData.pencils;
+                document.getElementById('profile-pencils').textContent = userData.pencils || 0;
                 document.getElementById('about-me-text').textContent = userData.aboutMe || 'This user has not written an about me yet.';
-                document.getElementById('pencil-count').textContent = userData.pencils;
+                document.getElementById('pencil-count').textContent = userData.pencils || 0;
             }
         }
 
