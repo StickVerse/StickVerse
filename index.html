@@ -600,7 +600,7 @@
             background-color: var(--card-bg);
             padding: 24px;
             margin-top: 24px;
-            border-radius: 12px;
+            border-radius: 0; /* Remove rounded corners */
             border: 1px solid var(--border);
         }
 
@@ -623,7 +623,7 @@
             border: 1px solid var(--border);
             color: var(--text);
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 0; /* Remove rounded corners */
             font-weight: 600;
             transition: all 0.2s;
         }
@@ -664,7 +664,7 @@
             aspect-ratio: 1;
             background-color: var(--secondary);
             border: 2px solid var(--border);
-            border-radius: 12px;
+            border-radius: 0; /* Remove rounded corners */
             position: relative;
             cursor: crosshair;
             image-rendering: pixelated;
@@ -675,7 +675,7 @@
             aspect-ratio: 1;
             background-color: var(--secondary);
             border: 2px solid var(--border);
-            border-radius: 12px;
+            border-radius: 0; /* Remove rounded corners */
             position: relative;
             display: flex;
             align-items: center;
@@ -698,7 +698,7 @@
             aspect-ratio: 1;
             cursor: pointer;
             border: 3px solid transparent;
-            border-radius: 8px;
+            border-radius: 0; /* Remove rounded corners */
             transition: all 0.2s;
         }
 
@@ -1309,6 +1309,10 @@
                                     <option value="shirt">Shirt</option>
                                     <option value="pants">Pants</option>
                                     <option value="glasses">Glasses</option>
+                                    <option value="left-arm">Left Arm</option>
+                                    <option value="right-arm">Right Arm</option>
+                                    <option value="left-leg">Left Leg</option>
+                                    <option value="right-leg">Right Leg</option>
                                 </select>
                             </div>
                             <button class="btn btn-primary" id="create-accessory" style="width: 100%;">Create Accessory (Cost: 50 Pencils)</button>
@@ -1537,14 +1541,18 @@
         let currentColor = '#ff0000';
         let pixels = [];
         let currentAccessoryType = 'hat';
-        let gridSize = 40;
+        let gridSize = 64; // Increased from 40 for better detail
 
         const accessorySizes = {
-            hat: { width: 40, height: 40 },
-            face: { width: 40, height: 40 },
-            shirt: { width: 60, height: 60 },
-            pants: { width: 50, height: 60 },
-            glasses: { width: 40, height: 40 }
+            hat: { width: 64, height: 64 },
+            face: { width: 64, height: 64 },
+            shirt: { width: 80, height: 80 },
+            pants: { width: 70, height: 80 },
+            glasses: { width: 64, height: 64 },
+            'left-arm': { width: 60, height: 60 },
+            'right-arm': { width: 60, height: 60 },
+            'left-leg': { width: 60, height: 60 },
+            'right-leg': { width: 60, height: 60 }
         };
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -1724,6 +1732,34 @@
                     accessoryPreview.style.height = size.height + 'px';
                     accessoryPreview.style.top = '10px';
                     accessoryPreview.style.left = '80px';
+                    break;
+                case 'left-arm':
+                    accessoryPreview.style.position = 'absolute';
+                    accessoryPreview.style.width = size.width + 'px';
+                    accessoryPreview.style.height = size.height + 'px';
+                    accessoryPreview.style.top = '70px';
+                    accessoryPreview.style.left = '45px';
+                    break;
+                case 'right-arm':
+                    accessoryPreview.style.position = 'absolute';
+                    accessoryPreview.style.width = size.width + 'px';
+                    accessoryPreview.style.height = size.height + 'px';
+                    accessoryPreview.style.top = '70px';
+                    accessoryPreview.style.left = '95px';
+                    break;
+                case 'left-leg':
+                    accessoryPreview.style.position = 'absolute';
+                    accessoryPreview.style.width = size.width + 'px';
+                    accessoryPreview.style.height = size.height + 'px';
+                    accessoryPreview.style.top = '150px';
+                    accessoryPreview.style.left = '45px';
+                    break;
+                case 'right-leg':
+                    accessoryPreview.style.position = 'absolute';
+                    accessoryPreview.style.width = size.width + 'px';
+                    accessoryPreview.style.height = size.height + 'px';
+                    accessoryPreview.style.top = '150px';
+                    accessoryPreview.style.left = '95px';
                     break;
             }
             
@@ -1943,10 +1979,10 @@
             
             if (isFirstAccessory) {
                 userData.pencils += 1000;
-                if (!userData.badges.includes('First Creator')) {
-                    userData.badges.push('First Creator');
+                if (!userData.badges.includes('Accessory Developer')) {
+                    userData.badges.push('Accessory Developer');
                 }
-                showNotification('Congratulations! You earned the "First Creator" badge and 1000 Pencils!', 'success');
+                showNotification('Congratulations! You earned the "Accessory Developer" badge and 1000 Pencils!', 'success');
             }
             
             server.saveUser(currentUser, userData);
@@ -2052,7 +2088,7 @@
                 const preview = document.createElement('div');
                 preview.className = 'accessory-item-preview';
                 
-                const accGridSize = accessory.gridSize || 40;
+                const accGridSize = accessory.gridSize || 64;
                 const previewScale = 70 / accGridSize;
                 
                 for (let y = 0; y < accGridSize; y++) {
@@ -2121,7 +2157,7 @@
                         element.innerHTML = '';
                         
                         const size = accessorySizes[type];
-                        const accGridSize = accessory.gridSize || 40;
+                        const accGridSize = accessory.gridSize || 64;
                         const scale = size.width / accGridSize;
                         
                         for (let y = 0; y < accGridSize; y++) {
@@ -2160,7 +2196,7 @@
                     const itemElement = document.createElement('div');
                     itemElement.className = 'wearing-item';
                     
-                    const accGridSize = accessory.gridSize || 40;
+                    const accGridSize = accessory.gridSize || 64;
                     const previewScale = 60 / accGridSize;
                     
                     for (let y = 0; y < accGridSize; y++) {
