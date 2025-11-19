@@ -72,6 +72,7 @@
             font-size: 24px;
             color: white;
             border: 2px solid var(--border);
+            border-radius: 4px;
         }
         .logo h1 {
             font-size: 24px;
@@ -91,6 +92,7 @@
             background-color: var(--dark);
             color: var(--text);
             font-size: 14px;
+            border-radius: 4px;
         }
         .search-bar input:focus {
             outline: none;
@@ -112,6 +114,8 @@
             gap: 8px;
             background-color: var(--card-bg);
             color: var(--text);
+            border-radius: 4px;
+            transition: all 0.2s ease;
         }
         .btn:hover {
             background-color: var(--card-hover);
@@ -182,6 +186,8 @@
             border-bottom: 4px solid transparent;
             font-weight: 600;
             color: var(--text-secondary);
+            transition: all 0.2s ease;
+            border-radius: 4px 4px 0 0;
         }
         .nav-tabs li.active {
             border-bottom: 4px solid var(--primary);
@@ -224,6 +230,7 @@
             border: 2px solid var(--border);
             cursor: pointer;
             background-color: var(--card-bg);
+            border-radius: 4px;
         }
         .friend-item:hover {
             background-color: var(--card-hover);
@@ -239,12 +246,14 @@
             font-size: 13px;
             font-weight: bold;
             border: 2px solid var(--border);
+            border-radius: 4px;
         }
         .friend-status {
             width: 10px;
             height: 10px;
             margin-left: auto;
             border: 2px solid var(--secondary);
+            border-radius: 50%;
         }
         .status-online {
             background-color: var(--success);
@@ -268,6 +277,7 @@
             margin-bottom: 20px;
             text-align: center;
             border: 3px solid var(--border);
+            border-radius: 8px;
         }
         .hero-banner h2 {
             font-size: 38px;
@@ -289,9 +299,12 @@
             background-color: var(--card-bg);
             overflow: hidden;
             border: 3px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.2s ease;
         }
         .event-card:hover {
             border-color: var(--primary);
+            transform: translateY(-5px);
         }
         .event-card-content {
             padding: 18px;
@@ -322,6 +335,7 @@
             align-items: center;
             justify-content: center;
             border: 3px solid var(--border);
+            border-radius: 8px;
         }
         .stickman-avatar {
             width: 200px;
@@ -344,6 +358,7 @@
             background-color: white;
             top: 10px;
             left: 80px;
+            border-radius: 50%;
         }
         .stickman-arm-left {
             position: absolute;
@@ -393,6 +408,7 @@
             max-height: 900px;
             overflow-y: auto;
             border: 3px solid var(--border);
+            border-radius: 8px;
         }
         .accessory-category {
             margin-bottom: 20px;
@@ -424,10 +440,13 @@
             border: 2px solid var(--border);
             position: relative;
             overflow: hidden;
+            border-radius: 4px;
+            transition: all 0.2s ease;
         }
         .accessory-item:hover {
             border-color: var(--primary);
             background-color: var(--secondary);
+            transform: scale(1.05);
         }
         .accessory-item.selected {
             border-color: var(--success);
@@ -465,6 +484,7 @@
             justify-content: center;
             z-index: 10;
             font-weight: bold;
+            border-radius: 50%;
         }
         .accessory-item:hover .delete-accessory {
             display: flex;
@@ -477,6 +497,7 @@
             padding: 20px;
             margin-top: 20px;
             border: 3px solid var(--border);
+            border-radius: 8px;
         }
         .creator-tool h3 {
             margin-bottom: 16px;
@@ -497,6 +518,8 @@
             cursor: pointer;
             font-weight: 600;
             font-size: 13px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
         }
         .tool-btn:hover {
             border-color: var(--primary);
@@ -527,6 +550,7 @@
             position: relative;
             cursor: crosshair;
             margin-bottom: 12px;
+            border-radius: 4px;
         }
         .preview-area {
             width: 100%;
@@ -537,6 +561,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 4px;
         }
         .pixel {
             position: absolute;
@@ -552,6 +577,8 @@
             aspect-ratio: 1;
             cursor: pointer;
             border: 3px solid transparent;
+            border-radius: 4px;
+            transition: all 0.2s ease;
         }
         .color-option:hover {
             transform: scale(1.05);
@@ -567,6 +594,7 @@
             background-color: var(--card-bg);
             padding: 28px;
             border: 3px solid var(--border);
+            border-radius: 8px;
         }
         .profile-avatar {
             width: 160px;
@@ -578,6 +606,7 @@
             position: relative;
             overflow: hidden;
             border: 3px solid var(--border);
+            border-radius: 8px;
         }
         .profile-stickman {
             width: 100%;
@@ -609,6 +638,34 @@
             align-items: center;
             gap: 6px;
             border: 2px solid var(--border);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .badge.sketched {
+            background: repeating-linear-gradient(
+                45deg,
+                #ffd700,
+                #ffd700 10px,
+                #ffed4e 10px,
+                #ffed4e 20px
+            );
+            position: relative;
+        }
+        .badge.sketched::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 5px,
+                rgba(0,0,0,0.1) 5px,
+                rgba(0,0,0,0.1) 10px
+            );
         }
         .badge-icon {
             font-size: 14px;
@@ -646,6 +703,7 @@
             background-color: var(--card-bg);
             padding: 20px;
             border: 3px solid var(--border);
+            border-radius: 8px;
         }
         .about-section h3, .wearing-section h3 {
             margin-bottom: 14px;
@@ -666,6 +724,8 @@
             font-weight: 600;
             padding: 4px 10px;
             background-color: var(--dark);
+            border-radius: 4px;
+            transition: all 0.2s ease;
         }
         .edit-btn:hover {
             background-color: var(--secondary);
@@ -684,6 +744,7 @@
             justify-content: center;
             position: relative;
             border: 2px solid var(--border);
+            border-radius: 4px;
         }
         .no-friends {
             text-align: center;
@@ -699,6 +760,7 @@
             padding: 8px 14px;
             border: 2px solid var(--border);
             font-weight: 600;
+            border-radius: 4px;
         }
         .pencil-icon {
             width: 18px;
@@ -711,6 +773,7 @@
             font-weight: 700;
             color: #000;
             border: 2px solid var(--border);
+            border-radius: 4px;
         }
         .modal {
             display: none;
@@ -735,6 +798,7 @@
             position: relative;
             border: 3px solid var(--border);
             box-shadow: 0 8px 32px var(--shadow);
+            border-radius: 8px;
         }
         .close-modal {
             position: absolute;
@@ -750,6 +814,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 50%;
         }
         .close-modal:hover {
             background-color: var(--accent);
@@ -781,6 +846,7 @@
             background-color: var(--dark);
             color: var(--text);
             font-size: 14px;
+            border-radius: 4px;
         }
         .form-group input:focus, .form-group select:focus {
             outline: none;
@@ -822,6 +888,7 @@
             opacity: 0;
             transform: translateX(100%);
             transition: all 0.3s ease;
+            border-radius: 4px;
         }
         .notification.show {
             opacity: 1;
@@ -848,6 +915,7 @@
             overflow-y: auto;
             z-index: 10;
             display: none;
+            border-radius: 4px;
         }
         .search-results.active {
             display: block;
@@ -859,6 +927,7 @@
             gap: 10px;
             cursor: pointer;
             border-bottom: 2px solid var(--border);
+            transition: all 0.2s ease;
         }
         .search-result-item:last-child {
             border-bottom: none;
@@ -876,6 +945,7 @@
             font-size: 14px;
             font-weight: bold;
             border: 2px solid var(--border);
+            border-radius: 4px;
         }
         .add-friend-btn {
             padding: 6px 14px;
@@ -886,6 +956,8 @@
             font-size: 12px;
             font-weight: 600;
             margin-left: auto;
+            border-radius: 4px;
+            transition: all 0.2s ease;
         }
         .add-friend-btn:hover {
             background: #01a049;
@@ -908,6 +980,7 @@
             border: 3px solid var(--border);
             padding: 20px;
             margin-bottom: 20px;
+            border-radius: 8px;
         }
         .inbox-header {
             font-size: 20px;
@@ -924,6 +997,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            border-radius: 4px;
         }
         .friend-request-avatar {
             width: 40px;
@@ -935,6 +1009,7 @@
             font-size: 16px;
             font-weight: bold;
             border: 2px solid var(--border);
+            border-radius: 4px;
         }
         .friend-request-info {
             flex: 1;
@@ -953,6 +1028,8 @@
             cursor: pointer;
             font-size: 12px;
             font-weight: 600;
+            border-radius: 4px;
+            transition: all 0.2s ease;
         }
         .accept-btn {
             background: var(--success);
@@ -969,6 +1046,27 @@
         }
         .decline-btn:hover {
             background: #e55a2b;
+        }
+        .body-part-colors {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        .body-color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .body-color-option:hover {
+            transform: scale(1.1);
+        }
+        .body-color-option.selected {
+            border-color: white;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
         }
         @media (max-width: 768px) {
             .container {
@@ -1048,7 +1146,7 @@
                 </div>
                
                 <h2 style="margin-top: 36px; margin-bottom: 16px; font-size: 26px; font-weight: 700;">What is StickVerse?</h2>
-                <div style="background-color: var(--card-bg); padding: 20px; border: 3px solid var(--border);">
+                <div style="background-color: var(--card-bg); padding: 20px; border: 3px solid var(--border); border-radius: 8px;">
                     <p style="line-height: 1.7; margin-bottom: 14px;">StickVerse is a revolutionary 2D adventure platform where players can create, share, and play stickman-based games. Our platform offers:</p>
                     <ul style="margin: 18px 0 18px 24px; line-height: 1.9;">
                         <li>Advanced avatar customization with player-created accessories</li>
@@ -1064,12 +1162,19 @@
                 <div class="avatar-container">
                     <div class="avatar-viewer">
                         <div class="stickman-avatar" id="main-avatar">
-                            <div class="stickman-head"></div>
-                            <div class="stickman-body"></div>
-                            <div class="stickman-arm-left"></div>
-                            <div class="stickman-arm-right"></div>
-                            <div class="stickman-leg-left"></div>
-                            <div class="stickman-leg-right"></div>
+                            <div class="stickman-head" id="stickman-head"></div>
+                            <div class="stickman-body" id="stickman-body"></div>
+                            <div class="stickman-arm-left" id="stickman-arm-left"></div>
+                            <div class="stickman-arm-right" id="stickman-arm-right"></div>
+                            <div class="stickman-leg-left" id="stickman-leg-left"></div>
+                            <div class="stickman-leg-right" id="stickman-leg-right"></div>
+                        </div>
+                        <div class="body-part-colors">
+                            <div class="body-color-option selected" style="background-color: #ffffff;" data-part="all" data-color="#ffffff"></div>
+                            <div class="body-color-option" style="background-color: #ff6b6b;" data-part="head" data-color="#ff6b6b"></div>
+                            <div class="body-color-option" style="background-color: #6bff6b;" data-part="body" data-color="#6bff6b"></div>
+                            <div class="body-color-option" style="background-color: #6b6bff;" data-part="arms" data-color="#6b6bff"></div>
+                            <div class="body-color-option" style="background-color: #ffff6b;" data-part="legs" data-color="#ffff6b"></div>
                         </div>
                         <button class="btn btn-secondary" id="remove-all-items">Remove All Items</button>
                     </div>
@@ -1383,7 +1488,13 @@
             aboutMe: '',
             equippedItems: {},
             createdAccessories: [],
-            badges: []
+            badges: [],
+            bodyColors: {
+                head: '#ffffff',
+                body: '#ffffff',
+                arms: '#ffffff',
+                legs: '#ffffff'
+            }
         };
         let currentTool = 'draw';
         let currentColor = '#ff0000';
@@ -1402,6 +1513,7 @@
             updateWearingItems();
             setupCreatorTool();
             setupPixelCanvas();
+            setupBodyColorPicker();
            
             const savedUser = localStorage.getItem('stickverse_current_user');
             if (savedUser) {
@@ -1410,6 +1522,12 @@
                 if (savedData) {
                     userData = savedData;
                     if (!userData.badges) userData.badges = [];
+                    if (!userData.bodyColors) userData.bodyColors = {
+                        head: '#ffffff',
+                        body: '#ffffff',
+                        arms: '#ffffff',
+                        legs: '#ffffff'
+                    };
                     updateUIForLoggedInState();
                     updateProfileData();
                     updateFriendsList();
@@ -1438,6 +1556,38 @@
            
             updatePreviewArea();
         });
+        
+        function setupBodyColorPicker() {
+            document.querySelectorAll('.body-color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const part = this.getAttribute('data-part');
+                    const color = this.getAttribute('data-color');
+                    
+                    document.querySelectorAll('.body-color-option').forEach(o => {
+                        o.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    
+                    if (part === 'all') {
+                        // Apply color to all body parts
+                        userData.bodyColors.head = color;
+                        userData.bodyColors.body = color;
+                        userData.bodyColors.arms = color;
+                        userData.bodyColors.legs = color;
+                    } else {
+                        // Apply color to specific body part
+                        userData.bodyColors[part] = color;
+                    }
+                    
+                    if (currentUser) {
+                        server.saveUser(currentUser, userData);
+                    }
+                    
+                    updateAvatarDisplay();
+                    showNotification('Body color updated!', 'success');
+                });
+            });
+        }
         
         function setupPixelCanvas() {
             const canvas = document.getElementById('creator-canvas');
@@ -1672,6 +1822,12 @@
                     currentUser = username;
                     userData = user;
                     if (!userData.badges) userData.badges = [];
+                    if (!userData.bodyColors) userData.bodyColors = {
+                        head: '#ffffff',
+                        body: '#ffffff',
+                        arms: '#ffffff',
+                        legs: '#ffffff'
+                    };
                    
                     localStorage.setItem('stickverse_current_user', username);
                    
@@ -1716,6 +1872,12 @@
                 userData.createdAccessories = [];
                 userData.equippedItems = {};
                 userData.badges = [];
+                userData.bodyColors = {
+                    head: '#ffffff',
+                    body: '#ffffff',
+                    arms: '#ffffff',
+                    legs: '#ffffff'
+                };
                
                 server.saveUser(username, userData);
                 localStorage.setItem('stickverse_current_user', username);
@@ -1857,7 +2019,13 @@
                             aboutMe: '',
                             equippedItems: {},
                             createdAccessories: [],
-                            badges: []
+                            badges: [],
+                            bodyColors: {
+                                head: '#ffffff',
+                                body: '#ffffff',
+                                arms: '#ffffff',
+                                legs: '#ffffff'
+                            }
                         };
                         localStorage.removeItem('stickverse_current_user');
                         location.reload();
@@ -1882,6 +2050,9 @@
                     userData.badges.forEach(badge => {
                         const badgeEl = document.createElement('div');
                         badgeEl.className = 'badge';
+                        if (badge === 'Designer' && userData.pencils >= 1000) {
+                            badgeEl.classList.add('sketched');
+                        }
                         badgeEl.innerHTML = `<span class="badge-icon">🎩</span>${badge}`;
                         badgesContainer.appendChild(badgeEl);
                     });
@@ -2006,6 +2177,14 @@
             const existingLayers = mainAvatar.querySelectorAll('.accessory-layer');
             existingLayers.forEach(layer => layer.remove());
            
+            // Update body part colors
+            document.getElementById('stickman-head').style.backgroundColor = userData.bodyColors.head;
+            document.getElementById('stickman-body').style.backgroundColor = userData.bodyColors.body;
+            document.getElementById('stickman-arm-left').style.backgroundColor = userData.bodyColors.arms;
+            document.getElementById('stickman-arm-right').style.backgroundColor = userData.bodyColors.arms;
+            document.getElementById('stickman-leg-left').style.backgroundColor = userData.bodyColors.legs;
+            document.getElementById('stickman-leg-right').style.backgroundColor = userData.bodyColors.legs;
+           
             Object.entries(userData.equippedItems).forEach(([type, accessory]) => {
                 if (accessory) {
                     renderAccessoryOnAvatar(mainAvatar, accessory);
@@ -2015,6 +2194,17 @@
             const profileAvatar = document.querySelector('.profile-stickman');
             const profileLayers = profileAvatar.querySelectorAll('.accessory-layer');
             profileLayers.forEach(layer => layer.remove());
+           
+            // Update profile avatar body part colors
+            const profileHead = profileAvatar.querySelector('.stickman-head');
+            const profileBody = profileAvatar.querySelector('.stickman-body');
+            const profileArms = profileAvatar.querySelectorAll('.stickman-arm-left, .stickman-arm-right');
+            const profileLegs = profileAvatar.querySelectorAll('.stickman-leg-left, .stickman-leg-right');
+            
+            if (profileHead) profileHead.style.backgroundColor = userData.bodyColors.head;
+            if (profileBody) profileBody.style.backgroundColor = userData.bodyColors.body;
+            profileArms.forEach(arm => arm.style.backgroundColor = userData.bodyColors.arms);
+            profileLegs.forEach(leg => leg.style.backgroundColor = userData.bodyColors.legs);
            
             Object.entries(userData.equippedItems).forEach(([type, accessory]) => {
                 if (accessory) {
