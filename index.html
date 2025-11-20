@@ -1508,21 +1508,21 @@
     <script>
         const supabaseUrl = 'https://nwvdsymbuovdcaenfcua.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53dmRzeW1idW92ZGNhZW5mY3VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2MDgxMzcsImV4cCI6MjA3OTE4NDEzN30.ijk32q0F0xdlQqYTulHjLk2SoeKEwD6G4L8zd4eOJEg';
-        const supabase = createClient(supabaseUrl, supabaseKey);
+        const client = supabase.createClient(supabaseUrl, supabaseKey);
         const server = {
             generateId: function() {
                 return Date.now().toString(36) + Math.random().toString(36).substr(2);
             },
          
             async saveUser(username, userData) {
-                const { error } = await supabase
+                const { error } = await client
                     .from('users')
                     .upsert({ username: username, data: userData });
                 if (error) console.error(error);
             },
          
             async getUser(username) {
-                const { data, error } = await supabase
+                const { data, error } = await client
                     .from('users')
                     .select('data')
                     .eq('username', username)
@@ -1532,7 +1532,7 @@
             },
          
             async searchUsers(query) {
-                const { data, error } = await supabase
+                const { data, error } = await client
                     .from('users')
                     .select('*');
                 if (error) console.error(error);
@@ -1555,7 +1555,7 @@
             },
          
             async sendFriendRequest(from, to) {
-                const { data, error } = await supabase
+                const { data, error } = await client
                     .from('friend_requests')
                     .select('requests')
                     .eq('username', to)
@@ -1564,7 +1564,7 @@
                 let requests = data ? data.requests : [];
                 if (!requests.includes(from) && from !== to) {
                     requests.push(from);
-                    const { error: upsertError } = await supabase
+                    const { error: upsertError } = await client
                         .from('friend_requests')
                         .upsert({ username: to, requests: requests });
                     if (upsertError) console.error(upsertError);
@@ -1591,7 +1591,7 @@
                     await this.saveUser(requester, requesterData);
                 }
              
-                const { data, error } = await supabase
+                const { data, error } = await client
                     .from('friend_requests')
                     .select('requests')
                     .eq('username', user)
@@ -1599,7 +1599,7 @@
                 if (error) console.error(error);
                 let requests = data ? data.requests : [];
                 requests = requests.filter(r => r !== requester);
-                await supabase
+                await client
                     .from('friend_requests')
                     .upsert({ username: user, requests: requests });
              
@@ -1607,7 +1607,7 @@
             },
          
             async declineFriendRequest(user, requester) {
-                const { data, error } = await supabase
+                const { data, error } = await client
                     .from('friend_requests')
                     .select('requests')
                     .eq('username', user)
@@ -1615,14 +1615,14 @@
                 if (error) console.error(error);
                 let requests = data ? data.requests : [];
                 requests = requests.filter(r => r !== requester);
-                await supabase
+                await client
                     .from('friend_requests')
                     .upsert({ username: user, requests: requests });
                 return true;
             },
          
             async getFriendRequests(username) {
-                const { data, error } = await supabase
+                const { data, error } = await client
                     .from('friend_requests')
                     .select('requests')
                     .eq('username', username)
@@ -1649,7 +1649,7 @@
                 return true;
             },
             async sendDuelRequest(from, to) {
-                const { data, error } = await supabase
+                const { data, error } = await client
                     .from('duel_requests')
                     .select('requests')
                     .eq('username', to)
@@ -1658,7 +1658,7 @@
                 let requests = data ? data.requests : [];
                 if (!requests.includes(from) && from !== to) {
                     requests.push(from);
-                    const { error: upsertError } = await supabase
+                    const { error: upsertError } = await client
                         .from('duel_requests')
                         .upsert({ username: to, requests: requests });
                     if (upsertError) console.error(upsertError);
@@ -1667,7 +1667,7 @@
                 return false;
             },
             async acceptDuelRequest(user, requester) {
-                const { data, error } = await supabase
+                const { data, error } = await client
                     .from('duel_requests')
                     .select('requests')
                     .eq('username', user)
@@ -1675,13 +1675,13 @@
                 if (error) console.error(error);
                 let requests = data ? data.requests : [];
                 requests = requests.filter(r => r !== requester);
-                await supabase
+                await client
                     .from('duel_requests')
                     .upsert({ username: user, requests: requests });
                 return true;
             },
             async declineDuelRequest(user, requester) {
-                const { data, error } = await supabase
+                const { data, error } = await client
                     .from('duel_requests')
                     .select('requests')
                     .eq('username', user)
@@ -1689,13 +1689,13 @@
                 if (error) console.error(error);
                 let requests = data ? data.requests : [];
                 requests = requests.filter(r => r !== requester);
-                await supabase
+                await client
                     .from('duel_requests')
                     .upsert({ username: user, requests: requests });
                 return true;
             },
             async getDuelRequests(username) {
-                const { data, error } = await supabase
+                const { data, error } = await client
                     .from('duel_requests')
                     .select('requests')
                     .eq('username', username)
@@ -1705,7 +1705,7 @@
             },
           
             async markBadgeAsEarned(username, badgeName) {
-                const { data, error } = await supabase
+                const { data, error } = await client
                     .from('earned_badges')
                     .select('badges')
                     .eq('username', username)
@@ -1714,14 +1714,14 @@
                 let badges = data ? data.badges : [];
                 if (!badges.includes(badgeName)) {
                     badges.push(badgeName);
-                    await supabase
+                    await client
                         .from('earned_badges')
                         .upsert({ username: username, badges: badges });
                 }
             },
           
             async hasBadgeBeenEarned(username, badgeName) {
-                const { data, error } = await supabase
+                const { data, error } = await client
                     .from('earned_badges')
                     .select('badges')
                     .eq('username', username)
@@ -1731,7 +1731,7 @@
                 return badges.includes(badgeName);
             },
             async getAllUsernames() {
-                const { data, error } = await supabase
+                const { data, error } = await client
                     .from('users')
                     .select('username');
                 if (error) console.error(error);
@@ -2218,10 +2218,10 @@
                             joinDate: new Date().toLocaleDateString(),
                             friends: [],
                             followers: [],
-                            pencils: 0;
-                            aboutMe: '';
-                            badges: [];
-                            skinColor: '#ffffff';
+                            pencils: 0,
+                            aboutMe: '',
+                            badges: [],
+                            skinColor: '#ffffff',
                             skinBrightness: 100
                         };
                         localStorage.removeItem('stickverse_current_user');
