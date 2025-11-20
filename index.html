@@ -1299,7 +1299,7 @@
                     <h2>Welcome to StickVerse</h2>
                     <p>The ultimate 2D stickman adventure platform where creativity meets fun!</p>
                 </div>
-              
+             
                 <h2 style="margin-bottom: 16px; font-size: 26px; font-weight: 700;">Current Event</h2>
                 <div class="events-grid">
                     <div class="event-card">
@@ -1313,7 +1313,7 @@
                         </div>
                     </div>
                 </div>
-              
+             
                 <h2 style="margin-top: 36px; margin-bottom: 16px; font-size: 26px; font-weight: 700;">What is StickVerse?</h2>
                 <div style="background-color: var(--card-bg); padding: 20px; border: 3px solid var(--border); border-radius: 8px;">
                     <p style="line-height: 1.7; margin-bottom: 14px;">StickVerse is a revolutionary 2D adventure platform where players can create, share, and play stickman-based games. Our platform offers:</p>
@@ -1509,19 +1509,18 @@
         const supabaseUrl = 'https://nwvdsymbuovdcaenfcua.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53dmRzeW1idW92ZGNhZW5mY3VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2MDgxMzcsImV4cCI6MjA3OTE4NDEzN30.ijk32q0F0xdlQqYTulHjLk2SoeKEwD6G4L8zd4eOJEg';
         const supabase = createClient(supabaseUrl, supabaseKey);
-
         const server = {
             generateId: function() {
                 return Date.now().toString(36) + Math.random().toString(36).substr(2);
             },
-          
+         
             async saveUser(username, userData) {
                 const { error } = await supabase
                     .from('users')
                     .upsert({ username: username, data: userData });
                 if (error) console.error(error);
             },
-          
+         
             async getUser(username) {
                 const { data, error } = await supabase
                     .from('users')
@@ -1531,7 +1530,7 @@
                 if (error) console.error(error);
                 return data ? data.data : null;
             },
-          
+         
             async searchUsers(query) {
                 const { data, error } = await supabase
                     .from('users')
@@ -1554,7 +1553,7 @@
                 }
                 return results;
             },
-          
+         
             async sendFriendRequest(from, to) {
                 const { data, error } = await supabase
                     .from('friend_requests')
@@ -1573,25 +1572,25 @@
                 }
                 return false;
             },
-          
+         
             async acceptFriendRequest(user, requester) {
                 const userData = await this.getUser(user);
                 const requesterData = await this.getUser(requester);
                 if (!userData || !requesterData) return false;
-              
+             
                 if (!userData.friends) userData.friends = [];
                 if (!requesterData.friends) requesterData.friends = [];
-              
+             
                 if (!userData.friends.includes(requester)) {
                     userData.friends.push(requester);
                     await this.saveUser(user, userData);
                 }
-              
+             
                 if (!requesterData.friends.includes(user)) {
                     requesterData.friends.push(user);
                     await this.saveUser(requester, requesterData);
                 }
-              
+             
                 const { data, error } = await supabase
                     .from('friend_requests')
                     .select('requests')
@@ -1603,10 +1602,10 @@
                 await supabase
                     .from('friend_requests')
                     .upsert({ username: user, requests: requests });
-              
+             
                 return true;
             },
-          
+         
             async declineFriendRequest(user, requester) {
                 const { data, error } = await supabase
                     .from('friend_requests')
@@ -1621,7 +1620,7 @@
                     .upsert({ username: user, requests: requests });
                 return true;
             },
-          
+         
             async getFriendRequests(username) {
                 const { data, error } = await supabase
                     .from('friend_requests')
@@ -1631,25 +1630,24 @@
                 if (error && error.code !== 'PGRST116') console.error(error);
                 return data ? data.requests : [];
             },
-          
+         
             async removeFriend(user1, user2) {
                 const user1Data = await this.getUser(user1);
                 const user2Data = await this.getUser(user2);
                 if (!user1Data || !user2Data) return false;
-              
+             
                 if (user1Data.friends) {
                     user1Data.friends = user1Data.friends.filter(f => f !== user2);
                     await this.saveUser(user1, user1Data);
                 }
-              
+             
                 if (user2Data.friends) {
                     user2Data.friends = user2Data.friends.filter(f => f !== user1);
                     await this.saveUser(user2, user2Data);
                 }
-              
+             
                 return true;
             },
-
             async sendDuelRequest(from, to) {
                 const { data, error } = await supabase
                     .from('duel_requests')
@@ -1668,7 +1666,6 @@
                 }
                 return false;
             },
-
             async acceptDuelRequest(user, requester) {
                 const { data, error } = await supabase
                     .from('duel_requests')
@@ -1683,7 +1680,6 @@
                     .upsert({ username: user, requests: requests });
                 return true;
             },
-
             async declineDuelRequest(user, requester) {
                 const { data, error } = await supabase
                     .from('duel_requests')
@@ -1698,7 +1694,6 @@
                     .upsert({ username: user, requests: requests });
                 return true;
             },
-
             async getDuelRequests(username) {
                 const { data, error } = await supabase
                     .from('duel_requests')
@@ -1708,7 +1703,7 @@
                 if (error && error.code !== 'PGRST116') console.error(error);
                 return data ? data.requests : [];
             },
-           
+          
             async markBadgeAsEarned(username, badgeName) {
                 const { data, error } = await supabase
                     .from('earned_badges')
@@ -1724,7 +1719,7 @@
                         .upsert({ username: username, badges: badges });
                 }
             },
-           
+          
             async hasBadgeBeenEarned(username, badgeName) {
                 const { data, error } = await supabase
                     .from('earned_badges')
@@ -1735,7 +1730,6 @@
                 const badges = data ? data.badges : [];
                 return badges.includes(badgeName);
             },
-
             async getAllUsernames() {
                 const { data, error } = await supabase
                     .from('users')
@@ -1744,7 +1738,7 @@
                 return data ? data.map(d => d.username) : [];
             }
         };
-       
+      
         let currentUser = null;
         let userData = {
             username: '',
@@ -1757,13 +1751,13 @@
             skinColor: '#ffffff',
             skinBrightness: 100
         };
-       
+      
         let autoSaveTimeout = null;
-       
+      
         function playSketchAnimation(badgeName) {
             const overlay = document.getElementById('sketch-overlay');
             const container = document.getElementById('sketch-container');
-           
+          
             container.innerHTML = `
                 <div class="sketch-badge">
                     <div class="sketch-circle"></div>
@@ -1782,9 +1776,9 @@
                     </div>
                 </div>
             `;
-           
+          
             overlay.classList.add('active');
-           
+          
             setTimeout(() => {
                 overlay.classList.remove('active');
                 setTimeout(() => {
@@ -1792,11 +1786,11 @@
                 }, 300);
             }, 4000);
         }
-       
+      
         document.addEventListener('DOMContentLoaded', async function() {
             updateUIForLoggedInState();
             setupAdvancedCustomization();
-          
+         
             const savedUser = localStorage.getItem('stickverse_current_user');
             if (savedUser) {
                 currentUser = savedUser;
@@ -1807,7 +1801,7 @@
                     if (!userData.skinColor) userData.skinColor = '#ffffff';
                     if (!userData.pencils) userData.pencils = 0;
                     if (!userData.skinBrightness) userData.skinBrightness = 100;
-                   
+                  
                     updateUIForLoggedInState();
                     updateProfileData();
                     updateFriendsList();
@@ -1819,24 +1813,24 @@
                 }
             }
         });
-       
+      
         function setupAdvancedCustomization() {
             // Color options
             document.querySelectorAll('.color-option').forEach(option => {
                 option.addEventListener('click', function() {
                     const color = this.getAttribute('data-color');
-                   
+                  
                     document.querySelectorAll('.color-option').forEach(o => {
                         o.classList.remove('selected');
                     });
                     this.classList.add('selected');
-                   
+                  
                     userData.skinColor = color;
                     updateAvatarDisplay();
                     triggerAutoSave();
                 });
             });
-           
+          
             // Brightness slider
             document.getElementById('skin-brightness').addEventListener('input', function() {
                 userData.skinBrightness = this.value;
@@ -1844,23 +1838,23 @@
                 triggerAutoSave();
             });
         }
-       
+      
         function triggerAutoSave() {
             if (!currentUser) return;
-           
+          
             // Show auto-save indicator
             const indicator = document.getElementById('auto-save-indicator');
             indicator.classList.add('show');
-           
+          
             // Clear existing timeout
             if (autoSaveTimeout) {
                 clearTimeout(autoSaveTimeout);
             }
-           
+          
             // Set new timeout for saving
             autoSaveTimeout = setTimeout(async () => {
                 await server.saveUser(currentUser, userData);
-               
+              
                 // Check if user qualifies for Designer badge
                 if (userData.skinColor !== '#ffffff' && !userData.badges.includes('Designer')) {
                     userData.pencils += 1000;
@@ -1868,72 +1862,86 @@
                     await server.markBadgeAsEarned(currentUser, 'Designer');
                     updateProfileData();
                     updateUIForLoggedInState();
-                   
+                  
                     // Show notification first
                     showNotification('You earned 1000 Pencils and the "Designer" badge!', 'success');
-                   
+                  
                     // Then play sketch animation after a short delay
                     setTimeout(() => {
                         playSketchAnimation('Designer');
                     }, 500);
                 }
-               
+              
                 // Hide indicator after a delay
                 setTimeout(() => {
                     indicator.classList.remove('show');
                 }, 1500);
             }, 1000);
         }
-       
+      
         function updateAvatarDisplay() {
             // Update skin color for all body parts with brightness
             const brightness = userData.skinBrightness / 100;
             const color = applyBrightness(userData.skinColor, brightness);
-           
+          
             document.getElementById('stickman-head').style.backgroundColor = color;
             document.getElementById('stickman-body').style.backgroundColor = color;
             document.getElementById('stickman-arm-left').style.backgroundColor = color;
             document.getElementById('stickman-arm-right').style.backgroundColor = color;
             document.getElementById('stickman-leg-left').style.backgroundColor = color;
             document.getElementById('stickman-leg-right').style.backgroundColor = color;
-           
+          
             // Update profile avatar
             const profileHead = document.querySelector('.profile-stickman .stickman-head');
             const profileBody = document.querySelector('.profile-stickman .stickman-body');
             const profileArms = document.querySelectorAll('.profile-stickman .stickman-arm-left, .profile-stickman .stickman-arm-right');
             const profileLegs = document.querySelectorAll('.profile-stickman .stickman-leg-left, .profile-stickman .stickman-leg-right');
-           
+          
             if (profileHead) profileHead.style.backgroundColor = color;
             if (profileBody) profileBody.style.backgroundColor = color;
             profileArms.forEach(arm => arm.style.backgroundColor = color);
             profileLegs.forEach(leg => leg.style.backgroundColor = color);
         }
-       
+      
         function applyBrightness(color, brightness) {
             // Convert hex to RGB
             let r = parseInt(color.substr(1, 2), 16);
             let g = parseInt(color.substr(3, 2), 16);
             let b = parseInt(color.substr(5, 2), 16);
-           
+          
             // Apply brightness
             r = Math.min(255, Math.floor(r * brightness));
             g = Math.min(255, Math.floor(g * brightness));
             b = Math.min(255, Math.floor(b * brightness));
-           
+          
             // Convert back to hex
             return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
         }
-       
+      
         async function showUserProfile(username) {
             const user = await server.getUser(username);
             if (!user) return;
-           
+          
             const modal = document.getElementById('profile-modal');
             const content = document.getElementById('profile-modal-content');
-           
+          
             const brightness = (user.skinBrightness || 100) / 100;
             const color = applyBrightness(user.skinColor || '#ffffff', brightness);
-           
+          
+            let buttonText = 'Add Friend';
+            let hasPendingRequest = false;
+            if (currentUser && currentUser !== username) {
+                if (userData.friends && userData.friends.includes(username)) {
+                    buttonText = 'Friends';
+                } else {
+                    const pendingRequests = await server.getFriendRequests(username);
+                    hasPendingRequest = pendingRequests.includes(currentUser);
+                    if (hasPendingRequest) {
+                        buttonText = 'Pending';
+                    }
+                }
+            }
+          
             content.innerHTML = `
                 <div class="profile-header">
                     <div class="profile-avatar">
@@ -1978,13 +1986,12 @@
                 ${currentUser && currentUser !== username ? `
                     <div style="margin-top: 20px; display: flex; gap: 10px;">
                         <button class="btn btn-primary" id="add-friend-from-profile" data-username="${username}">
-                            ${userData.friends && userData.friends.includes(username) ? 'Friends' :
-                              (await server.getFriendRequests(username)).includes(currentUser) ? 'Pending' : 'Add Friend'}
+                            ${buttonText}
                         </button>
                     </div>
                 ` : ''}
             `;
-           
+          
             // Add friend button functionality
             const addFriendBtn = document.getElementById('add-friend-from-profile');
             if (addFriendBtn) {
@@ -1992,7 +1999,7 @@
                     const targetUser = this.getAttribute('data-username');
                     const isFriend = userData.friends && userData.friends.includes(targetUser);
                     const hasPendingRequest = (await server.getFriendRequests(targetUser)).includes(currentUser);
-                   
+                  
                     if (isFriend) {
                         if (confirm(`Remove ${targetUser} from friends?`)) {
                             await server.removeFriend(currentUser, targetUser);
@@ -2012,37 +2019,37 @@
                     }
                 });
             }
-           
+          
             modal.classList.add('active');
         }
-       
+      
         document.querySelectorAll('.nav-tabs li').forEach(item => {
             item.addEventListener('click', async function() {
                 const tabId = this.getAttribute('data-tab');
-              
+             
                 if ((tabId === 'profile' || tabId === 'avatar' || tabId === 'inbox' || tabId === 'arena') && !currentUser) {
                     document.getElementById('signup-modal').classList.add('active');
                     return;
                 }
-              
+             
                 document.querySelectorAll('.nav-tabs li').forEach(tab => {
                     tab.classList.remove('active');
                 });
-              
+             
                 this.classList.add('active');
-              
+             
                 document.querySelectorAll('.content-section').forEach(section => {
                     section.classList.remove('active');
                 });
                 document.getElementById(tabId).classList.add('active');
-              
+             
                 if (tabId === 'inbox') {
                     await updateFriendRequestsList();
                     await updateDuelRequestsList();
                 } else if (tabId === 'arena') {
                     await updateOpponentsList();
                 }
-               
+              
                 // Check if user just earned the Designer badge and is on the home tab
                 if (tabId === 'home' && currentUser && userData.badges.includes('Designer') &&
                     !await server.hasBadgeBeenEarned(currentUser, 'Designer')) {
@@ -2054,7 +2061,7 @@
                 }
             });
         });
-       
+      
         const loginBtn = document.getElementById('login-btn');
         const signupBtn = document.getElementById('signup-btn');
         const loginModal = document.getElementById('login-modal');
@@ -2064,39 +2071,39 @@
         const switchToSignup = document.getElementById('switch-to-signup');
         const switchToLogin = document.getElementById('switch-to-login');
         const closeModalBtns = document.querySelectorAll('.close-modal');
-       
+      
         loginBtn.addEventListener('click', () => {
             loginModal.classList.add('active');
         });
-       
+      
         signupBtn.addEventListener('click', () => {
             signupModal.classList.add('active');
         });
-       
+      
         closeLogin.addEventListener('click', () => {
             loginModal.classList.remove('active');
         });
-       
+      
         closeSignup.addEventListener('click', () => {
             signupModal.classList.remove('active');
         });
-       
+      
         switchToSignup.addEventListener('click', () => {
             loginModal.classList.remove('active');
             signupModal.classList.add('active');
         });
-       
+      
         switchToLogin.addEventListener('click', () => {
             signupModal.classList.remove('active');
             loginModal.classList.add('active');
         });
-       
+      
         closeModalBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 this.closest('.modal').classList.remove('active');
             });
         });
-       
+      
         window.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal')) {
                 e.target.classList.remove('active');
@@ -2105,23 +2112,23 @@
                 e.target.classList.remove('active');
             }
         });
-       
+      
         document.getElementById('login-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const username = document.getElementById('login-username').value;
             const password = document.getElementById('login-password').value;
-          
+         
             if (username && password) {
                 const user = await server.getUser(username);
-              
+             
                 if (user) {
                     currentUser = username;
                     userData = user;
                     if (!userData.badges) userData.badges = [];
                     if (!userData.skinColor) userData.skinColor = '#ffffff';
-                  
+                 
                     localStorage.setItem('stickverse_current_user', username);
-                  
+                 
                     showNotification('Successfully logged in as ' + username + '!', 'success');
                     loginModal.classList.remove('active');
                     updateUIForLoggedInState();
@@ -2137,25 +2144,25 @@
                 }
             }
         });
-       
+      
         document.getElementById('signup-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const username = document.getElementById('signup-username').value;
             const password = document.getElementById('signup-password').value;
             const confirmPassword = document.getElementById('signup-confirm').value;
-          
+         
             if (password !== confirmPassword) {
                 showNotification('Passwords do not match!', 'error');
                 return;
             }
-          
+         
             if (username && password) {
                 const existing = await server.getUser(username);
                 if (existing) {
                     showNotification('Username already exists!', 'error');
                     return;
                 }
-              
+             
                 currentUser = username;
                 userData.username = username;
                 userData.friends = [];
@@ -2165,10 +2172,10 @@
                 userData.badges = [];
                 userData.skinColor = '#ffffff';
                 userData.skinBrightness = 100;
-              
+             
                 await server.saveUser(username, userData);
                 localStorage.setItem('stickverse_current_user', username);
-              
+             
                 showNotification('Account created successfully! Welcome to StickVerse, ' + username + '!', 'success');
                 signupModal.classList.remove('active');
                 updateUIForLoggedInState();
@@ -2177,7 +2184,7 @@
                 document.querySelector('[data-tab="arena"]').style.display = 'block';
             }
         });
-       
+      
         function updateUIForLoggedInState() {
             const userActions = document.getElementById('user-actions');
             if (currentUser) {
@@ -2193,7 +2200,7 @@
                     <span style="font-weight: 600;">Welcome, ${currentUser}!</span>
                     <button class="btn btn-logout" id="logout-btn">Log Out</button>
                 `;
-              
+             
                 document.getElementById('inbox-btn').addEventListener('click', async function() {
                     document.querySelectorAll('.nav-tabs li').forEach(tab => tab.classList.remove('active'));
                     document.querySelector('[data-tab="inbox"]').classList.add('active');
@@ -2202,7 +2209,7 @@
                     await updateFriendRequestsList();
                     await updateDuelRequestsList();
                 });
-              
+             
                 document.getElementById('logout-btn').addEventListener('click', function() {
                     if (confirm('Are you sure you want to log out?')) {
                         currentUser = null;
@@ -2221,7 +2228,7 @@
                         location.reload();
                     }
                 });
-               
+              
                 // Update badge count
                 (async () => {
                     const friendReq = await server.getFriendRequests(currentUser);
@@ -2237,7 +2244,7 @@
                 })();
             }
         }
-       
+      
         function updateProfileData() {
             if (currentUser) {
                 document.getElementById('profile-username').textContent = currentUser;
@@ -2246,12 +2253,12 @@
                 document.getElementById('profile-followers').textContent = userData.followers ? userData.followers.length : 0;
                 document.getElementById('profile-pencils').textContent = userData.pencils || 0;
                 document.getElementById('about-me-text').textContent = userData.aboutMe || 'This user has not written an about me yet.';
-               
+              
                 const pencilCount = document.getElementById('pencil-count');
                 if (pencilCount) {
                     pencilCount.textContent = userData.pencils || 0;
                 }
-              
+             
                 const badgesContainer = document.getElementById('profile-badges');
                 badgesContainer.innerHTML = '';
                 if (userData.badges && userData.badges.length > 0) {
@@ -2267,7 +2274,7 @@
                 }
             }
         }
-       
+      
         document.getElementById('edit-about').addEventListener('click', async function() {
             if (currentUser) {
                 const newAbout = prompt('Edit your about me:', userData.aboutMe || '');
@@ -2281,29 +2288,29 @@
                 showNotification('Please log in to edit your profile.', 'warning');
             }
         });
-       
+      
         document.getElementById('user-search').addEventListener('input', async function() {
             const query = this.value.trim();
             const resultsContainer = document.getElementById('search-results');
-          
+         
             if (query.length < 2) {
                 resultsContainer.classList.remove('active');
                 return;
             }
-          
+         
             const results = await server.searchUsers(query);
             resultsContainer.innerHTML = '';
-          
+         
             if (results.length === 0) {
                 resultsContainer.innerHTML = '<div class="search-result-item">No users found</div>';
             } else {
                 results.forEach(user => {
                     const resultItem = document.createElement('div');
                     resultItem.className = 'search-result-item';
-                  
+                 
                     const isFriend = currentUser && userData.friends && userData.friends.includes(user.username);
                     const hasPendingRequest = currentUser && (await server.getFriendRequests(user.username)).includes(currentUser);
-                  
+                 
                     resultItem.innerHTML = `
                         <div class="search-result-avatar">${user.username.substring(0, 1).toUpperCase()}</div>
                         <div style="flex: 1;">
@@ -2315,9 +2322,9 @@
                                 ${isFriend ? 'Friends' : hasPendingRequest ? 'Pending' : 'Add Friend'}
                             </button>` : ''}
                     `;
-                  
+                 
                     resultsContainer.appendChild(resultItem);
-                   
+                  
                     // Add click event to show user profile
                     resultItem.addEventListener('click', async function(e) {
                         if (!e.target.classList.contains('add-friend-btn')) {
@@ -2325,7 +2332,7 @@
                         }
                     });
                 });
-              
+             
                 document.querySelectorAll('.add-friend-btn').forEach(btn => {
                     btn.addEventListener('click', async function(e) {
                         e.stopPropagation();
@@ -2352,25 +2359,25 @@
                     });
                 });
             }
-          
+         
             resultsContainer.classList.add('active');
         });
-       
+      
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.search-bar')) {
                 document.getElementById('search-results').classList.remove('active');
             }
         });
-       
+      
         function updateFriendsList() {
             const friendsList = document.getElementById('friends-list');
             friendsList.innerHTML = '';
-          
+         
             if (!currentUser || !userData.friends || userData.friends.length === 0) {
                 friendsList.innerHTML = '<div class="no-friends">No friends yet</div>';
                 return;
             }
-          
+         
             userData.friends.forEach(friend => {
                 const friendItem = document.createElement('div');
                 friendItem.className = 'friend-item';
@@ -2379,28 +2386,28 @@
                     <span style="font-weight: 600; font-size: 14px;">${friend}</span>
                     <div class="friend-status status-online"></div>
                 `;
-               
+              
                 friendItem.addEventListener('click', async function() {
                     await showUserProfile(friend);
                 });
-               
+              
                 friendsList.appendChild(friendItem);
             });
         }
-       
+      
         async function updateFriendRequestsList() {
             if (!currentUser) return;
-           
+          
             const container = document.getElementById('friend-requests-list');
             container.innerHTML = '';
-           
+          
             const requests = await server.getFriendRequests(currentUser);
-           
+          
             if (requests.length === 0) {
                 container.innerHTML = '<div class="no-friends">No pending friend requests</div>';
                 return;
             }
-           
+          
             requests.forEach(requester => {
                 const requestItem = document.createElement('div');
                 requestItem.className = 'friend-request-item';
@@ -2417,7 +2424,7 @@
                 `;
                 container.appendChild(requestItem);
             });
-           
+          
             document.querySelectorAll('.accept-btn:not(.duel-accept)').forEach(btn => {
                 btn.addEventListener('click', async function() {
                     const requester = this.getAttribute('data-requester');
@@ -2430,7 +2437,7 @@
                     }
                 });
             });
-           
+          
             document.querySelectorAll('.decline-btn:not(.duel-decline)').forEach(btn => {
                 btn.addEventListener('click', async function() {
                     const requester = this.getAttribute('data-requester');
@@ -2442,22 +2449,22 @@
                 });
             });
         }
-       
+      
         async function updateDuelRequestsList() {
             if (!currentUser) return;
-           
+          
             const container = document.getElementById('duel-requests-list');
             if (!container) return;
-           
+          
             container.innerHTML = '';
-           
+          
             const requests = await server.getDuelRequests(currentUser);
-           
+          
             if (requests.length === 0) {
                 container.innerHTML = '<div class="no-friends">No pending duel requests</div>';
                 return;
             }
-           
+          
             requests.forEach(requester => {
                 const requestItem = document.createElement('div');
                 requestItem.className = 'friend-request-item';
@@ -2474,7 +2481,7 @@
                 `;
                 container.appendChild(requestItem);
             });
-           
+          
             document.querySelectorAll('.duel-accept').forEach(btn => {
                 btn.addEventListener('click', async function() {
                     const opponent = this.getAttribute('data-requester');
@@ -2483,7 +2490,7 @@
                     await updateDuelRequestsList();
                 });
             });
-           
+          
             document.querySelectorAll('.duel-decline').forEach(btn => {
                 btn.addEventListener('click', async function() {
                     const opponent = this.getAttribute('data-requester');
@@ -2493,21 +2500,21 @@
                 });
             });
         }
-       
+      
         async function updateOpponentsList() {
             if (!currentUser) return;
-           
+          
             const list = document.getElementById('opponents-list');
             list.innerHTML = '';
-           
+          
             const allUsers = await server.getAllUsernames();
             const filteredUsers = allUsers.filter(u => u !== currentUser);
-           
+          
             if (filteredUsers.length === 0) {
                 list.innerHTML = '<div class="no-friends">No opponents available</div>';
                 return;
             }
-           
+          
             filteredUsers.forEach(u => {
                 const item = document.createElement('div');
                 item.className = 'friend-item';
@@ -2518,7 +2525,7 @@
                 `;
                 list.appendChild(item);
             });
-           
+          
             document.querySelectorAll('.challenge-btn').forEach(btn => {
                 btn.addEventListener('click', async function() {
                     const opponent = this.getAttribute('data-opponent');
@@ -2530,50 +2537,49 @@
                 });
             });
         }
-
         function startDuel(opponent) {
             const modal = document.getElementById('duel-modal');
             modal.classList.add('active');
-           
+          
             const playerData = userData;
             let opponentData = {}; // Will fetch async but for simplicity, assume default
             (async () => {
                 opponentData = await server.getUser(opponent) || { skinColor: '#ffffff', skinBrightness: 100 };
                 setupStickman('opponent-stickman', opponentData.skinColor, opponentData.skinBrightness / 100);
             })();
-           
+          
             let playerHP = 100;
             let opponentHP = 100;
             let isPlayerDefending = false;
             let isOpponentDefending = false;
-           
+          
             const duelInfo = document.getElementById('duel-info');
             duelInfo.innerHTML = `
                 <p>Your HP: <span id="player-hp">100</span></p>
                 <p>${opponent}'s HP: <span id="opponent-hp">100</span></p>
                 <p id="duel-message">Choose your move! (Attack beats Special, Special beats Defend, Defend beats Attack)</p>
             `;
-           
+          
             const actions = document.getElementById('duel-actions');
             actions.innerHTML = `
                 <button class="btn btn-primary" id="attack-btn">Attack</button>
                 <button class="btn btn-secondary" id="defend-btn">Defend</button>
                 <button class="btn btn-logout" id="special-btn">Special</button>
             `;
-           
+          
             setupStickman('player-stickman', playerData.skinColor, playerData.skinBrightness / 100);
-           
+          
             function opponentMove() {
                 const moves = ['attack', 'defend', 'special'];
                 return moves[Math.floor(Math.random() * moves.length)];
             }
-           
-            function playTurn(playerChoice) {
+          
+            async function playTurn(playerChoice) {
                 const opponentChoice = opponentMove();
                 let message = '';
                 let damageToOpponent = 0;
                 let damageToPlayer = 0;
-               
+              
                 // Player action
                 if (playerChoice === 'attack') {
                     damageToOpponent = 20;
@@ -2585,7 +2591,7 @@
                     damageToOpponent = 30;
                     message += 'You use special! ';
                 }
-               
+              
                 // Opponent action
                 if (opponentChoice === 'attack') {
                     damageToPlayer = 20;
@@ -2597,12 +2603,12 @@
                     damageToPlayer = 30;
                     message += 'Opponent uses special!';
                 }
-               
+              
                 // Apply counters
                 if (playerChoice === 'attack' && opponentChoice === 'special') damageToOpponent += 10; // Attack beats special
                 if (playerChoice === 'special' && opponentChoice === 'defend') damageToOpponent += 10; // Special beats defend
                 if (playerChoice === 'defend' && opponentChoice === 'attack') damageToPlayer -= 10; // Defend beats attack
-               
+              
                 if (isOpponentDefending) {
                     damageToOpponent = Math.floor(damageToOpponent / 2);
                     isOpponentDefending = false;
@@ -2611,17 +2617,17 @@
                     damageToPlayer = Math.floor(damageToPlayer / 2);
                     isPlayerDefending = false;
                 }
-               
+              
                 opponentHP -= damageToOpponent;
                 playerHP -= damageToPlayer;
-               
+              
                 if (opponentHP < 0) opponentHP = 0;
                 if (playerHP < 0) playerHP = 0;
-               
+              
                 document.getElementById('player-hp').textContent = playerHP;
                 document.getElementById('opponent-hp').textContent = opponentHP;
                 document.getElementById('duel-message').textContent = message;
-               
+              
                 if (playerHP <= 0 || opponentHP <= 0) {
                     actions.innerHTML = '';
                     if (playerHP <= 0 && opponentHP <= 0) {
@@ -2642,12 +2648,12 @@
                     return;
                 }
             }
-           
+          
             document.getElementById('attack-btn').addEventListener('click', () => playTurn('attack'));
             document.getElementById('defend-btn').addEventListener('click', () => playTurn('defend'));
             document.getElementById('special-btn').addEventListener('click', () => playTurn('special'));
         }
-       
+      
         function setupStickman(id, color, brightness) {
             const container = document.getElementById(id);
             const adjColor = applyBrightness(color, brightness);
@@ -2660,13 +2666,13 @@
                 <div class="stickman-leg-right" style="background-color: ${adjColor}; position: absolute; top: 120px; left: 75px; width: 45px; height: 6px; transform: rotate(30deg);"></div>
             `;
         }
-       
+      
         function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
             notification.textContent = message;
             notification.className = `notification ${type}`;
             notification.classList.add('show');
-          
+         
             setTimeout(() => {
                 notification.classList.remove('show');
             }, 3000);
