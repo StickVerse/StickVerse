@@ -358,7 +358,6 @@
             background-color: white;
             top: 10px;
             left: 80px;
-            /* Square head instead of circle */
             border-radius: 0;
         }
         .stickman-arm-left {
@@ -398,100 +397,6 @@
             left: 95px;
             transform: rotate(30deg);
             transform-origin: left center;
-        }
-        .accessory-layer {
-            position: absolute;
-            pointer-events: none;
-        }
-        .accessories-panel {
-            background-color: var(--card-bg);
-            padding: 20px;
-            max-height: 900px;
-            overflow-y: auto;
-            border: 3px solid var(--border);
-            border-radius: 8px;
-        }
-        .accessory-category {
-            margin-bottom: 20px;
-        }
-        .accessory-category h4 {
-            margin-bottom: 12px;
-            color: var(--text);
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding-bottom: 6px;
-            border-bottom: 2px solid var(--border);
-        }
-        .accessory-items {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-        .accessory-item {
-            width: 100%;
-            aspect-ratio: 1;
-            background-color: var(--dark);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 2px solid var(--border);
-            position: relative;
-            overflow: hidden;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-        }
-        .accessory-item:hover {
-            border-color: var(--primary);
-            background-color: var(--secondary);
-            transform: scale(1.05);
-        }
-        .accessory-item.selected {
-            border-color: var(--success);
-            background-color: rgba(2, 183, 87, 0.2);
-        }
-        .accessory-item-preview {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-        .accessory-item-name {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0,0,0,0.9);
-            padding: 4px;
-            font-size: 10px;
-            text-align: center;
-            color: white;
-        }
-        .delete-accessory {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 20px;
-            height: 20px;
-            background-color: rgba(220, 53, 69, 0.95);
-            border: none;
-            color: white;
-            font-size: 12px;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            font-weight: bold;
-            border-radius: 50%;
-        }
-        .accessory-item:hover .delete-accessory {
-            display: flex;
-        }
-        .delete-accessory:hover {
-            background-color: #c82333;
         }
         .profile-header {
             display: flex;
@@ -954,19 +859,19 @@
             background: #e55a2b;
         }
         .body-part-colors {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
             gap: 10px;
             margin-bottom: 20px;
             justify-content: center;
-            flex-wrap: wrap;
         }
         .body-color-option {
             width: 30px;
             height: 30px;
-            border-radius: 50%;
             cursor: pointer;
             border: 2px solid transparent;
             transition: all 0.2s ease;
+            border-radius: 4px;
         }
         .body-color-option:hover {
             transform: scale(1.1);
@@ -975,10 +880,21 @@
             border-color: white;
             box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
         }
+        .profile-modal-content {
+            background-color: var(--card-bg);
+            width: 600px;
+            max-width: 90%;
+            padding: 28px;
+            position: relative;
+            border: 3px solid var(--border);
+            box-shadow: 0 8px 32px var(--shadow);
+            border-radius: 8px;
+        }
         .avatar-customization {
             background-color: var(--card-bg);
             padding: 20px;
-            margin-top: 20px;
+            max-height: 900px;
+            overflow-y: auto;
             border: 3px solid var(--border);
             border-radius: 8px;
         }
@@ -986,6 +902,89 @@
             margin-bottom: 16px;
             font-size: 17px;
             font-weight: 700;
+        }
+        .customization-section {
+            margin-bottom: 20px;
+        }
+        .customization-section h4 {
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+        
+        /* Advanced Customization Styles */
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        .color-option.selected {
+            border-color: white;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+        .slider-container {
+            margin-bottom: 15px;
+        }
+        .slider-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .slider {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: var(--dark);
+            border-radius: 4px;
+            outline: none;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: 2px solid var(--border);
+        }
+        .avatar-preview-container {
+            position: relative;
+            width: 200px;
+            height: 300px;
+            margin: 0 auto 20px;
+        }
+        .avatar-preview {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        .auto-save-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--success);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .auto-save-indicator.show {
+            opacity: 1;
         }
         @media (max-width: 768px) {
             .container {
@@ -998,7 +997,7 @@
             .avatar-container {
                 grid-template-columns: 1fr;
             }
-            .accessories-panel {
+            .avatar-customization {
                 width: 100%;
             }
             .profile-content {
@@ -1054,11 +1053,11 @@
                 <div class="events-grid">
                     <div class="event-card">
                         <div style="background: linear-gradient(135deg, #ff6b35, #ff8c42); height: 160px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; border-bottom: 3px solid var(--border);">
-                            Accessory Creator Challenge
+                            Avatar Customization Challenge
                         </div>
                         <div class="event-card-content">
-                            <h3>Design Your Own Accessories</h3>
-                            <p>Create unique accessories for your stickman avatar and earn exclusive rewards!</p>
+                            <h3>Customize Your Stickman</h3>
+                            <p>Change your stickman's skin color to earn exclusive rewards!</p>
                             <p style="margin-top: 10px; color: #ffd700; font-weight: 600;">Prize: 1000 Pencils + Designer Badge</p>
                         </div>
                     </div>
@@ -1068,7 +1067,7 @@
                 <div style="background-color: var(--card-bg); padding: 20px; border: 3px solid var(--border); border-radius: 8px;">
                     <p style="line-height: 1.7; margin-bottom: 14px;">StickVerse is a revolutionary 2D adventure platform where players can create, share, and play stickman-based games. Our platform offers:</p>
                     <ul style="margin: 18px 0 18px 24px; line-height: 1.9;">
-                        <li>Advanced avatar customization with player-created accessories</li>
+                        <li>Advanced avatar customization with multiple options</li>
                         <li>A growing library of user-created stickman games</li>
                         <li>Social features to connect with friends and other players</li>
                         <li>Regular events with exclusive rewards</li>
@@ -1080,58 +1079,42 @@
                 <h2 style="margin-bottom: 20px; font-size: 26px; font-weight: 700;">Avatar Editor</h2>
                 <div class="avatar-container">
                     <div class="avatar-viewer">
-                        <div class="stickman-avatar" id="main-avatar">
-                            <div class="stickman-head" id="stickman-head"></div>
-                            <div class="stickman-body" id="stickman-body"></div>
-                            <div class="stickman-arm-left" id="stickman-arm-left"></div>
-                            <div class="stickman-arm-right" id="stickman-arm-right"></div>
-                            <div class="stickman-leg-left" id="stickman-leg-left"></div>
-                            <div class="stickman-leg-right" id="stickman-leg-right"></div>
+                        <div class="avatar-preview-container">
+                            <div class="auto-save-indicator" id="auto-save-indicator">Saved</div>
+                            <div class="stickman-avatar" id="main-avatar">
+                                <div class="stickman-head" id="stickman-head"></div>
+                                <div class="stickman-body" id="stickman-body"></div>
+                                <div class="stickman-arm-left" id="stickman-arm-left"></div>
+                                <div class="stickman-arm-right" id="stickman-arm-right"></div>
+                                <div class="stickman-leg-left" id="stickman-leg-left"></div>
+                                <div class="stickman-leg-right" id="stickman-leg-right"></div>
+                            </div>
                         </div>
-                        <div class="body-part-colors">
-                            <div class="body-color-option selected" style="background-color: #ffffff;" data-color="#ffffff"></div>
-                            <div class="body-color-option" style="background-color: #ffcc99;" data-color="#ffcc99"></div>
-                            <div class="body-color-option" style="background-color: #e6b87e;" data-color="#e6b87e"></div>
-                            <div class="body-color-option" style="background-color: #d9a366;" data-color="#d9a366"></div>
-                            <div class="body-color-option" style="background-color: #cc9966;" data-color="#cc9966"></div>
-                            <div class="body-color-option" style="background-color: #bf8040;" data-color="#bf8040"></div>
-                            <div class="body-color-option" style="background-color: #8c5c2e;" data-color="#8c5c2e"></div>
-                            <div class="body-color-option" style="background-color: #593c1f;" data-color="#593c1f"></div>
-                            <div class="body-color-option" style="background-color: #ff9999;" data-color="#ff9999"></div>
-                            <div class="body-color-option" style="background-color: #99ff99;" data-color="#99ff99"></div>
-                            <div class="body-color-option" style="background-color: #9999ff;" data-color="#9999ff"></div>
-                            <div class="body-color-option" style="background-color: #ffff99;" data-color="#ffff99"></div>
-                            <div class="body-color-option" style="background-color: #ff99ff;" data-color="#ff99ff"></div>
-                            <div class="body-color-option" style="background-color: #99ffff;" data-color="#99ffff"></div>
-                        </div>
-                        <button class="btn btn-secondary" id="remove-all-items">Remove All Items</button>
                     </div>
-                    <div class="accessories-panel">
-                        <div class="accessory-category">
-                            <h4>Hats</h4>
-                            <div class="accessory-items" id="hats-accessories">
-                                <!-- Hats will be populated by JavaScript -->
+                    <div class="avatar-customization">
+                        <h3>Skin Color Customization</h3>
+                        <div class="customization-section">
+                            <h4>Choose a skin color:</h4>
+                            <div class="color-palette">
+                                <div class="color-option selected" style="background-color: #ffffff;" data-color="#ffffff"></div>
+                                <div class="color-option" style="background-color: #ffcc99;" data-color="#ffcc99"></div>
+                                <div class="color-option" style="background-color: #e6b87e;" data-color="#e6b87e"></div>
+                                <div class="color-option" style="background-color: #d9a366;" data-color="#d9a366"></div>
+                                <div class="color-option" style="background-color: #cc9966;" data-color="#cc9966"></div>
+                                <div class="color-option" style="background-color: #bf8040;" data-color="#bf8040"></div>
+                                <div class="color-option" style="background-color: #8c5c2e;" data-color="#8c5c2e"></div>
+                                <div class="color-option" style="background-color: #593c1f;" data-color="#593c1f"></div>
+                                <div class="color-option" style="background-color: #ff9999;" data-color="#ff9999"></div>
+                                <div class="color-option" style="background-color: #99ff99;" data-color="#99ff99"></div>
+                                <div class="color-option" style="background-color: #9999ff;" data-color="#9999ff"></div>
+                                <div class="color-option" style="background-color: #ffff99;" data-color="#ffff99"></div>
+                                <div class="color-option" style="background-color: #ff99ff;" data-color="#ff99ff"></div>
+                                <div class="color-option" style="background-color: #99ffff;" data-color="#99ffff"></div>
                             </div>
-                        </div>
-                       
-                        <div class="accessory-category">
-                            <h4>Hair</h4>
-                            <div class="accessory-items" id="hair-accessories">
-                                <!-- Hair will be populated by JavaScript -->
-                            </div>
-                        </div>
-                        
-                        <div class="accessory-category">
-                            <h4>Facial Features</h4>
-                            <div class="accessory-items" id="face-accessories">
-                                <!-- Facial features will be populated by JavaScript -->
-                            </div>
-                        </div>
-                        
-                        <div class="accessory-category">
-                            <h4>Clothing</h4>
-                            <div class="accessory-items" id="clothing-accessories">
-                                <!-- Clothing will be populated by JavaScript -->
+                            
+                            <div class="slider-container">
+                                <label for="skin-brightness">Brightness</label>
+                                <input type="range" min="0" max="100" value="100" class="slider" id="skin-brightness">
                             </div>
                         </div>
                     </div>
@@ -1177,13 +1160,6 @@
                             <button class="edit-btn" id="edit-about">Edit</button>
                         </h3>
                         <p id="about-me-text">Create an account and tell us about yourself!</p>
-                    </div>
-                   
-                    <div class="wearing-section">
-                        <h3>Currently Wearing</h3>
-                        <div class="wearing-items" id="wearing-items">
-                            <div class="no-friends">No items equipped</div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1247,10 +1223,15 @@
             </div>
         </div>
     </div>
+    <div class="modal" id="profile-modal">
+        <div class="profile-modal-content">
+            <button class="close-modal">&times;</button>
+            <div id="profile-modal-content"></div>
+        </div>
+    </div>
     <script>
         const server = {
             users: {},
-            accessories: {},
             friendRequests: {},
            
             generateId: function() {
@@ -1272,21 +1253,6 @@
                 return this.users[username];
             },
            
-            saveAccessory: function(accessoryId, accessoryData) {
-                this.accessories[accessoryId] = accessoryData;
-                localStorage.setItem('stickverse_accessories', JSON.stringify(this.accessories));
-            },
-           
-            getAccessory: function(accessoryId) {
-                if (!this.accessories[accessoryId]) {
-                    const savedAccessories = localStorage.getItem('stickverse_accessories');
-                    if (savedAccessories) {
-                        this.accessories = JSON.parse(savedAccessories);
-                    }
-                }
-                return this.accessories[accessoryId];
-            },
-           
             searchUsers: function(query) {
                 const results = [];
                 for (const username in this.users) {
@@ -1296,7 +1262,9 @@
                             avatar: this.users[username].avatar || '?',
                             friends: this.users[username].friends || [],
                             followers: this.users[username].followers || [],
-                            aboutMe: this.users[username].aboutMe || ''
+                            aboutMe: this.users[username].aboutMe || '',
+                            skinColor: this.users[username].skinColor || '#ffffff',
+                            skinBrightness: this.users[username].skinBrightness || 100
                         });
                     }
                 }
@@ -1373,517 +1341,24 @@
             }
         };
         
-        // Enhanced default accessories with better positioning and design
-        const defaultAccessories = {
-            hats: [
-                {
-                    id: 'hat1',
-                    name: 'Baseball Cap',
-                    type: 'hat',
-                    position: { top: -5, left: 75, width: 50, height: 15 },
-                    render: function(layer) {
-                        // Cap brim
-                        const brim = document.createElement('div');
-                        brim.style.position = 'absolute';
-                        brim.style.width = '50px';
-                        brim.style.height = '8px';
-                        brim.style.backgroundColor = '#3366cc';
-                        brim.style.top = '7px';
-                        brim.style.left = '0';
-                        brim.style.borderRadius = '4px';
-                        layer.appendChild(brim);
-                        
-                        // Cap top
-                        const top = document.createElement('div');
-                        top.style.position = 'absolute';
-                        top.style.width = '40px';
-                        top.style.height = '12px';
-                        top.style.backgroundColor = '#3366cc';
-                        top.style.top = '0';
-                        top.style.left = '5px';
-                        top.style.borderRadius = '12px 12px 0 0';
-                        layer.appendChild(top);
-                    }
-                },
-                {
-                    id: 'hat2',
-                    name: 'Top Hat',
-                    type: 'hat',
-                    position: { top: -20, left: 75, width: 40, height: 25 },
-                    render: function(layer) {
-                        // Hat brim
-                        const brim = document.createElement('div');
-                        brim.style.position = 'absolute';
-                        brim.style.width = '45px';
-                        brim.style.height = '5px';
-                        brim.style.backgroundColor = '#222222';
-                        brim.style.top = '20px';
-                        brim.style.left: '-2px';
-                        brim.style.borderRadius = '2px';
-                        layer.appendChild(brim);
-                        
-                        // Hat body
-                        const body = document.createElement('div');
-                        body.style.position = 'absolute';
-                        body.style.width = '30px';
-                        body.style.height = '20px';
-                        body.style.backgroundColor = '#222222';
-                        body.style.top = '0';
-                        body.style.left = '5px';
-                        body.style.borderRadius = '2px 2px 0 0';
-                        layer.appendChild(body);
-                    }
-                },
-                {
-                    id: 'hat3',
-                    name: 'Beanie',
-                    type: 'hat',
-                    position: { top: -5, left: 75, width: 45, height: 20 },
-                    render: function(layer) {
-                        // Beanie body
-                        const body = document.createElement('div');
-                        body.style.position = 'absolute';
-                        body.style.width = '45px';
-                        body.style.height = '18px';
-                        body.style.backgroundColor = '#cc3366';
-                        body.style.top = '2px';
-                        body.style.left = '0';
-                        body.style.borderRadius = '20px 20px 5px 5px';
-                        layer.appendChild(body);
-                        
-                        // Beanie puff
-                        const puff = document.createElement('div');
-                        puff.style.position = 'absolute';
-                        puff.style.width = '15px';
-                        puff.style.height = '10px';
-                        puff.style.backgroundColor = '#ffffff';
-                        puff.style.top = '0';
-                        puff.style.left = '15px';
-                        puff.style.borderRadius = '10px 10px 0 0';
-                        layer.appendChild(puff);
-                    }
-                },
-                {
-                    id: 'hat4',
-                    name: 'Crown',
-                    type: 'hat',
-                    position: { top: -10, left: 75, width: 45, height: 20 },
-                    render: function(layer) {
-                        // Crown base
-                        const base = document.createElement('div');
-                        base.style.position = 'absolute';
-                        base.style.width = '45px';
-                        base.style.height = '10px';
-                        base.style.backgroundColor = '#ffd700';
-                        base.style.top = '10px';
-                        base.style.left = '0';
-                        base.style.borderRadius = '2px';
-                        layer.appendChild(base);
-                        
-                        // Crown points
-                        for (let i = 0; i < 5; i++) {
-                            const point = document.createElement('div');
-                            point.style.position = 'absolute';
-                            point.style.width = '8px';
-                            point.style.height = '10px';
-                            point.style.backgroundColor = '#ffd700';
-                            point.style.top = '0';
-                            point.style.left = (i * 9) + 'px';
-                            point.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
-                            layer.appendChild(point);
-                        }
-                        
-                        // Gems
-                        const gem = document.createElement('div');
-                        gem.style.position = 'absolute';
-                        gem.style.width = '8px';
-                        gem.style.height = '8px';
-                        gem.style.backgroundColor = '#ff3366';
-                        gem.style.top = '5px';
-                        gem.style.left = '18px';
-                        gem.style.borderRadius = '50%';
-                        layer.appendChild(gem);
-                    }
-                }
-            ],
-            hair: [
-                {
-                    id: 'hair1',
-                    name: 'Spiky Hair',
-                    type: 'hair',
-                    position: { top: 5, left: 75, width: 45, height: 20 },
-                    render: function(layer) {
-                        // Base hair
-                        const base = document.createElement('div');
-                        base.style.position = 'absolute';
-                        base.style.width = '45px';
-                        base.style.height = '12px';
-                        base.style.backgroundColor = '#333333';
-                        base.style.top = '8px';
-                        base.style.left = '0';
-                        base.style.borderRadius = '20px 20px 0 0';
-                        layer.appendChild(base);
-                        
-                        // Spikes
-                        for (let i = 0; i < 5; i++) {
-                            const spike = document.createElement('div');
-                            spike.style.position = 'absolute';
-                            spike.style.width = '8px';
-                            spike.style.height = '12px';
-                            spike.style.backgroundColor = '#333333';
-                            spike.style.top = '0';
-                            spike.style.left = (i * 9) + 'px';
-                            spike.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
-                            layer.appendChild(spike);
-                        }
-                    }
-                },
-                {
-                    id: 'hair2',
-                    name: 'Long Hair',
-                    type: 'hair',
-                    position: { top: 10, left: 75, width: 45, height: 30 },
-                    render: function(layer) {
-                        // Hair top
-                        const top = document.createElement('div');
-                        top.style.position = 'absolute';
-                        top.style.width = '45px';
-                        top.style.height = '12px';
-                        top.style.backgroundColor = '#8B4513';
-                        top.style.top = '0';
-                        top.style.left = '0';
-                        top.style.borderRadius = '20px 20px 0 0';
-                        layer.appendChild(top);
-                        
-                        // Hair sides
-                        const leftSide = document.createElement('div');
-                        leftSide.style.position = 'absolute';
-                        leftSide.style.width = '12px';
-                        leftSide.style.height = '25px';
-                        leftSide.style.backgroundColor = '#8B4513';
-                        leftSide.style.top = '12px';
-                        leftSide.style.left = '0';
-                        leftSide.style.borderRadius = '0 0 5px 0';
-                        layer.appendChild(leftSide);
-                        
-                        const rightSide = document.createElement('div');
-                        rightSide.style.position = 'absolute';
-                        rightSide.style.width = '12px';
-                        rightSide.style.height = '25px';
-                        rightSide.style.backgroundColor = '#8B4513';
-                        rightSide.style.top = '12px';
-                        rightSide.style.left = '33px';
-                        rightSide.style.borderRadius = '0 0 0 5px';
-                        layer.appendChild(rightSide);
-                        
-                        // Hair back
-                        const back = document.createElement('div');
-                        back.style.position = 'absolute';
-                        back.style.width = '25px';
-                        back.style.height = '20px';
-                        back.style.backgroundColor = '#8B4513';
-                        back.style.top = '12px';
-                        back.style.left = '10px';
-                        layer.appendChild(back);
-                    }
-                },
-                {
-                    id: 'hair3',
-                    name: 'Afro',
-                    type: 'hair',
-                    position: { top: 0, left: 70, width: 55, height: 25 },
-                    render: function(layer) {
-                        // Afro base
-                        const afro = document.createElement('div');
-                        afro.style.position = 'absolute';
-                        afro.style.width = '55px';
-                        afro.style.height = '25px';
-                        afro.style.backgroundColor = '#333333';
-                        afro.style.top = '0';
-                        afro.style.left = '0';
-                        afro.style.borderRadius = '50%';
-                        layer.appendChild(afro);
-                    }
-                }
-            ],
-            face: [
-                {
-                    id: 'face1',
-                    name: 'Sunglasses',
-                    type: 'face',
-                    position: { top: 20, left: 80, width: 35, height: 10 },
-                    render: function(layer) {
-                        // Frame
-                        const frame = document.createElement('div');
-                        frame.style.position = 'absolute';
-                        frame.style.width = '35px';
-                        frame.style.height = '10px';
-                        frame.style.backgroundColor = '#000000';
-                        frame.style.top = '0';
-                        frame.style.left = '0';
-                        frame.style.borderRadius = '5px';
-                        layer.appendChild(frame);
-                        
-                        // Lenses
-                        const leftLens = document.createElement('div');
-                        leftLens.style.position = 'absolute';
-                        leftLens.style.width = '12px';
-                        leftLens.style.height = '8px';
-                        leftLens.style.backgroundColor = '#1a53ff';
-                        leftLens.style.top = '1px';
-                        leftLens.style.left = '2px';
-                        leftLens.style.borderRadius = '3px';
-                        layer.appendChild(leftLens);
-                        
-                        const rightLens = document.createElement('div');
-                        rightLens.style.position = 'absolute';
-                        rightLens.style.width = '12px';
-                        rightLens.style.height = '8px';
-                        rightLens.style.backgroundColor = '#1a53ff';
-                        rightLens.style.top = '1px';
-                        rightLens.style.left = '21px';
-                        rightLens.style.borderRadius = '3px';
-                        layer.appendChild(rightLens);
-                    }
-                },
-                {
-                    id: 'face2',
-                    name: 'Mustache',
-                    type: 'face',
-                    position: { top: 35, left: 85, width: 25, height: 5 },
-                    render: function(layer) {
-                        const mustache = document.createElement('div');
-                        mustache.style.position = 'absolute';
-                        mustache.style.width = '25px';
-                        mustache.style.height = '5px';
-                        mustache.style.backgroundColor = '#000000';
-                        mustache.style.top = '0';
-                        mustache.style.left = '0';
-                        mustache.style.borderRadius = '0 0 10px 10px';
-                        layer.appendChild(mustache);
-                    }
-                },
-                {
-                    id: 'face3',
-                    name: 'Monocle',
-                    type: 'face',
-                    position: { top: 22, left: 95, width: 15, height: 15 },
-                    render: function(layer) {
-                        // Monocle lens
-                        const lens = document.createElement('div');
-                        lens.style.position = 'absolute';
-                        lens.style.width = '12px';
-                        lens.style.height = '12px';
-                        lens.style.backgroundColor = '#1a53ff';
-                        lens.style.top = '0';
-                        lens.style.left = '0';
-                        lens.style.borderRadius = '50%';
-                        lens.style.border = '2px solid #000000';
-                        layer.appendChild(lens);
-                        
-                        // Monocle chain
-                        const chain = document.createElement('div');
-                        chain.style.position = 'absolute';
-                        chain.style.width = '8px';
-                        chain.style.height = '2px';
-                        chain.style.backgroundColor = '#000000';
-                        chain.style.top = '14px';
-                        chain.style.left = '2px';
-                        chain.style.transform = 'rotate(45deg)';
-                        layer.appendChild(chain);
-                    }
-                },
-                {
-                    id: 'face4',
-                    name: 'Eye Patch',
-                    type: 'face',
-                    position: { top: 20, left: 80, width: 15, height: 10 },
-                    render: function(layer) {
-                        // Patch
-                        const patch = document.createElement('div');
-                        patch.style.position = 'absolute';
-                        patch.style.width = '15px';
-                        patch.style.height = '10px';
-                        patch.style.backgroundColor = '#000000';
-                        patch.style.top = '0';
-                        patch.style.left = '0';
-                        patch.style.borderRadius = '5px';
-                        layer.appendChild(patch);
-                        
-                        // Strap
-                        const strap = document.createElement('div');
-                        strap.style.position = 'absolute';
-                        strap.style.width = '25px';
-                        strap.style.height = '3px';
-                        strap.style.backgroundColor = '#000000';
-                        strap.style.top = '5px';
-                        strap.style.left = '15px';
-                        layer.appendChild(strap);
-                    }
-                }
-            ],
-            clothing: [
-                {
-                    id: 'clothing1',
-                    name: 'T-Shirt',
-                    type: 'clothing',
-                    position: { top: 50, left: 75, width: 50, height: 60 },
-                    render: function(layer) {
-                        // Shirt body
-                        const body = document.createElement('div');
-                        body.style.position = 'absolute';
-                        body.style.width = '30px';
-                        body.style.height = '40px';
-                        body.style.backgroundColor = '#ff3366';
-                        body.style.top = '10px';
-                        body.style.left = '10px';
-                        body.style.borderRadius = '5px';
-                        layer.appendChild(body);
-                        
-                        // Sleeves
-                        const leftSleeve = document.createElement('div');
-                        leftSleeve.style.position = 'absolute';
-                        leftSleeve.style.width = '15px';
-                        leftSleeve.style.height = '10px';
-                        leftSleeve.style.backgroundColor = '#ff3366';
-                        leftSleeve.style.top = '10px';
-                        leftSleeve.style.left = '0';
-                        leftSleeve.style.borderRadius = '5px 0 0 5px';
-                        layer.appendChild(leftSleeve);
-                        
-                        const rightSleeve = document.createElement('div');
-                        rightSleeve.style.position = 'absolute';
-                        rightSleeve.style.width = '15px';
-                        rightSleeve.style.height = '10px';
-                        rightSleeve.style.backgroundColor = '#ff3366';
-                        rightSleeve.style.top = '10px';
-                        rightSleeve.style.left = '35px';
-                        rightSleeve.style.borderRadius = '0 5px 5px 0';
-                        layer.appendChild(rightSleeve);
-                    }
-                },
-                {
-                    id: 'clothing2',
-                    name: 'Jacket',
-                    type: 'clothing',
-                    position: { top: 50, left: 75, width: 50, height: 60 },
-                    render: function(layer) {
-                        // Jacket body
-                        const body = document.createElement('div');
-                        body.style.position = 'absolute';
-                        body.style.width = '30px';
-                        body.style.height = '40px';
-                        body.style.backgroundColor = '#663300';
-                        body.style.top = '10px';
-                        body.style.left = '10px';
-                        body.style.borderRadius = '5px';
-                        layer.appendChild(body);
-                        
-                        // Sleeves
-                        const leftSleeve = document.createElement('div');
-                        leftSleeve.style.position = 'absolute';
-                        leftSleeve.style.width = '15px';
-                        leftSleeve.style.height = '15px';
-                        leftSleeve.style.backgroundColor = '#663300';
-                        leftSleeve.style.top = '10px';
-                        leftSleeve.style.left = '0';
-                        leftSleeve.style.borderRadius = '5px 0 0 5px';
-                        layer.appendChild(leftSleeve);
-                        
-                        const rightSleeve = document.createElement('div');
-                        rightSleeve.style.position = 'absolute';
-                        rightSleeve.style.width = '15px';
-                        rightSleeve.style.height = '15px';
-                        rightSleeve.style.backgroundColor = '#663300';
-                        rightSleeve.style.top = '10px';
-                        rightSleeve.style.left = '35px';
-                        rightSleeve.style.borderRadius = '0 5px 5px 0';
-                        layer.appendChild(rightSleeve);
-                        
-                        // Collar
-                        const collar = document.createElement('div');
-                        collar.style.position = 'absolute';
-                        collar.style.width = '20px';
-                        collar.style.height = '5px';
-                        collar.style.backgroundColor = '#663300';
-                        collar.style.top = '5px';
-                        collar.style.left = '15px';
-                        collar.style.borderRadius = '2px';
-                        layer.appendChild(collar);
-                    }
-                },
-                {
-                    id: 'clothing3',
-                    name: 'Dress',
-                    type: 'clothing',
-                    position: { top: 50, left: 75, width: 50, height: 80 },
-                    render: function(layer) {
-                        // Dress top
-                        const top = document.createElement('div');
-                        top.style.position = 'absolute';
-                        top.style.width = '30px';
-                        top.style.height = '20px';
-                        top.style.backgroundColor = '#cc33cc';
-                        top.style.top = '10px';
-                        top.style.left = '10px';
-                        top.style.borderRadius = '5px 5px 0 0';
-                        layer.appendChild(top);
-                        
-                        // Dress skirt
-                        const skirt = document.createElement('div');
-                        skirt.style.position = 'absolute';
-                        skirt.style.width = '40px';
-                        skirt.style.height = '50px';
-                        skirt.style.backgroundColor = '#cc33cc';
-                        skirt.style.top = '30px';
-                        skirt.style.left = '5px';
-                        skirt.style.borderRadius = '0 0 10px 10px';
-                        layer.appendChild(skirt);
-                        
-                        // Sleeves
-                        const leftSleeve = document.createElement('div');
-                        leftSleeve.style.position = 'absolute';
-                        leftSleeve.style.width = '10px';
-                        leftSleeve.style.height = '10px';
-                        leftSleeve.style.backgroundColor = '#cc33cc';
-                        leftSleeve.style.top = '10px';
-                        leftSleeve.style.left = '0';
-                        leftSleeve.style.borderRadius = '5px';
-                        layer.appendChild(leftSleeve);
-                        
-                        const rightSleeve = document.createElement('div');
-                        rightSleeve.style.position = 'absolute';
-                        rightSleeve.style.width = '10px';
-                        rightSleeve.style.height = '10px';
-                        rightSleeve.style.backgroundColor = '#cc33cc';
-                        rightSleeve.style.top = '10px';
-                        rightSleeve.style.left = '40px';
-                        rightSleeve.style.borderRadius = '5px';
-                        layer.appendChild(rightSleeve);
-                    }
-                }
-            ]
-        };
-        
         let currentUser = null;
         let userData = {
             username: '',
             joinDate: new Date().toLocaleDateString(),
             friends: [],
             followers: [],
-            pencils: 1000,
+            pencils: 0,
             aboutMe: '',
-            equippedItems: {},
-            createdAccessories: [],
             badges: [],
-            skinColor: '#ffffff'
+            skinColor: '#ffffff',
+            skinBrightness: 100
         };
+        
+        let autoSaveTimeout = null;
         
         document.addEventListener('DOMContentLoaded', function() {
             updateUIForLoggedInState();
-            updateWearingItems();
-            setupBodyColorPicker();
-            populateDefaultAccessories();
+            setupAdvancedCustomization();
            
             const savedUser = localStorage.getItem('stickverse_current_user');
             if (savedUser) {
@@ -1893,151 +1368,202 @@
                     userData = savedData;
                     if (!userData.badges) userData.badges = [];
                     if (!userData.skinColor) userData.skinColor = '#ffffff';
+                    if (!userData.pencils) userData.pencils = 0;
+                    if (!userData.skinBrightness) userData.skinBrightness = 100;
+                    
                     updateUIForLoggedInState();
                     updateProfileData();
                     updateFriendsList();
                     updateAvatarDisplay();
-                    updateUserAccessories();
                     updateFriendRequestsList();
                     document.querySelector('[data-tab="inbox"]').style.display = 'block';
                 }
             }
-           
-            document.getElementById('remove-all-items').addEventListener('click', function() {
-                if (currentUser) {
-                    userData.equippedItems = {};
-                    server.saveUser(currentUser, userData);
-                    updateAvatarDisplay();
-                    updateWearingItems();
-                    showNotification('All items removed!', 'success');
-                }
-            });
         });
         
-        function populateDefaultAccessories() {
-            // Populate hats
-            const hatsContainer = document.getElementById('hats-accessories');
-            defaultAccessories.hats.forEach(hat => {
-                const item = createAccessoryItem(hat);
-                hatsContainer.appendChild(item);
-            });
-            
-            // Populate hair
-            const hairContainer = document.getElementById('hair-accessories');
-            defaultAccessories.hair.forEach(hair => {
-                const item = createAccessoryItem(hair);
-                hairContainer.appendChild(item);
-            });
-            
-            // Populate face
-            const faceContainer = document.getElementById('face-accessories');
-            defaultAccessories.face.forEach(face => {
-                const item = createAccessoryItem(face);
-                faceContainer.appendChild(item);
-            });
-            
-            // Populate clothing
-            const clothingContainer = document.getElementById('clothing-accessories');
-            defaultAccessories.clothing.forEach(clothing => {
-                const item = createAccessoryItem(clothing);
-                clothingContainer.appendChild(item);
-            });
-        }
-        
-        function createAccessoryItem(accessory) {
-            const item = document.createElement('div');
-            item.className = 'accessory-item';
-            item.dataset.id = accessory.id;
-            item.dataset.type = accessory.type;
-            
-            if (userData.equippedItems[accessory.type] && userData.equippedItems[accessory.type].id === accessory.id) {
-                item.classList.add('selected');
-            }
-           
-            const preview = document.createElement('div');
-            preview.className = 'accessory-item-preview';
-            
-            // Create a mini preview of the accessory
-            const previewContainer = document.createElement('div');
-            previewContainer.style.width = '100%';
-            previewContainer.style.height = '100%';
-            previewContainer.style.position = 'relative';
-            previewContainer.style.overflow = 'hidden';
-            
-            accessory.render(previewContainer);
-            
-            const nameLabel = document.createElement('div');
-            nameLabel.className = 'accessory-item-name';
-            nameLabel.textContent = accessory.name;
-            previewContainer.appendChild(nameLabel);
-            
-            preview.appendChild(previewContainer);
-            item.appendChild(preview);
-           
-            item.addEventListener('click', function() {
-                if (userData.equippedItems[accessory.type] && userData.equippedItems[accessory.type].id === accessory.id) {
-                    delete userData.equippedItems[accessory.type];
-                    showNotification('Unequipped ' + accessory.name + '!', 'success');
-                } else {
-                    userData.equippedItems[accessory.type] = accessory;
-                    showNotification('Equipped ' + accessory.name + '!', 'success');
-                    
-                    // Award Designer badge if user customizes their avatar
-                    if (!userData.badges.includes('Designer')) {
-                        userData.badges.push('Designer');
-                        showNotification('Congratulations! You earned the "Designer" badge!', 'success');
-                    }
-                }
-                updateAvatarDisplay();
-                updateWearingItems();
-                updateAccessorySelection();
-                if (currentUser) {
-                    server.saveUser(currentUser, userData);
-                }
-            });
-            
-            return item;
-        }
-        
-        function updateAccessorySelection() {
-            document.querySelectorAll('.accessory-item').forEach(item => {
-                const type = item.dataset.type;
-                const id = item.dataset.id;
-                
-                if (userData.equippedItems[type] && userData.equippedItems[type].id === id) {
-                    item.classList.add('selected');
-                } else {
-                    item.classList.remove('selected');
-                }
-            });
-        }
-        
-        function setupBodyColorPicker() {
-            document.querySelectorAll('.body-color-option').forEach(option => {
+        function setupAdvancedCustomization() {
+            // Color options
+            document.querySelectorAll('.color-option').forEach(option => {
                 option.addEventListener('click', function() {
                     const color = this.getAttribute('data-color');
                     
-                    document.querySelectorAll('.body-color-option').forEach(o => {
+                    document.querySelectorAll('.color-option').forEach(o => {
                         o.classList.remove('selected');
                     });
                     this.classList.add('selected');
                     
                     userData.skinColor = color;
-                    
-                    if (currentUser) {
-                        server.saveUser(currentUser, userData);
-                    }
-                    
                     updateAvatarDisplay();
-                    showNotification('Skin color updated!', 'success');
-                    
-                    // Award Designer badge if user customizes their avatar
-                    if (!userData.badges.includes('Designer')) {
-                        userData.badges.push('Designer');
-                        showNotification('Congratulations! You earned the "Designer" badge!', 'success');
-                    }
+                    triggerAutoSave();
                 });
             });
+            
+            // Brightness slider
+            document.getElementById('skin-brightness').addEventListener('input', function() {
+                userData.skinBrightness = this.value;
+                updateAvatarDisplay();
+                triggerAutoSave();
+            });
+        }
+        
+        function triggerAutoSave() {
+            if (!currentUser) return;
+            
+            // Show auto-save indicator
+            const indicator = document.getElementById('auto-save-indicator');
+            indicator.classList.add('show');
+            
+            // Clear existing timeout
+            if (autoSaveTimeout) {
+                clearTimeout(autoSaveTimeout);
+            }
+            
+            // Set new timeout for saving
+            autoSaveTimeout = setTimeout(() => {
+                server.saveUser(currentUser, userData);
+                
+                // Check if user qualifies for Designer badge
+                if (userData.skinColor !== '#ffffff' && !userData.badges.includes('Designer')) {
+                    userData.pencils += 1000;
+                    userData.badges.push('Designer');
+                    updateProfileData();
+                    updateUIForLoggedInState();
+                    showNotification('You earned 1000 Pencils and the "Designer" badge!', 'success');
+                }
+                
+                // Hide indicator after a delay
+                setTimeout(() => {
+                    indicator.classList.remove('show');
+                }, 1500);
+            }, 1000); // Save after 1 second of inactivity
+        }
+        
+        function updateAvatarDisplay() {
+            // Update skin color for all body parts with brightness
+            const brightness = userData.skinBrightness / 100;
+            const color = applyBrightness(userData.skinColor, brightness);
+            
+            document.getElementById('stickman-head').style.backgroundColor = color;
+            document.getElementById('stickman-body').style.backgroundColor = color;
+            document.getElementById('stickman-arm-left').style.backgroundColor = color;
+            document.getElementById('stickman-arm-right').style.backgroundColor = color;
+            document.getElementById('stickman-leg-left').style.backgroundColor = color;
+            document.getElementById('stickman-leg-right').style.backgroundColor = color;
+            
+            // Update profile avatar
+            const profileHead = document.querySelector('.profile-stickman .stickman-head');
+            const profileBody = document.querySelector('.profile-stickman .stickman-body');
+            const profileArms = document.querySelectorAll('.profile-stickman .stickman-arm-left, .profile-stickman .stickman-arm-right');
+            const profileLegs = document.querySelectorAll('.profile-stickman .stickman-leg-left, .profile-stickman .stickman-leg-right');
+            
+            if (profileHead) profileHead.style.backgroundColor = color;
+            if (profileBody) profileBody.style.backgroundColor = color;
+            profileArms.forEach(arm => arm.style.backgroundColor = color);
+            profileLegs.forEach(leg => leg.style.backgroundColor = color);
+        }
+        
+        function applyBrightness(color, brightness) {
+            // Convert hex to RGB
+            let r = parseInt(color.substr(1, 2), 16);
+            let g = parseInt(color.substr(3, 2), 16);
+            let b = parseInt(color.substr(5, 2), 16);
+            
+            // Apply brightness
+            r = Math.min(255, Math.floor(r * brightness));
+            g = Math.min(255, Math.floor(g * brightness));
+            b = Math.min(255, Math.floor(b * brightness));
+            
+            // Convert back to hex
+            return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+        }
+        
+        function showUserProfile(username) {
+            const user = server.getUser(username);
+            if (!user) return;
+            
+            const modal = document.getElementById('profile-modal');
+            const content = document.getElementById('profile-modal-content');
+            
+            content.innerHTML = `
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <div class="profile-stickman">
+                            <div class="stickman-head" style="background-color: ${user.skinColor || '#ffffff'}"></div>
+                            <div class="stickman-body" style="background-color: ${user.skinColor || '#ffffff'}"></div>
+                            <div class="stickman-arm-left" style="background-color: ${user.skinColor || '#ffffff'}"></div>
+                            <div class="stickman-arm-right" style="background-color: ${user.skinColor || '#ffffff'}"></div>
+                            <div class="stickman-leg-left" style="background-color: ${user.skinColor || '#ffffff'}"></div>
+                            <div class="stickman-leg-right" style="background-color: ${user.skinColor || '#ffffff'}"></div>
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <h2>${username}</h2>
+                        <div class="profile-badges">
+                            ${user.badges && user.badges.includes('Designer') ? 
+                                '<div class="badge sketched"><span class="badge-icon">D</span>Designer</div>' : ''}
+                        </div>
+                        <p>Member since ${user.joinDate || 'Unknown'}</p>
+                        <div class="profile-stats">
+                            <div class="stat">
+                                <div class="stat-value">${user.friends ? user.friends.length : 0}</div>
+                                <div class="stat-label">Friends</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${user.followers ? user.followers.length : 0}</div>
+                                <div class="stat-label">Followers</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${user.pencils || 0}</div>
+                                <div class="stat-label">Pencils</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-content">
+                    <div class="about-section">
+                        <h3>About Me</h3>
+                        <p>${user.aboutMe || 'This user has not written an about me yet.'}</p>
+                    </div>
+                </div>
+                ${currentUser && currentUser !== username ? `
+                    <div style="margin-top: 20px; display: flex; gap: 10px;">
+                        <button class="btn btn-primary" id="add-friend-from-profile" data-username="${username}">
+                            ${userData.friends && userData.friends.includes(username) ? 'Friends' : 
+                              server.getFriendRequests(username).includes(currentUser) ? 'Pending' : 'Add Friend'}
+                        </button>
+                    </div>
+                ` : ''}
+            `;
+            
+            // Add friend button functionality
+            const addFriendBtn = document.getElementById('add-friend-from-profile');
+            if (addFriendBtn) {
+                addFriendBtn.addEventListener('click', function() {
+                    const targetUser = this.getAttribute('data-username');
+                    const isFriend = userData.friends && userData.friends.includes(targetUser);
+                    const hasPendingRequest = server.getFriendRequests(targetUser).includes(currentUser);
+                    
+                    if (isFriend) {
+                        if (confirm(`Remove ${targetUser} from friends?`)) {
+                            server.removeFriend(currentUser, targetUser);
+                            userData.friends = userData.friends.filter(f => f !== targetUser);
+                            this.textContent = 'Add Friend';
+                            updateFriendsList();
+                            updateProfileData();
+                            showNotification(`Removed ${targetUser} from friends`, 'success');
+                        }
+                    } else if (hasPendingRequest) {
+                        showNotification('Friend request already sent!', 'warning');
+                    } else {
+                        if (server.sendFriendRequest(currentUser, targetUser)) {
+                            this.textContent = 'Pending';
+                            showNotification(`Friend request sent to ${targetUser}!`, 'success');
+                        }
+                    }
+                });
+            }
+            
+            modal.classList.add('active');
         }
         
         document.querySelectorAll('.nav-tabs li').forEach(item => {
@@ -2136,7 +1662,6 @@
                     updateProfileData();
                     updateFriendsList();
                     updateAvatarDisplay();
-                    updateUserAccessories();
                     updateFriendRequestsList();
                     document.querySelector('[data-tab="inbox"]').style.display = 'block';
                 } else {
@@ -2166,12 +1691,11 @@
                 userData.username = username;
                 userData.friends = [];
                 userData.followers = [];
-                userData.pencils = 1000;
+                userData.pencils = 0;
                 userData.aboutMe = '';
-                userData.createdAccessories = [];
-                userData.equippedItems = {};
                 userData.badges = [];
                 userData.skinColor = '#ffffff';
+                userData.skinBrightness = 100;
                
                 server.saveUser(username, userData);
                 localStorage.setItem('stickverse_current_user', username);
@@ -2217,12 +1741,11 @@
                             joinDate: new Date().toLocaleDateString(),
                             friends: [],
                             followers: [],
-                            pencils: 1000,
+                            pencils: 0,
                             aboutMe: '',
-                            equippedItems: {},
-                            createdAccessories: [],
                             badges: [],
-                            skinColor: '#ffffff'
+                            skinColor: '#ffffff',
+                            skinBrightness: 100
                         };
                         localStorage.removeItem('stickverse_current_user');
                         location.reload();
@@ -2250,7 +1773,7 @@
                         if (badge === 'Designer') {
                             badgeEl.classList.add('sketched');
                         }
-                        badgeEl.innerHTML = `<span class="badge-icon">🎩</span>${badge}`;
+                        badgeEl.innerHTML = `<span class="badge-icon">D</span>${badge}`;
                         badgesContainer.appendChild(badgeEl);
                     });
                 }
@@ -2260,107 +1783,6 @@
                     updateUIForLoggedInState();
                 }
             }
-        }
-        
-        function updateUserAccessories() {
-            // This function would update the user's created accessories
-            // For now, we're using default accessories only
-        }
-        
-        function renderAccessoryOnAvatar(container, accessory) {
-            const layer = document.createElement('div');
-            layer.className = 'accessory-layer';
-            layer.style.position = 'absolute';
-            layer.style.width = accessory.position.width + 'px';
-            layer.style.height = accessory.position.height + 'px';
-            layer.style.top = accessory.position.top + 'px';
-            layer.style.left = accessory.position.left + 'px';
-           
-            accessory.render(layer);
-            container.appendChild(layer);
-        }
-        
-        function updateAvatarDisplay() {
-            const mainAvatar = document.getElementById('main-avatar');
-            const existingLayers = mainAvatar.querySelectorAll('.accessory-layer');
-            existingLayers.forEach(layer => layer.remove());
-           
-            // Update skin color for all body parts
-            document.getElementById('stickman-head').style.backgroundColor = userData.skinColor;
-            document.getElementById('stickman-body').style.backgroundColor = userData.skinColor;
-            document.getElementById('stickman-arm-left').style.backgroundColor = userData.skinColor;
-            document.getElementById('stickman-arm-right').style.backgroundColor = userData.skinColor;
-            document.getElementById('stickman-leg-left').style.backgroundColor = userData.skinColor;
-            document.getElementById('stickman-leg-right').style.backgroundColor = userData.skinColor;
-           
-            Object.entries(userData.equippedItems).forEach(([type, accessory]) => {
-                if (accessory) {
-                    renderAccessoryOnAvatar(mainAvatar, accessory);
-                }
-            });
-            
-            const profileAvatar = document.querySelector('.profile-stickman');
-            const profileLayers = profileAvatar.querySelectorAll('.accessory-layer');
-            profileLayers.forEach(layer => layer.remove());
-           
-            // Update profile avatar skin color
-            const profileHead = profileAvatar.querySelector('.stickman-head');
-            const profileBody = profileAvatar.querySelector('.stickman-body');
-            const profileArms = profileAvatar.querySelectorAll('.stickman-arm-left, .stickman-arm-right');
-            const profileLegs = profileAvatar.querySelectorAll('.stickman-leg-left, .stickman-leg-right');
-            
-            if (profileHead) profileHead.style.backgroundColor = userData.skinColor;
-            if (profileBody) profileBody.style.backgroundColor = userData.skinColor;
-            profileArms.forEach(arm => arm.style.backgroundColor = userData.skinColor);
-            profileLegs.forEach(leg => leg.style.backgroundColor = userData.skinColor);
-           
-            Object.entries(userData.equippedItems).forEach(([type, accessory]) => {
-                if (accessory) {
-                    renderAccessoryOnAvatar(profileAvatar, accessory);
-                }
-            });
-        }
-        
-        function updateWearingItems() {
-            const wearingContainer = document.getElementById('wearing-items');
-            wearingContainer.innerHTML = '';
-           
-            if (Object.keys(userData.equippedItems).length === 0) {
-                wearingContainer.innerHTML = '<div class="no-friends" style="grid-column: 1/-1;">No items equipped</div>';
-                return;
-            }
-           
-            Object.entries(userData.equippedItems).forEach(([type, accessory]) => {
-                if (accessory) {
-                    const itemElement = document.createElement('div');
-                    itemElement.className = 'wearing-item';
-                   
-                    // Create a mini preview of the accessory
-                    const previewContainer = document.createElement('div');
-                    previewContainer.style.width = '100%';
-                    previewContainer.style.height = '100%';
-                    previewContainer.style.position = 'relative';
-                    previewContainer.style.overflow = 'hidden';
-                    
-                    accessory.render(previewContainer);
-                   
-                    const label = document.createElement('div');
-                    label.style.position = 'absolute';
-                    label.style.bottom = '0';
-                    label.style.left = '0';
-                    label.style.right = '0';
-                    label.style.textAlign = 'center';
-                    label.style.fontSize = '10px';
-                    label.style.background = 'rgba(0,0,0,0.9)';
-                    label.style.padding = '6px 4px 4px';
-                    label.style.color = 'white';
-                    label.textContent = accessory.name;
-                    previewContainer.appendChild(label);
-                   
-                    itemElement.appendChild(previewContainer);
-                    wearingContainer.appendChild(itemElement);
-                }
-            });
         }
         
         document.getElementById('edit-about').addEventListener('click', function() {
@@ -2412,6 +1834,13 @@
                     `;
                    
                     resultsContainer.appendChild(resultItem);
+                    
+                    // Add click event to show user profile
+                    resultItem.addEventListener('click', function(e) {
+                        if (!e.target.classList.contains('add-friend-btn')) {
+                            showUserProfile(user.username);
+                        }
+                    });
                 });
                
                 document.querySelectorAll('.add-friend-btn').forEach(btn => {
@@ -2467,6 +1896,11 @@
                     <span style="font-weight: 600; font-size: 14px;">${friend}</span>
                     <div class="friend-status status-online"></div>
                 `;
+                
+                friendItem.addEventListener('click', function() {
+                    showUserProfile(friend);
+                });
+                
                 friendsList.appendChild(friendItem);
             });
         }
