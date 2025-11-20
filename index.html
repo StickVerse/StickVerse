@@ -73,6 +73,12 @@
             color: white;
             border: 2px solid var(--border);
             border-radius: 4px;
+            animation: logoSpin 20s linear infinite;
+        }
+        @keyframes logoSpin {
+            0%, 90% { transform: rotate(0deg); }
+            95% { transform: rotate(360deg); }
+            100% { transform: rotate(360deg); }
         }
         .logo h1 {
             font-size: 24px;
@@ -93,10 +99,12 @@
             color: var(--text);
             font-size: 14px;
             border-radius: 4px;
+            transition: all 0.3s ease;
         }
         .search-bar input:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 162, 255, 0.3);
         }
         .user-actions {
             display: flex;
@@ -115,11 +123,34 @@
             background-color: var(--card-bg);
             color: var(--text);
             border-radius: 4px;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
         .btn:hover {
             background-color: var(--card-hover);
             border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+        .btn:active {
+            transform: translateY(0px);
         }
         .btn-primary {
             background: var(--primary);
@@ -169,6 +200,11 @@
             font-size: 11px;
             font-weight: 700;
             border: 2px solid var(--secondary);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
         nav {
             background-color: var(--secondary);
@@ -186,7 +222,7 @@
             border-bottom: 4px solid transparent;
             font-weight: 600;
             color: var(--text-secondary);
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             border-radius: 4px 4px 0 0;
         }
         .nav-tabs li.active {
@@ -231,10 +267,12 @@
             cursor: pointer;
             background-color: var(--card-bg);
             border-radius: 4px;
+            transition: all 0.3s ease;
         }
         .friend-item:hover {
             background-color: var(--card-hover);
             border-color: var(--primary);
+            transform: translateX(5px);
         }
         .friend-avatar {
             width: 32px;
@@ -258,6 +296,11 @@
         .status-online {
             background-color: var(--success);
             box-shadow: 0 0 6px var(--success);
+            animation: glow 2s ease-in-out infinite;
+        }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 6px var(--success); }
+            50% { box-shadow: 0 0 12px var(--success); }
         }
         .main-content {
             flex: 1;
@@ -267,27 +310,52 @@
         }
         .content-section {
             display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .content-section.active {
             display: block;
         }
         .hero-banner {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), #0088cc);
             padding: 40px;
             margin-bottom: 20px;
             text-align: center;
             border: 3px solid var(--border);
             border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 3s infinite;
+        }
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
         .hero-banner h2 {
             font-size: 38px;
             margin-bottom: 10px;
             font-weight: 700;
+            position: relative;
+            z-index: 1;
         }
         .hero-banner p {
             font-size: 17px;
             max-width: 600px;
             margin: 0 auto 20px;
+            position: relative;
+            z-index: 1;
         }
         .events-grid {
             display: grid;
@@ -300,11 +368,13 @@
             overflow: hidden;
             border: 3px solid var(--border);
             border-radius: 8px;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
         }
         .event-card:hover {
             border-color: var(--primary);
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 24px var(--shadow);
         }
         .event-card-content {
             padding: 18px;
@@ -342,6 +412,11 @@
             height: 300px;
             position: relative;
             margin-bottom: 30px;
+            animation: floatAvatar 3s ease-in-out infinite;
+        }
+        @keyframes floatAvatar {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
         .stickman-body {
             position: absolute;
@@ -350,6 +425,7 @@
             background-color: white;
             top: 50px;
             left: 97px;
+            transition: all 0.3s ease;
         }
         .stickman-head {
             position: absolute;
@@ -359,6 +435,12 @@
             top: 10px;
             left: 80px;
             border-radius: 0;
+            transition: all 0.3s ease;
+            animation: bobHead 2s ease-in-out infinite;
+        }
+        @keyframes bobHead {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(5deg); }
         }
         .stickman-arm-left {
             position: absolute;
@@ -368,6 +450,13 @@
             top: 70px;
             left: 45px;
             transform: rotate(30deg);
+            transition: all 0.3s ease;
+            animation: waveArmLeft 2s ease-in-out infinite;
+            transform-origin: right center;
+        }
+        @keyframes waveArmLeft {
+            0%, 100% { transform: rotate(30deg); }
+            50% { transform: rotate(20deg); }
         }
         .stickman-arm-right {
             position: absolute;
@@ -377,6 +466,13 @@
             top: 70px;
             left: 95px;
             transform: rotate(-30deg);
+            transition: all 0.3s ease;
+            animation: waveArmRight 2s ease-in-out infinite 0.5s;
+            transform-origin: left center;
+        }
+        @keyframes waveArmRight {
+            0%, 100% { transform: rotate(-30deg); }
+            50% { transform: rotate(-20deg); }
         }
         .stickman-leg-left {
             position: absolute;
@@ -387,6 +483,7 @@
             left: 45px;
             transform: rotate(-30deg);
             transform-origin: right center;
+            transition: all 0.3s ease;
         }
         .stickman-leg-right {
             position: absolute;
@@ -397,6 +494,7 @@
             left: 95px;
             transform: rotate(30deg);
             transform-origin: left center;
+            transition: all 0.3s ease;
         }
         .profile-header {
             display: flex;
@@ -452,6 +550,10 @@
             border-radius: 20px;
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .badge:hover {
+            transform: scale(1.05) rotate(-2deg);
         }
         .badge.sketched {
             background: repeating-linear-gradient(
@@ -477,6 +579,112 @@
                 rgba(0,0,0,0.1) 5px,
                 rgba(0,0,0,0.1) 10px
             );
+        }
+        
+        /* Sketch Animation Styles */
+        .sketch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .sketch-overlay.active {
+            display: flex;
+            animation: fadeInOverlay 0.3s ease;
+        }
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .sketch-badge-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+        .sketch-badge {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            animation: fadeInBadge 0.5s ease forwards;
+        }
+        @keyframes fadeInBadge {
+            to { opacity: 1; }
+        }
+        .sketch-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+        }
+        .sketch-path {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .sketch-path circle {
+            fill: none;
+            stroke: #000;
+            stroke-width: 4;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawCircle 2s ease forwards;
+        }
+        @keyframes drawCircle {
+            to { stroke-dashoffset: 0; }
+        }
+        .sketch-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 28px;
+            font-weight: 700;
+            color: #000;
+            opacity: 0;
+            animation: fadeInText 0.5s ease 1.5s forwards, floatText 1s ease-in-out 2s infinite;
+            text-align: center;
+        }
+        @keyframes fadeInText {
+            to { opacity: 1; }
+        }
+        @keyframes floatText {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+            50% { transform: translate(-50%, -50%) translateY(-5px); }
+        }
+        .sketch-particles {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+        }
+        .sketch-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ffd700;
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleExplode 1.5s ease 2.5s forwards;
+        }
+        @keyframes particleExplode {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
         }
         .badge-icon {
             font-size: 14px;
@@ -572,6 +780,11 @@
             border: 2px solid var(--border);
             font-weight: 600;
             border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .currency-display:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
         }
         .pencil-icon {
             width: 18px;
@@ -585,6 +798,12 @@
             color: #000;
             border: 2px solid var(--border);
             border-radius: 4px;
+            animation: rotatePencil 3s ease-in-out infinite;
+        }
+        @keyframes rotatePencil {
+            0%, 90% { transform: rotate(0deg); }
+            95% { transform: rotate(180deg); }
+            100% { transform: rotate(180deg); }
         }
         .modal {
             display: none;
@@ -600,6 +819,7 @@
         }
         .modal.active {
             display: flex;
+            animation: fadeInOverlay 0.3s ease;
         }
         .modal-content {
             background-color: var(--card-bg);
@@ -610,6 +830,11 @@
             border: 3px solid var(--border);
             box-shadow: 0 8px 32px var(--shadow);
             border-radius: 8px;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
         .close-modal {
             position: absolute;
@@ -626,11 +851,13 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
+            transition: all 0.3s ease;
         }
         .close-modal:hover {
             background-color: var(--accent);
             color: white;
             border-color: var(--accent);
+            transform: rotate(90deg);
         }
         .modal h2 {
             margin-bottom: 20px;
@@ -658,10 +885,12 @@
             color: var(--text);
             font-size: 14px;
             border-radius: 4px;
+            transition: all 0.3s ease;
         }
         .form-group input:focus, .form-group select:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 162, 255, 0.3);
         }
         .form-actions {
             display: flex;
@@ -809,6 +1038,11 @@
             align-items: center;
             gap: 12px;
             border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .friend-request-item:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
         }
         .friend-request-avatar {
             width: 40px;
@@ -925,14 +1159,16 @@
             border-radius: 4px;
             cursor: pointer;
             border: 2px solid transparent;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .color-option:hover {
-            transform: scale(1.1);
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
         }
         .color-option.selected {
             border-color: white;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+            transform: scale(1.1);
         }
         .slider-container {
             margin-bottom: 15px;
@@ -958,6 +1194,11 @@
             background: var(--primary);
             cursor: pointer;
             border: 2px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 10px var(--primary);
         }
         .avatar-preview-container {
             position: relative;
@@ -985,6 +1226,11 @@
         }
         .auto-save-indicator.show {
             opacity: 1;
+            animation: saveIndicator 2s ease;
+        }
+        @keyframes saveIndicator {
+            0%, 100% { opacity: 0; transform: scale(1); }
+            20%, 80% { opacity: 1; transform: scale(1.05); }
         }
         @media (max-width: 768px) {
             .container {
@@ -1011,6 +1257,9 @@
 </head>
 <body>
     <div class="notification" id="notification"></div>
+    <div class="sketch-overlay" id="sketch-overlay">
+        <div class="sketch-badge-container" id="sketch-container"></div>
+    </div>
     <header>
         <div class="logo">
             <div class="logo-img">S</div>
@@ -1233,6 +1482,7 @@
         const server = {
             users: {},
             friendRequests: {},
+            earnedBadges: {},
            
             generateId: function() {
                 return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -1338,6 +1588,24 @@
                 }
                
                 return true;
+            },
+            
+            markBadgeAsEarned: function(username, badgeName) {
+                if (!this.earnedBadges[username]) {
+                    this.earnedBadges[username] = [];
+                }
+                if (!this.earnedBadges[username].includes(badgeName)) {
+                    this.earnedBadges[username].push(badgeName);
+                    localStorage.setItem('stickverse_earned_badges', JSON.stringify(this.earnedBadges));
+                }
+            },
+            
+            hasBadgeBeenEarned: function(username, badgeName) {
+                const saved = localStorage.getItem('stickverse_earned_badges');
+                if (saved) {
+                    this.earnedBadges = JSON.parse(saved);
+                }
+                return this.earnedBadges[username] && this.earnedBadges[username].includes(badgeName);
             }
         };
         
@@ -1355,6 +1623,39 @@
         };
         
         let autoSaveTimeout = null;
+        
+        function playSketchAnimation(badgeName) {
+            const overlay = document.getElementById('sketch-overlay');
+            const container = document.getElementById('sketch-container');
+            
+            container.innerHTML = `
+                <div class="sketch-badge">
+                    <div class="sketch-circle"></div>
+                    <svg class="sketch-path" viewBox="0 0 300 300">
+                        <circle cx="150" cy="150" r="90" />
+                    </svg>
+                    <div class="sketch-text">${badgeName}<br>Earned!</div>
+                    <div class="sketch-particles">
+                        ${Array(20).fill(0).map((_, i) => {
+                            const angle = (i / 20) * Math.PI * 2;
+                            const distance = 100 + Math.random() * 50;
+                            const tx = Math.cos(angle) * distance;
+                            const ty = Math.sin(angle) * distance;
+                            return `<div class="sketch-particle" style="--tx: ${tx}px; --ty: ${ty}px; left: 50%; top: 50%; animation-delay: ${2 + i * 0.05}s;"></div>`;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+            
+            overlay.classList.add('active');
+            
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 300);
+            }, 4000);
+        }
         
         document.addEventListener('DOMContentLoaded', function() {
             updateUIForLoggedInState();
@@ -1426,16 +1727,24 @@
                 if (userData.skinColor !== '#ffffff' && !userData.badges.includes('Designer')) {
                     userData.pencils += 1000;
                     userData.badges.push('Designer');
+                    server.markBadgeAsEarned(currentUser, 'Designer');
                     updateProfileData();
                     updateUIForLoggedInState();
+                    
+                    // Show notification first
                     showNotification('You earned 1000 Pencils and the "Designer" badge!', 'success');
+                    
+                    // Then play sketch animation after a short delay
+                    setTimeout(() => {
+                        playSketchAnimation('Designer');
+                    }, 500);
                 }
                 
                 // Hide indicator after a delay
                 setTimeout(() => {
                     indicator.classList.remove('show');
                 }, 1500);
-            }, 1000); // Save after 1 second of inactivity
+            }, 1000);
         }
         
         function updateAvatarDisplay() {
@@ -1484,16 +1793,19 @@
             const modal = document.getElementById('profile-modal');
             const content = document.getElementById('profile-modal-content');
             
+            const brightness = (user.skinBrightness || 100) / 100;
+            const color = applyBrightness(user.skinColor || '#ffffff', brightness);
+            
             content.innerHTML = `
                 <div class="profile-header">
                     <div class="profile-avatar">
                         <div class="profile-stickman">
-                            <div class="stickman-head" style="background-color: ${user.skinColor || '#ffffff'}"></div>
-                            <div class="stickman-body" style="background-color: ${user.skinColor || '#ffffff'}"></div>
-                            <div class="stickman-arm-left" style="background-color: ${user.skinColor || '#ffffff'}"></div>
-                            <div class="stickman-arm-right" style="background-color: ${user.skinColor || '#ffffff'}"></div>
-                            <div class="stickman-leg-left" style="background-color: ${user.skinColor || '#ffffff'}"></div>
-                            <div class="stickman-leg-right" style="background-color: ${user.skinColor || '#ffffff'}"></div>
+                            <div class="stickman-head" style="background-color: ${color}"></div>
+                            <div class="stickman-body" style="background-color: ${color}"></div>
+                            <div class="stickman-arm-left" style="background-color: ${color}"></div>
+                            <div class="stickman-arm-right" style="background-color: ${color}"></div>
+                            <div class="stickman-leg-left" style="background-color: ${color}"></div>
+                            <div class="stickman-leg-right" style="background-color: ${color}"></div>
                         </div>
                     </div>
                     <div class="profile-info">
@@ -1589,6 +1901,16 @@
                 if (tabId === 'inbox') {
                     updateFriendRequestsList();
                 }
+                
+                // Check if user just earned the Designer badge and is on the home tab
+                if (tabId === 'home' && currentUser && userData.badges.includes('Designer') && 
+                    !server.hasBadgeBeenEarned(currentUser, 'Designer')) {
+                    // Play the sketch animation
+                    setTimeout(() => {
+                        playSketchAnimation('Designer');
+                        server.markBadgeAsEarned(currentUser, 'Designer');
+                    }, 500);
+                }
             });
         });
         
@@ -1636,6 +1958,9 @@
         
         window.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+            if (e.target.id === 'sketch-overlay') {
                 e.target.classList.remove('active');
             }
         });
@@ -1762,7 +2087,11 @@
                 document.getElementById('profile-followers').textContent = userData.followers ? userData.followers.length : 0;
                 document.getElementById('profile-pencils').textContent = userData.pencils || 0;
                 document.getElementById('about-me-text').textContent = userData.aboutMe || 'This user has not written an about me yet.';
-                document.getElementById('pencil-count').textContent = userData.pencils || 0;
+                
+                const pencilCount = document.getElementById('pencil-count');
+                if (pencilCount) {
+                    pencilCount.textContent = userData.pencils || 0;
+                }
                
                 const badgesContainer = document.getElementById('profile-badges');
                 badgesContainer.innerHTML = '';
