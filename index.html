@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StickVerse - 2D Stickman Adventure Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
             margin: 0;
@@ -1505,167 +1506,242 @@
         </div>
     </div>
     <script>
+        const supabaseUrl = 'https://nwvdsymbuovdcaenfcua.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53dmRzeW1idW92ZGNhZW5mY3VhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2MDgxMzcsImV4cCI6MjA3OTE4NDEzN30.ijk32q0F0xdlQqYTulHjLk2SoeKEwD6G4L8zd4eOJEg';
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
         const server = {
-            users: {},
-            friendRequests: {},
-            duelRequests: {},
-            earnedBadges: {},
-          
             generateId: function() {
                 return Date.now().toString(36) + Math.random().toString(36).substr(2);
             },
           
-            saveUser: function(username, userData) {
-                this.users[username] = userData;
-                localStorage.setItem('stickverse_users', JSON.stringify(this.users));
+            async saveUser(username, userData) {
+                const { error } = await supabase
+                    .from('users')
+                    .upsert({ username: username, data: userData });
+                if (error) console.error(error);
             },
           
-            getUser: function(username) {
-                if (!this.users[username]) {
-                    const savedUsers = localStorage.getItem('stickverse_users');
-                    if (savedUsers) {
-                        this.users = JSON.parse(savedUsers);
-                    }
-                }
-                return this.users[username];
+            async getUser(username) {
+                const { data, error } = await supabase
+                    .from('users')
+                    .select('data')
+                    .eq('username', username)
+                    .single();
+                if (error) console.error(error);
+                return data ? data.data : null;
             },
           
-            searchUsers: function(query) {
+            async searchUsers(query) {
+                const { data, error } = await supabase
+                    .from('users')
+                    .select('*');
+                if (error) console.error(error);
+                const users = data || [];
                 const results = [];
-                for (const username in this.users) {
-                    if (username.toLowerCase().includes(query.toLowerCase())) {
+                for (const user of users) {
+                    if (user.username.toLowerCase().includes(query.toLowerCase())) {
                         results.push({
-                            username: username,
-                            avatar: this.users[username].avatar || '?',
-                            friends: this.users[username].friends || [],
-                            followers: this.users[username].followers || [],
-                            aboutMe: this.users[username].aboutMe || '',
-                            skinColor: this.users[username].skinColor || '#ffffff',
-                            skinBrightness: this.users[username].skinBrightness || 100
+                            username: user.username,
+                            avatar: user.data.avatar || '?',
+                            friends: user.data.friends || [],
+                            followers: user.data.followers || [],
+                            aboutMe: user.data.aboutMe || '',
+                            skinColor: user.data.skinColor || '#ffffff',
+                            skinBrightness: user.data.skinBrightness || 100
                         });
                     }
                 }
                 return results;
             },
           
-            sendFriendRequest: function(from, to) {
-                if (!this.friendRequests[to]) {
-                    this.friendRequests[to] = [];
-                }
-                if (!this.friendRequests[to].includes(from) && from !== to) {
-                    this.friendRequests[to].push(from);
-                    localStorage.setItem('stickverse_friend_requests', JSON.stringify(this.friendRequests));
+            async sendFriendRequest(from, to) {
+                const { data, error } = await supabase
+                    .from('friend_requests')
+                    .select('requests')
+                    .eq('username', to)
+                    .single();
+                if (error && error.code !== 'PGRST116') console.error(error);
+                let requests = data ? data.requests : [];
+                if (!requests.includes(from) && from !== to) {
+                    requests.push(from);
+                    const { error: upsertError } = await supabase
+                        .from('friend_requests')
+                        .upsert({ username: to, requests: requests });
+                    if (upsertError) console.error(upsertError);
                     return true;
                 }
                 return false;
             },
           
-            acceptFriendRequest: function(user, requester) {
-                if (!this.users[user] || !this.users[requester]) return false;
+            async acceptFriendRequest(user, requester) {
+                const userData = await this.getUser(user);
+                const requesterData = await this.getUser(requester);
+                if (!userData || !requesterData) return false;
               
-                if (!this.users[user].friends) this.users[user].friends = [];
-                if (!this.users[requester].friends) this.users[requester].friends = [];
+                if (!userData.friends) userData.friends = [];
+                if (!requesterData.friends) requesterData.friends = [];
               
-                if (!this.users[user].friends.includes(requester)) {
-                    this.users[user].friends.push(requester);
-                    this.saveUser(user, this.users[user]);
+                if (!userData.friends.includes(requester)) {
+                    userData.friends.push(requester);
+                    await this.saveUser(user, userData);
                 }
               
-                if (!this.users[requester].friends.includes(user)) {
-                    this.users[requester].friends.push(user);
-                    this.saveUser(requester, this.users[requester]);
+                if (!requesterData.friends.includes(user)) {
+                    requesterData.friends.push(user);
+                    await this.saveUser(requester, requesterData);
                 }
               
-                if (this.friendRequests[user]) {
-                    this.friendRequests[user] = this.friendRequests[user].filter(r => r !== requester);
-                    localStorage.setItem('stickverse_friend_requests', JSON.stringify(this.friendRequests));
-                }
+                const { data, error } = await supabase
+                    .from('friend_requests')
+                    .select('requests')
+                    .eq('username', user)
+                    .single();
+                if (error) console.error(error);
+                let requests = data ? data.requests : [];
+                requests = requests.filter(r => r !== requester);
+                await supabase
+                    .from('friend_requests')
+                    .upsert({ username: user, requests: requests });
               
                 return true;
             },
           
-            declineFriendRequest: function(user, requester) {
-                if (this.friendRequests[user]) {
-                    this.friendRequests[user] = this.friendRequests[user].filter(r => r !== requester);
-                    localStorage.setItem('stickverse_friend_requests', JSON.stringify(this.friendRequests));
+            async declineFriendRequest(user, requester) {
+                const { data, error } = await supabase
+                    .from('friend_requests')
+                    .select('requests')
+                    .eq('username', user)
+                    .single();
+                if (error) console.error(error);
+                let requests = data ? data.requests : [];
+                requests = requests.filter(r => r !== requester);
+                await supabase
+                    .from('friend_requests')
+                    .upsert({ username: user, requests: requests });
+                return true;
+            },
+          
+            async getFriendRequests(username) {
+                const { data, error } = await supabase
+                    .from('friend_requests')
+                    .select('requests')
+                    .eq('username', username)
+                    .single();
+                if (error && error.code !== 'PGRST116') console.error(error);
+                return data ? data.requests : [];
+            },
+          
+            async removeFriend(user1, user2) {
+                const user1Data = await this.getUser(user1);
+                const user2Data = await this.getUser(user2);
+                if (!user1Data || !user2Data) return false;
+              
+                if (user1Data.friends) {
+                    user1Data.friends = user1Data.friends.filter(f => f !== user2);
+                    await this.saveUser(user1, user1Data);
+                }
+              
+                if (user2Data.friends) {
+                    user2Data.friends = user2Data.friends.filter(f => f !== user1);
+                    await this.saveUser(user2, user2Data);
+                }
+              
+                return true;
+            },
+
+            async sendDuelRequest(from, to) {
+                const { data, error } = await supabase
+                    .from('duel_requests')
+                    .select('requests')
+                    .eq('username', to)
+                    .single();
+                if (error && error.code !== 'PGRST116') console.error(error);
+                let requests = data ? data.requests : [];
+                if (!requests.includes(from) && from !== to) {
+                    requests.push(from);
+                    const { error: upsertError } = await supabase
+                        .from('duel_requests')
+                        .upsert({ username: to, requests: requests });
+                    if (upsertError) console.error(upsertError);
                     return true;
                 }
                 return false;
             },
-          
-            getFriendRequests: function(username) {
-                const saved = localStorage.getItem('stickverse_friend_requests');
-                if (saved) {
-                    this.friendRequests = JSON.parse(saved);
-                }
-                return this.friendRequests[username] || [];
-            },
-          
-            removeFriend: function(user1, user2) {
-                if (!this.users[user1] || !this.users[user2]) return false;
-              
-                if (this.users[user1].friends) {
-                    this.users[user1].friends = this.users[user1].friends.filter(f => f !== user2);
-                    this.saveUser(user1, this.users[user1]);
-                }
-              
-                if (this.users[user2].friends) {
-                    this.users[user2].friends = this.users[user2].friends.filter(f => f !== user1);
-                    this.saveUser(user2, this.users[user2]);
-                }
-              
+
+            async acceptDuelRequest(user, requester) {
+                const { data, error } = await supabase
+                    .from('duel_requests')
+                    .select('requests')
+                    .eq('username', user)
+                    .single();
+                if (error) console.error(error);
+                let requests = data ? data.requests : [];
+                requests = requests.filter(r => r !== requester);
+                await supabase
+                    .from('duel_requests')
+                    .upsert({ username: user, requests: requests });
                 return true;
             },
 
-            sendDuelRequest: function(from, to) {
-                if (!this.duelRequests) this.duelRequests = {};
-                if (!this.duelRequests[to]) this.duelRequests[to] = [];
-                if (!this.duelRequests[to].includes(from) && from !== to) {
-                    this.duelRequests[to].push(from);
-                    localStorage.setItem('stickverse_duel_requests', JSON.stringify(this.duelRequests));
-                    return true;
-                }
-                return false;
-            },
-
-            acceptDuelRequest: function(user, requester) {
-                if (this.duelRequests[user]) {
-                    this.duelRequests[user] = this.duelRequests[user].filter(r => r !== requester);
-                    localStorage.setItem('stickverse_duel_requests', JSON.stringify(this.duelRequests));
-                }
+            async declineDuelRequest(user, requester) {
+                const { data, error } = await supabase
+                    .from('duel_requests')
+                    .select('requests')
+                    .eq('username', user)
+                    .single();
+                if (error) console.error(error);
+                let requests = data ? data.requests : [];
+                requests = requests.filter(r => r !== requester);
+                await supabase
+                    .from('duel_requests')
+                    .upsert({ username: user, requests: requests });
                 return true;
             },
 
-            declineDuelRequest: function(user, requester) {
-                if (this.duelRequests[user]) {
-                    this.duelRequests[user] = this.duelRequests[user].filter(r => r !== requester);
-                    localStorage.setItem('stickverse_duel_requests', JSON.stringify(this.duelRequests));
-                }
-                return true;
-            },
-
-            getDuelRequests: function(username) {
-                const saved = localStorage.getItem('stickverse_duel_requests');
-                if (saved) this.duelRequests = JSON.parse(saved);
-                return this.duelRequests[username] || [];
+            async getDuelRequests(username) {
+                const { data, error } = await supabase
+                    .from('duel_requests')
+                    .select('requests')
+                    .eq('username', username)
+                    .single();
+                if (error && error.code !== 'PGRST116') console.error(error);
+                return data ? data.requests : [];
             },
            
-            markBadgeAsEarned: function(username, badgeName) {
-                if (!this.earnedBadges[username]) {
-                    this.earnedBadges[username] = [];
-                }
-                if (!this.earnedBadges[username].includes(badgeName)) {
-                    this.earnedBadges[username].push(badgeName);
-                    localStorage.setItem('stickverse_earned_badges', JSON.stringify(this.earnedBadges));
+            async markBadgeAsEarned(username, badgeName) {
+                const { data, error } = await supabase
+                    .from('earned_badges')
+                    .select('badges')
+                    .eq('username', username)
+                    .single();
+                if (error && error.code !== 'PGRST116') console.error(error);
+                let badges = data ? data.badges : [];
+                if (!badges.includes(badgeName)) {
+                    badges.push(badgeName);
+                    await supabase
+                        .from('earned_badges')
+                        .upsert({ username: username, badges: badges });
                 }
             },
            
-            hasBadgeBeenEarned: function(username, badgeName) {
-                const saved = localStorage.getItem('stickverse_earned_badges');
-                if (saved) {
-                    this.earnedBadges = JSON.parse(saved);
-                }
-                return this.earnedBadges[username] && this.earnedBadges[username].includes(badgeName);
+            async hasBadgeBeenEarned(username, badgeName) {
+                const { data, error } = await supabase
+                    .from('earned_badges')
+                    .select('badges')
+                    .eq('username', username)
+                    .single();
+                if (error && error.code !== 'PGRST116') console.error(error);
+                const badges = data ? data.badges : [];
+                return badges.includes(badgeName);
+            },
+
+            async getAllUsernames() {
+                const { data, error } = await supabase
+                    .from('users')
+                    .select('username');
+                if (error) console.error(error);
+                return data ? data.map(d => d.username) : [];
             }
         };
        
@@ -1717,14 +1793,14 @@
             }, 4000);
         }
        
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             updateUIForLoggedInState();
             setupAdvancedCustomization();
           
             const savedUser = localStorage.getItem('stickverse_current_user');
             if (savedUser) {
                 currentUser = savedUser;
-                const savedData = server.getUser(savedUser);
+                const savedData = await server.getUser(savedUser);
                 if (savedData) {
                     userData = savedData;
                     if (!userData.badges) userData.badges = [];
@@ -1736,8 +1812,8 @@
                     updateProfileData();
                     updateFriendsList();
                     updateAvatarDisplay();
-                    updateFriendRequestsList();
-                    updateDuelRequestsList();
+                    await updateFriendRequestsList();
+                    await updateDuelRequestsList();
                     document.querySelector('[data-tab="inbox"]').style.display = 'block';
                     document.querySelector('[data-tab="arena"]').style.display = 'block';
                 }
@@ -1782,14 +1858,14 @@
             }
            
             // Set new timeout for saving
-            autoSaveTimeout = setTimeout(() => {
-                server.saveUser(currentUser, userData);
+            autoSaveTimeout = setTimeout(async () => {
+                await server.saveUser(currentUser, userData);
                
                 // Check if user qualifies for Designer badge
                 if (userData.skinColor !== '#ffffff' && !userData.badges.includes('Designer')) {
                     userData.pencils += 1000;
                     userData.badges.push('Designer');
-                    server.markBadgeAsEarned(currentUser, 'Designer');
+                    await server.markBadgeAsEarned(currentUser, 'Designer');
                     updateProfileData();
                     updateUIForLoggedInState();
                    
@@ -1848,8 +1924,8 @@
             return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
         }
        
-        function showUserProfile(username) {
-            const user = server.getUser(username);
+        async function showUserProfile(username) {
+            const user = await server.getUser(username);
             if (!user) return;
            
             const modal = document.getElementById('profile-modal');
@@ -1903,7 +1979,7 @@
                     <div style="margin-top: 20px; display: flex; gap: 10px;">
                         <button class="btn btn-primary" id="add-friend-from-profile" data-username="${username}">
                             ${userData.friends && userData.friends.includes(username) ? 'Friends' :
-                              server.getFriendRequests(username).includes(currentUser) ? 'Pending' : 'Add Friend'}
+                              (await server.getFriendRequests(username)).includes(currentUser) ? 'Pending' : 'Add Friend'}
                         </button>
                     </div>
                 ` : ''}
@@ -1912,14 +1988,14 @@
             // Add friend button functionality
             const addFriendBtn = document.getElementById('add-friend-from-profile');
             if (addFriendBtn) {
-                addFriendBtn.addEventListener('click', function() {
+                addFriendBtn.addEventListener('click', async function() {
                     const targetUser = this.getAttribute('data-username');
                     const isFriend = userData.friends && userData.friends.includes(targetUser);
-                    const hasPendingRequest = server.getFriendRequests(targetUser).includes(currentUser);
+                    const hasPendingRequest = (await server.getFriendRequests(targetUser)).includes(currentUser);
                    
                     if (isFriend) {
                         if (confirm(`Remove ${targetUser} from friends?`)) {
-                            server.removeFriend(currentUser, targetUser);
+                            await server.removeFriend(currentUser, targetUser);
                             userData.friends = userData.friends.filter(f => f !== targetUser);
                             this.textContent = 'Add Friend';
                             updateFriendsList();
@@ -1929,7 +2005,7 @@
                     } else if (hasPendingRequest) {
                         showNotification('Friend request already sent!', 'warning');
                     } else {
-                        if (server.sendFriendRequest(currentUser, targetUser)) {
+                        if (await server.sendFriendRequest(currentUser, targetUser)) {
                             this.textContent = 'Pending';
                             showNotification(`Friend request sent to ${targetUser}!`, 'success');
                         }
@@ -1941,7 +2017,7 @@
         }
        
         document.querySelectorAll('.nav-tabs li').forEach(item => {
-            item.addEventListener('click', function() {
+            item.addEventListener('click', async function() {
                 const tabId = this.getAttribute('data-tab');
               
                 if ((tabId === 'profile' || tabId === 'avatar' || tabId === 'inbox' || tabId === 'arena') && !currentUser) {
@@ -1961,15 +2037,15 @@
                 document.getElementById(tabId).classList.add('active');
               
                 if (tabId === 'inbox') {
-                    updateFriendRequestsList();
-                    updateDuelRequestsList();
+                    await updateFriendRequestsList();
+                    await updateDuelRequestsList();
                 } else if (tabId === 'arena') {
-                    updateOpponentsList();
+                    await updateOpponentsList();
                 }
                
                 // Check if user just earned the Designer badge and is on the home tab
                 if (tabId === 'home' && currentUser && userData.badges.includes('Designer') &&
-                    !server.hasBadgeBeenEarned(currentUser, 'Designer')) {
+                    !await server.hasBadgeBeenEarned(currentUser, 'Designer')) {
                     // Play the sketch animation
                     setTimeout(() => {
                         playSketchAnimation('Designer');
@@ -2030,13 +2106,13 @@
             }
         });
        
-        document.getElementById('login-form').addEventListener('submit', function(e) {
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const username = document.getElementById('login-username').value;
             const password = document.getElementById('login-password').value;
           
             if (username && password) {
-                const user = server.getUser(username);
+                const user = await server.getUser(username);
               
                 if (user) {
                     currentUser = username;
@@ -2052,8 +2128,8 @@
                     updateProfileData();
                     updateFriendsList();
                     updateAvatarDisplay();
-                    updateFriendRequestsList();
-                    updateDuelRequestsList();
+                    await updateFriendRequestsList();
+                    await updateDuelRequestsList();
                     document.querySelector('[data-tab="inbox"]').style.display = 'block';
                     document.querySelector('[data-tab="arena"]').style.display = 'block';
                 } else {
@@ -2062,7 +2138,7 @@
             }
         });
        
-        document.getElementById('signup-form').addEventListener('submit', function(e) {
+        document.getElementById('signup-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const username = document.getElementById('signup-username').value;
             const password = document.getElementById('signup-password').value;
@@ -2074,7 +2150,8 @@
             }
           
             if (username && password) {
-                if (server.getUser(username)) {
+                const existing = await server.getUser(username);
+                if (existing) {
                     showNotification('Username already exists!', 'error');
                     return;
                 }
@@ -2089,7 +2166,7 @@
                 userData.skinColor = '#ffffff';
                 userData.skinBrightness = 100;
               
-                server.saveUser(username, userData);
+                await server.saveUser(username, userData);
                 localStorage.setItem('stickverse_current_user', username);
               
                 showNotification('Account created successfully! Welcome to StickVerse, ' + username + '!', 'success');
@@ -2104,11 +2181,10 @@
         function updateUIForLoggedInState() {
             const userActions = document.getElementById('user-actions');
             if (currentUser) {
-                const pendingRequests = server.getFriendRequests(currentUser).length + server.getDuelRequests(currentUser).length;
+                // Pending requests will be fetched async in update functions
                 userActions.innerHTML = `
                     <button class="btn btn-secondary inbox-btn" id="inbox-btn">
                         Inbox
-                        ${pendingRequests > 0 ? `<span class="inbox-badge">${pendingRequests}</span>` : ''}
                     </button>
                     <div class="currency-display">
                         <div class="pencil-icon">P</div>
@@ -2118,13 +2194,13 @@
                     <button class="btn btn-logout" id="logout-btn">Log Out</button>
                 `;
               
-                document.getElementById('inbox-btn').addEventListener('click', function() {
+                document.getElementById('inbox-btn').addEventListener('click', async function() {
                     document.querySelectorAll('.nav-tabs li').forEach(tab => tab.classList.remove('active'));
                     document.querySelector('[data-tab="inbox"]').classList.add('active');
                     document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
                     document.getElementById('inbox').classList.add('active');
-                    updateFriendRequestsList();
-                    updateDuelRequestsList();
+                    await updateFriendRequestsList();
+                    await updateDuelRequestsList();
                 });
               
                 document.getElementById('logout-btn').addEventListener('click', function() {
@@ -2145,6 +2221,20 @@
                         location.reload();
                     }
                 });
+               
+                // Update badge count
+                (async () => {
+                    const friendReq = await server.getFriendRequests(currentUser);
+                    const duelReq = await server.getDuelRequests(currentUser);
+                    const pendingRequests = friendReq.length + duelReq.length;
+                    const inboxBtn = document.getElementById('inbox-btn');
+                    if (pendingRequests > 0) {
+                        inboxBtn.innerHTML = `
+                            Inbox
+                            <span class="inbox-badge">${pendingRequests}</span>
+                        `;
+                    }
+                })();
             }
         }
        
@@ -2175,21 +2265,16 @@
                         badgesContainer.appendChild(badgeEl);
                     });
                 }
-               
-                const pendingRequests = server.getFriendRequests(currentUser).length + server.getDuelRequests(currentUser).length;
-                if (pendingRequests > 0) {
-                    updateUIForLoggedInState();
-                }
             }
         }
        
-        document.getElementById('edit-about').addEventListener('click', function() {
+        document.getElementById('edit-about').addEventListener('click', async function() {
             if (currentUser) {
                 const newAbout = prompt('Edit your about me:', userData.aboutMe || '');
                 if (newAbout !== null) {
                     userData.aboutMe = newAbout;
                     document.getElementById('about-me-text').textContent = newAbout || 'This user has not written an about me yet.';
-                    server.saveUser(currentUser, userData);
+                    await server.saveUser(currentUser, userData);
                     showNotification('About me updated!', 'success');
                 }
             } else {
@@ -2197,7 +2282,7 @@
             }
         });
        
-        document.getElementById('user-search').addEventListener('input', function() {
+        document.getElementById('user-search').addEventListener('input', async function() {
             const query = this.value.trim();
             const resultsContainer = document.getElementById('search-results');
           
@@ -2206,7 +2291,7 @@
                 return;
             }
           
-            const results = server.searchUsers(query);
+            const results = await server.searchUsers(query);
             resultsContainer.innerHTML = '';
           
             if (results.length === 0) {
@@ -2217,7 +2302,7 @@
                     resultItem.className = 'search-result-item';
                   
                     const isFriend = currentUser && userData.friends && userData.friends.includes(user.username);
-                    const hasPendingRequest = currentUser && server.getFriendRequests(user.username).includes(currentUser);
+                    const hasPendingRequest = currentUser && (await server.getFriendRequests(user.username)).includes(currentUser);
                   
                     resultItem.innerHTML = `
                         <div class="search-result-avatar">${user.username.substring(0, 1).toUpperCase()}</div>
@@ -2234,20 +2319,20 @@
                     resultsContainer.appendChild(resultItem);
                    
                     // Add click event to show user profile
-                    resultItem.addEventListener('click', function(e) {
+                    resultItem.addEventListener('click', async function(e) {
                         if (!e.target.classList.contains('add-friend-btn')) {
-                            showUserProfile(user.username);
+                            await showUserProfile(user.username);
                         }
                     });
                 });
               
                 document.querySelectorAll('.add-friend-btn').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
+                    btn.addEventListener('click', async function(e) {
                         e.stopPropagation();
                         const targetUser = this.getAttribute('data-username');
                         if (this.classList.contains('friends')) {
                             if (confirm(`Remove ${targetUser} from friends?`)) {
-                                server.removeFriend(currentUser, targetUser);
+                                await server.removeFriend(currentUser, targetUser);
                                 userData.friends = userData.friends.filter(f => f !== targetUser);
                                 this.textContent = 'Add Friend';
                                 this.classList.remove('friends');
@@ -2258,7 +2343,7 @@
                         } else if (this.classList.contains('pending')) {
                             showNotification('Friend request already sent!', 'warning');
                         } else {
-                            if (server.sendFriendRequest(currentUser, targetUser)) {
+                            if (await server.sendFriendRequest(currentUser, targetUser)) {
                                 this.textContent = 'Pending';
                                 this.classList.add('pending');
                                 showNotification(`Friend request sent to ${targetUser}!`, 'success');
@@ -2295,21 +2380,21 @@
                     <div class="friend-status status-online"></div>
                 `;
                
-                friendItem.addEventListener('click', function() {
-                    showUserProfile(friend);
+                friendItem.addEventListener('click', async function() {
+                    await showUserProfile(friend);
                 });
                
                 friendsList.appendChild(friendItem);
             });
         }
        
-        function updateFriendRequestsList() {
+        async function updateFriendRequestsList() {
             if (!currentUser) return;
            
             const container = document.getElementById('friend-requests-list');
             container.innerHTML = '';
            
-            const requests = server.getFriendRequests(currentUser);
+            const requests = await server.getFriendRequests(currentUser);
            
             if (requests.length === 0) {
                 container.innerHTML = '<div class="no-friends">No pending friend requests</div>';
@@ -2334,11 +2419,11 @@
             });
            
             document.querySelectorAll('.accept-btn:not(.duel-accept)').forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', async function() {
                     const requester = this.getAttribute('data-requester');
-                    if (server.acceptFriendRequest(currentUser, requester)) {
+                    if (await server.acceptFriendRequest(currentUser, requester)) {
                         userData.friends.push(requester);
-                        updateFriendRequestsList();
+                        await updateFriendRequestsList();
                         updateFriendsList();
                         updateProfileData();
                         showNotification(`You are now friends with ${requester}!`, 'success');
@@ -2347,10 +2432,10 @@
             });
            
             document.querySelectorAll('.decline-btn:not(.duel-decline)').forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', async function() {
                     const requester = this.getAttribute('data-requester');
-                    if (server.declineFriendRequest(currentUser, requester)) {
-                        updateFriendRequestsList();
+                    if (await server.declineFriendRequest(currentUser, requester)) {
+                        await updateFriendRequestsList();
                         updateProfileData();
                         showNotification(`Declined friend request from ${requester}`, 'success');
                     }
@@ -2358,7 +2443,7 @@
             });
         }
        
-        function updateDuelRequestsList() {
+        async function updateDuelRequestsList() {
             if (!currentUser) return;
            
             const container = document.getElementById('duel-requests-list');
@@ -2366,7 +2451,7 @@
            
             container.innerHTML = '';
            
-            const requests = server.getDuelRequests(currentUser);
+            const requests = await server.getDuelRequests(currentUser);
            
             if (requests.length === 0) {
                 container.innerHTML = '<div class="no-friends">No pending duel requests</div>';
@@ -2391,38 +2476,39 @@
             });
            
             document.querySelectorAll('.duel-accept').forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', async function() {
                     const opponent = this.getAttribute('data-requester');
-                    server.acceptDuelRequest(currentUser, opponent);
+                    await server.acceptDuelRequest(currentUser, opponent);
                     startDuel(opponent);
-                    updateDuelRequestsList();
+                    await updateDuelRequestsList();
                 });
             });
            
             document.querySelectorAll('.duel-decline').forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', async function() {
                     const opponent = this.getAttribute('data-requester');
-                    server.declineDuelRequest(currentUser, opponent);
-                    updateDuelRequestsList();
+                    await server.declineDuelRequest(currentUser, opponent);
+                    await updateDuelRequestsList();
                     showNotification(`Declined duel from ${opponent}`, 'success');
                 });
             });
         }
        
-        function updateOpponentsList() {
+        async function updateOpponentsList() {
             if (!currentUser) return;
            
             const list = document.getElementById('opponents-list');
             list.innerHTML = '';
            
-            const allUsers = Object.keys(server.users).filter(u => u !== currentUser);
+            const allUsers = await server.getAllUsernames();
+            const filteredUsers = allUsers.filter(u => u !== currentUser);
            
-            if (allUsers.length === 0) {
+            if (filteredUsers.length === 0) {
                 list.innerHTML = '<div class="no-friends">No opponents available</div>';
                 return;
             }
            
-            allUsers.forEach(u => {
+            filteredUsers.forEach(u => {
                 const item = document.createElement('div');
                 item.className = 'friend-item';
                 item.innerHTML = `
@@ -2434,9 +2520,9 @@
             });
            
             document.querySelectorAll('.challenge-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', async function() {
                     const opponent = this.getAttribute('data-opponent');
-                    if (server.sendDuelRequest(currentUser, opponent)) {
+                    if (await server.sendDuelRequest(currentUser, opponent)) {
                         showNotification(`Duel request sent to ${opponent}!`, 'success');
                     } else {
                         showNotification(`Duel request already sent or invalid!`, 'warning');
@@ -2450,7 +2536,11 @@
             modal.classList.add('active');
            
             const playerData = userData;
-            const opponentData = server.getUser(opponent) || { skinColor: '#ffffff', skinBrightness: 100 };
+            let opponentData = {}; // Will fetch async but for simplicity, assume default
+            (async () => {
+                opponentData = await server.getUser(opponent) || { skinColor: '#ffffff', skinBrightness: 100 };
+                setupStickman('opponent-stickman', opponentData.skinColor, opponentData.skinBrightness / 100);
+            })();
            
             let playerHP = 100;
             let opponentHP = 100;
@@ -2472,7 +2562,6 @@
             `;
            
             setupStickman('player-stickman', playerData.skinColor, playerData.skinBrightness / 100);
-            setupStickman('opponent-stickman', opponentData.skinColor, opponentData.skinBrightness / 100);
            
             function opponentMove() {
                 const moves = ['attack', 'defend', 'special'];
@@ -2542,7 +2631,7 @@
                     } else {
                         message = 'You won!';
                         userData.pencils += 100;
-                        server.saveUser(currentUser, userData);
+                        await server.saveUser(currentUser, userData);
                         updateProfileData();
                         updateUIForLoggedInState();
                     }
