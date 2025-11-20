@@ -580,7 +580,7 @@
                 rgba(0,0,0,0.1) 10px
             );
         }
-        
+       
         /* Sketch Animation Styles */
         .sketch-overlay {
             position: fixed;
@@ -1011,9 +1011,9 @@
             border-color: var(--border);
         }
         .preview-stickman {
-            width: 200px;
-            height: 300px;
             position: relative;
+            width: 150px;
+            height: 200px;
         }
         .inbox-panel {
             background-color: var(--card-bg);
@@ -1145,7 +1145,7 @@
             font-size: 15px;
             color: var(--text-secondary);
         }
-        
+       
         /* Advanced Customization Styles */
         .color-palette {
             display: grid;
@@ -1280,6 +1280,7 @@
             <li data-tab="avatar">Avatar</li>
             <li data-tab="profile">Profile</li>
             <li data-tab="inbox" style="display: none;">Inbox</li>
+            <li data-tab="arena" style="display: none;">Arena</li>
         </ul>
     </nav>
     <div class="container">
@@ -1297,7 +1298,7 @@
                     <h2>Welcome to StickVerse</h2>
                     <p>The ultimate 2D stickman adventure platform where creativity meets fun!</p>
                 </div>
-               
+              
                 <h2 style="margin-bottom: 16px; font-size: 26px; font-weight: 700;">Current Event</h2>
                 <div class="events-grid">
                     <div class="event-card">
@@ -1311,7 +1312,7 @@
                         </div>
                     </div>
                 </div>
-               
+              
                 <h2 style="margin-top: 36px; margin-bottom: 16px; font-size: 26px; font-weight: 700;">What is StickVerse?</h2>
                 <div style="background-color: var(--card-bg); padding: 20px; border: 3px solid var(--border); border-radius: 8px;">
                     <p style="line-height: 1.7; margin-bottom: 14px;">StickVerse is a revolutionary 2D adventure platform where players can create, share, and play stickman-based games. Our platform offers:</p>
@@ -1360,7 +1361,7 @@
                                 <div class="color-option" style="background-color: #ff99ff;" data-color="#ff99ff"></div>
                                 <div class="color-option" style="background-color: #99ffff;" data-color="#99ffff"></div>
                             </div>
-                            
+                           
                             <div class="slider-container">
                                 <label for="skin-brightness">Brightness</label>
                                 <input type="range" min="0" max="100" value="100" class="slider" id="skin-brightness">
@@ -1401,7 +1402,7 @@
                         </div>
                     </div>
                 </div>
-               
+              
                 <div class="profile-content">
                     <div class="about-section">
                         <h3>
@@ -1418,6 +1419,19 @@
                     <div id="friend-requests-list">
                         <div class="no-friends">No pending friend requests</div>
                     </div>
+                </div>
+                <div class="inbox-panel">
+                    <div class="inbox-header">Duel Requests</div>
+                    <div id="duel-requests-list">
+                        <div class="no-friends">No pending duel requests</div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-section" id="arena">
+                <h2 style="margin-bottom: 20px; font-size: 26px; font-weight: 700;">Arena - Duel with Players</h2>
+                <p>Challenge other players to skill-based duels and defeat their stick figures in RPG-style battles!</p>
+                <div id="opponents-list">
+                    <div class="no-friends">No opponents available</div>
                 </div>
             </div>
         </div>
@@ -1478,21 +1492,34 @@
             <div id="profile-modal-content"></div>
         </div>
     </div>
+    <div class="modal" id="duel-modal">
+        <div class="modal-content" style="width: 600px;">
+            <button class="close-modal">&times;</button>
+            <h2>Duel Arena</h2>
+            <div id="duel-content" style="display: flex; justify-content: space-around; align-items: center;">
+                <div id="player-stickman" class="preview-stickman"></div>
+                <div id="duel-info" style="text-align: center; width: 200px;"></div>
+                <div id="opponent-stickman" class="preview-stickman"></div>
+            </div>
+            <div id="duel-actions" style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;"></div>
+        </div>
+    </div>
     <script>
         const server = {
             users: {},
             friendRequests: {},
+            duelRequests: {},
             earnedBadges: {},
-           
+          
             generateId: function() {
                 return Date.now().toString(36) + Math.random().toString(36).substr(2);
             },
-           
+          
             saveUser: function(username, userData) {
                 this.users[username] = userData;
                 localStorage.setItem('stickverse_users', JSON.stringify(this.users));
             },
-           
+          
             getUser: function(username) {
                 if (!this.users[username]) {
                     const savedUsers = localStorage.getItem('stickverse_users');
@@ -1502,7 +1529,7 @@
                 }
                 return this.users[username];
             },
-           
+          
             searchUsers: function(query) {
                 const results = [];
                 for (const username in this.users) {
@@ -1520,7 +1547,7 @@
                 }
                 return results;
             },
-           
+          
             sendFriendRequest: function(from, to) {
                 if (!this.friendRequests[to]) {
                     this.friendRequests[to] = [];
@@ -1532,31 +1559,31 @@
                 }
                 return false;
             },
-           
+          
             acceptFriendRequest: function(user, requester) {
                 if (!this.users[user] || !this.users[requester]) return false;
-               
+              
                 if (!this.users[user].friends) this.users[user].friends = [];
                 if (!this.users[requester].friends) this.users[requester].friends = [];
-               
+              
                 if (!this.users[user].friends.includes(requester)) {
                     this.users[user].friends.push(requester);
                     this.saveUser(user, this.users[user]);
                 }
-               
+              
                 if (!this.users[requester].friends.includes(user)) {
                     this.users[requester].friends.push(user);
                     this.saveUser(requester, this.users[requester]);
                 }
-               
+              
                 if (this.friendRequests[user]) {
                     this.friendRequests[user] = this.friendRequests[user].filter(r => r !== requester);
                     localStorage.setItem('stickverse_friend_requests', JSON.stringify(this.friendRequests));
                 }
-               
+              
                 return true;
             },
-           
+          
             declineFriendRequest: function(user, requester) {
                 if (this.friendRequests[user]) {
                     this.friendRequests[user] = this.friendRequests[user].filter(r => r !== requester);
@@ -1565,7 +1592,7 @@
                 }
                 return false;
             },
-           
+          
             getFriendRequests: function(username) {
                 const saved = localStorage.getItem('stickverse_friend_requests');
                 if (saved) {
@@ -1573,23 +1600,56 @@
                 }
                 return this.friendRequests[username] || [];
             },
-           
+          
             removeFriend: function(user1, user2) {
                 if (!this.users[user1] || !this.users[user2]) return false;
-               
+              
                 if (this.users[user1].friends) {
                     this.users[user1].friends = this.users[user1].friends.filter(f => f !== user2);
                     this.saveUser(user1, this.users[user1]);
                 }
-               
+              
                 if (this.users[user2].friends) {
                     this.users[user2].friends = this.users[user2].friends.filter(f => f !== user1);
                     this.saveUser(user2, this.users[user2]);
                 }
-               
+              
                 return true;
             },
-            
+
+            sendDuelRequest: function(from, to) {
+                if (!this.duelRequests) this.duelRequests = {};
+                if (!this.duelRequests[to]) this.duelRequests[to] = [];
+                if (!this.duelRequests[to].includes(from) && from !== to) {
+                    this.duelRequests[to].push(from);
+                    localStorage.setItem('stickverse_duel_requests', JSON.stringify(this.duelRequests));
+                    return true;
+                }
+                return false;
+            },
+
+            acceptDuelRequest: function(user, requester) {
+                if (this.duelRequests[user]) {
+                    this.duelRequests[user] = this.duelRequests[user].filter(r => r !== requester);
+                    localStorage.setItem('stickverse_duel_requests', JSON.stringify(this.duelRequests));
+                }
+                return true;
+            },
+
+            declineDuelRequest: function(user, requester) {
+                if (this.duelRequests[user]) {
+                    this.duelRequests[user] = this.duelRequests[user].filter(r => r !== requester);
+                    localStorage.setItem('stickverse_duel_requests', JSON.stringify(this.duelRequests));
+                }
+                return true;
+            },
+
+            getDuelRequests: function(username) {
+                const saved = localStorage.getItem('stickverse_duel_requests');
+                if (saved) this.duelRequests = JSON.parse(saved);
+                return this.duelRequests[username] || [];
+            },
+           
             markBadgeAsEarned: function(username, badgeName) {
                 if (!this.earnedBadges[username]) {
                     this.earnedBadges[username] = [];
@@ -1599,7 +1659,7 @@
                     localStorage.setItem('stickverse_earned_badges', JSON.stringify(this.earnedBadges));
                 }
             },
-            
+           
             hasBadgeBeenEarned: function(username, badgeName) {
                 const saved = localStorage.getItem('stickverse_earned_badges');
                 if (saved) {
@@ -1608,7 +1668,7 @@
                 return this.earnedBadges[username] && this.earnedBadges[username].includes(badgeName);
             }
         };
-        
+       
         let currentUser = null;
         let userData = {
             username: '',
@@ -1621,13 +1681,13 @@
             skinColor: '#ffffff',
             skinBrightness: 100
         };
-        
+       
         let autoSaveTimeout = null;
-        
+       
         function playSketchAnimation(badgeName) {
             const overlay = document.getElementById('sketch-overlay');
             const container = document.getElementById('sketch-container');
-            
+           
             container.innerHTML = `
                 <div class="sketch-badge">
                     <div class="sketch-circle"></div>
@@ -1646,9 +1706,9 @@
                     </div>
                 </div>
             `;
-            
+           
             overlay.classList.add('active');
-            
+           
             setTimeout(() => {
                 overlay.classList.remove('active');
                 setTimeout(() => {
@@ -1656,11 +1716,11 @@
                 }, 300);
             }, 4000);
         }
-        
+       
         document.addEventListener('DOMContentLoaded', function() {
             updateUIForLoggedInState();
             setupAdvancedCustomization();
-           
+          
             const savedUser = localStorage.getItem('stickverse_current_user');
             if (savedUser) {
                 currentUser = savedUser;
@@ -1671,34 +1731,36 @@
                     if (!userData.skinColor) userData.skinColor = '#ffffff';
                     if (!userData.pencils) userData.pencils = 0;
                     if (!userData.skinBrightness) userData.skinBrightness = 100;
-                    
+                   
                     updateUIForLoggedInState();
                     updateProfileData();
                     updateFriendsList();
                     updateAvatarDisplay();
                     updateFriendRequestsList();
+                    updateDuelRequestsList();
                     document.querySelector('[data-tab="inbox"]').style.display = 'block';
+                    document.querySelector('[data-tab="arena"]').style.display = 'block';
                 }
             }
         });
-        
+       
         function setupAdvancedCustomization() {
             // Color options
             document.querySelectorAll('.color-option').forEach(option => {
                 option.addEventListener('click', function() {
                     const color = this.getAttribute('data-color');
-                    
+                   
                     document.querySelectorAll('.color-option').forEach(o => {
                         o.classList.remove('selected');
                     });
                     this.classList.add('selected');
-                    
+                   
                     userData.skinColor = color;
                     updateAvatarDisplay();
                     triggerAutoSave();
                 });
             });
-            
+           
             // Brightness slider
             document.getElementById('skin-brightness').addEventListener('input', function() {
                 userData.skinBrightness = this.value;
@@ -1706,23 +1768,23 @@
                 triggerAutoSave();
             });
         }
-        
+       
         function triggerAutoSave() {
             if (!currentUser) return;
-            
+           
             // Show auto-save indicator
             const indicator = document.getElementById('auto-save-indicator');
             indicator.classList.add('show');
-            
+           
             // Clear existing timeout
             if (autoSaveTimeout) {
                 clearTimeout(autoSaveTimeout);
             }
-            
+           
             // Set new timeout for saving
             autoSaveTimeout = setTimeout(() => {
                 server.saveUser(currentUser, userData);
-                
+               
                 // Check if user qualifies for Designer badge
                 if (userData.skinColor !== '#ffffff' && !userData.badges.includes('Designer')) {
                     userData.pencils += 1000;
@@ -1730,72 +1792,72 @@
                     server.markBadgeAsEarned(currentUser, 'Designer');
                     updateProfileData();
                     updateUIForLoggedInState();
-                    
+                   
                     // Show notification first
                     showNotification('You earned 1000 Pencils and the "Designer" badge!', 'success');
-                    
+                   
                     // Then play sketch animation after a short delay
                     setTimeout(() => {
                         playSketchAnimation('Designer');
                     }, 500);
                 }
-                
+               
                 // Hide indicator after a delay
                 setTimeout(() => {
                     indicator.classList.remove('show');
                 }, 1500);
             }, 1000);
         }
-        
+       
         function updateAvatarDisplay() {
             // Update skin color for all body parts with brightness
             const brightness = userData.skinBrightness / 100;
             const color = applyBrightness(userData.skinColor, brightness);
-            
+           
             document.getElementById('stickman-head').style.backgroundColor = color;
             document.getElementById('stickman-body').style.backgroundColor = color;
             document.getElementById('stickman-arm-left').style.backgroundColor = color;
             document.getElementById('stickman-arm-right').style.backgroundColor = color;
             document.getElementById('stickman-leg-left').style.backgroundColor = color;
             document.getElementById('stickman-leg-right').style.backgroundColor = color;
-            
+           
             // Update profile avatar
             const profileHead = document.querySelector('.profile-stickman .stickman-head');
             const profileBody = document.querySelector('.profile-stickman .stickman-body');
             const profileArms = document.querySelectorAll('.profile-stickman .stickman-arm-left, .profile-stickman .stickman-arm-right');
             const profileLegs = document.querySelectorAll('.profile-stickman .stickman-leg-left, .profile-stickman .stickman-leg-right');
-            
+           
             if (profileHead) profileHead.style.backgroundColor = color;
             if (profileBody) profileBody.style.backgroundColor = color;
             profileArms.forEach(arm => arm.style.backgroundColor = color);
             profileLegs.forEach(leg => leg.style.backgroundColor = color);
         }
-        
+       
         function applyBrightness(color, brightness) {
             // Convert hex to RGB
             let r = parseInt(color.substr(1, 2), 16);
             let g = parseInt(color.substr(3, 2), 16);
             let b = parseInt(color.substr(5, 2), 16);
-            
+           
             // Apply brightness
             r = Math.min(255, Math.floor(r * brightness));
             g = Math.min(255, Math.floor(g * brightness));
             b = Math.min(255, Math.floor(b * brightness));
-            
+           
             // Convert back to hex
             return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
         }
-        
+       
         function showUserProfile(username) {
             const user = server.getUser(username);
             if (!user) return;
-            
+           
             const modal = document.getElementById('profile-modal');
             const content = document.getElementById('profile-modal-content');
-            
+           
             const brightness = (user.skinBrightness || 100) / 100;
             const color = applyBrightness(user.skinColor || '#ffffff', brightness);
-            
+           
             content.innerHTML = `
                 <div class="profile-header">
                     <div class="profile-avatar">
@@ -1811,7 +1873,7 @@
                     <div class="profile-info">
                         <h2>${username}</h2>
                         <div class="profile-badges">
-                            ${user.badges && user.badges.includes('Designer') ? 
+                            ${user.badges && user.badges.includes('Designer') ?
                                 '<div class="badge sketched"><span class="badge-icon">D</span>Designer</div>' : ''}
                         </div>
                         <p>Member since ${user.joinDate || 'Unknown'}</p>
@@ -1840,13 +1902,13 @@
                 ${currentUser && currentUser !== username ? `
                     <div style="margin-top: 20px; display: flex; gap: 10px;">
                         <button class="btn btn-primary" id="add-friend-from-profile" data-username="${username}">
-                            ${userData.friends && userData.friends.includes(username) ? 'Friends' : 
+                            ${userData.friends && userData.friends.includes(username) ? 'Friends' :
                               server.getFriendRequests(username).includes(currentUser) ? 'Pending' : 'Add Friend'}
                         </button>
                     </div>
                 ` : ''}
             `;
-            
+           
             // Add friend button functionality
             const addFriendBtn = document.getElementById('add-friend-from-profile');
             if (addFriendBtn) {
@@ -1854,7 +1916,7 @@
                     const targetUser = this.getAttribute('data-username');
                     const isFriend = userData.friends && userData.friends.includes(targetUser);
                     const hasPendingRequest = server.getFriendRequests(targetUser).includes(currentUser);
-                    
+                   
                     if (isFriend) {
                         if (confirm(`Remove ${targetUser} from friends?`)) {
                             server.removeFriend(currentUser, targetUser);
@@ -1874,36 +1936,39 @@
                     }
                 });
             }
-            
+           
             modal.classList.add('active');
         }
-        
+       
         document.querySelectorAll('.nav-tabs li').forEach(item => {
             item.addEventListener('click', function() {
                 const tabId = this.getAttribute('data-tab');
-               
-                if ((tabId === 'profile' || tabId === 'avatar' || tabId === 'inbox') && !currentUser) {
+              
+                if ((tabId === 'profile' || tabId === 'avatar' || tabId === 'inbox' || tabId === 'arena') && !currentUser) {
                     document.getElementById('signup-modal').classList.add('active');
                     return;
                 }
-               
+              
                 document.querySelectorAll('.nav-tabs li').forEach(tab => {
                     tab.classList.remove('active');
                 });
-               
+              
                 this.classList.add('active');
-               
+              
                 document.querySelectorAll('.content-section').forEach(section => {
                     section.classList.remove('active');
                 });
                 document.getElementById(tabId).classList.add('active');
-               
+              
                 if (tabId === 'inbox') {
                     updateFriendRequestsList();
+                    updateDuelRequestsList();
+                } else if (tabId === 'arena') {
+                    updateOpponentsList();
                 }
-                
+               
                 // Check if user just earned the Designer badge and is on the home tab
-                if (tabId === 'home' && currentUser && userData.badges.includes('Designer') && 
+                if (tabId === 'home' && currentUser && userData.badges.includes('Designer') &&
                     !server.hasBadgeBeenEarned(currentUser, 'Designer')) {
                     // Play the sketch animation
                     setTimeout(() => {
@@ -1913,7 +1978,7 @@
                 }
             });
         });
-        
+       
         const loginBtn = document.getElementById('login-btn');
         const signupBtn = document.getElementById('signup-btn');
         const loginModal = document.getElementById('login-modal');
@@ -1923,39 +1988,39 @@
         const switchToSignup = document.getElementById('switch-to-signup');
         const switchToLogin = document.getElementById('switch-to-login');
         const closeModalBtns = document.querySelectorAll('.close-modal');
-        
+       
         loginBtn.addEventListener('click', () => {
             loginModal.classList.add('active');
         });
-        
+       
         signupBtn.addEventListener('click', () => {
             signupModal.classList.add('active');
         });
-        
+       
         closeLogin.addEventListener('click', () => {
             loginModal.classList.remove('active');
         });
-        
+       
         closeSignup.addEventListener('click', () => {
             signupModal.classList.remove('active');
         });
-        
+       
         switchToSignup.addEventListener('click', () => {
             loginModal.classList.remove('active');
             signupModal.classList.add('active');
         });
-        
+       
         switchToLogin.addEventListener('click', () => {
             signupModal.classList.remove('active');
             loginModal.classList.add('active');
         });
-        
+       
         closeModalBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 this.closest('.modal').classList.remove('active');
             });
         });
-        
+       
         window.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal')) {
                 e.target.classList.remove('active');
@@ -1964,23 +2029,23 @@
                 e.target.classList.remove('active');
             }
         });
-        
+       
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const username = document.getElementById('login-username').value;
             const password = document.getElementById('login-password').value;
-           
+          
             if (username && password) {
                 const user = server.getUser(username);
-               
+              
                 if (user) {
                     currentUser = username;
                     userData = user;
                     if (!userData.badges) userData.badges = [];
                     if (!userData.skinColor) userData.skinColor = '#ffffff';
-                   
+                  
                     localStorage.setItem('stickverse_current_user', username);
-                   
+                  
                     showNotification('Successfully logged in as ' + username + '!', 'success');
                     loginModal.classList.remove('active');
                     updateUIForLoggedInState();
@@ -1988,30 +2053,32 @@
                     updateFriendsList();
                     updateAvatarDisplay();
                     updateFriendRequestsList();
+                    updateDuelRequestsList();
                     document.querySelector('[data-tab="inbox"]').style.display = 'block';
+                    document.querySelector('[data-tab="arena"]').style.display = 'block';
                 } else {
                     showNotification('Invalid username or password', 'error');
                 }
             }
         });
-        
+       
         document.getElementById('signup-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const username = document.getElementById('signup-username').value;
             const password = document.getElementById('signup-password').value;
             const confirmPassword = document.getElementById('signup-confirm').value;
-           
+          
             if (password !== confirmPassword) {
                 showNotification('Passwords do not match!', 'error');
                 return;
             }
-           
+          
             if (username && password) {
                 if (server.getUser(username)) {
                     showNotification('Username already exists!', 'error');
                     return;
                 }
-               
+              
                 currentUser = username;
                 userData.username = username;
                 userData.friends = [];
@@ -2021,22 +2088,23 @@
                 userData.badges = [];
                 userData.skinColor = '#ffffff';
                 userData.skinBrightness = 100;
-               
+              
                 server.saveUser(username, userData);
                 localStorage.setItem('stickverse_current_user', username);
-               
+              
                 showNotification('Account created successfully! Welcome to StickVerse, ' + username + '!', 'success');
                 signupModal.classList.remove('active');
                 updateUIForLoggedInState();
                 updateProfileData();
                 document.querySelector('[data-tab="inbox"]').style.display = 'block';
+                document.querySelector('[data-tab="arena"]').style.display = 'block';
             }
         });
-        
+       
         function updateUIForLoggedInState() {
             const userActions = document.getElementById('user-actions');
             if (currentUser) {
-                const pendingRequests = server.getFriendRequests(currentUser).length;
+                const pendingRequests = server.getFriendRequests(currentUser).length + server.getDuelRequests(currentUser).length;
                 userActions.innerHTML = `
                     <button class="btn btn-secondary inbox-btn" id="inbox-btn">
                         Inbox
@@ -2049,15 +2117,16 @@
                     <span style="font-weight: 600;">Welcome, ${currentUser}!</span>
                     <button class="btn btn-logout" id="logout-btn">Log Out</button>
                 `;
-               
+              
                 document.getElementById('inbox-btn').addEventListener('click', function() {
                     document.querySelectorAll('.nav-tabs li').forEach(tab => tab.classList.remove('active'));
                     document.querySelector('[data-tab="inbox"]').classList.add('active');
                     document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
                     document.getElementById('inbox').classList.add('active');
                     updateFriendRequestsList();
+                    updateDuelRequestsList();
                 });
-               
+              
                 document.getElementById('logout-btn').addEventListener('click', function() {
                     if (confirm('Are you sure you want to log out?')) {
                         currentUser = null;
@@ -2078,7 +2147,7 @@
                 });
             }
         }
-        
+       
         function updateProfileData() {
             if (currentUser) {
                 document.getElementById('profile-username').textContent = currentUser;
@@ -2087,12 +2156,12 @@
                 document.getElementById('profile-followers').textContent = userData.followers ? userData.followers.length : 0;
                 document.getElementById('profile-pencils').textContent = userData.pencils || 0;
                 document.getElementById('about-me-text').textContent = userData.aboutMe || 'This user has not written an about me yet.';
-                
+               
                 const pencilCount = document.getElementById('pencil-count');
                 if (pencilCount) {
                     pencilCount.textContent = userData.pencils || 0;
                 }
-               
+              
                 const badgesContainer = document.getElementById('profile-badges');
                 badgesContainer.innerHTML = '';
                 if (userData.badges && userData.badges.length > 0) {
@@ -2106,14 +2175,14 @@
                         badgesContainer.appendChild(badgeEl);
                     });
                 }
-                
-                const pendingRequests = server.getFriendRequests(currentUser).length;
+               
+                const pendingRequests = server.getFriendRequests(currentUser).length + server.getDuelRequests(currentUser).length;
                 if (pendingRequests > 0) {
                     updateUIForLoggedInState();
                 }
             }
         }
-        
+       
         document.getElementById('edit-about').addEventListener('click', function() {
             if (currentUser) {
                 const newAbout = prompt('Edit your about me:', userData.aboutMe || '');
@@ -2127,29 +2196,29 @@
                 showNotification('Please log in to edit your profile.', 'warning');
             }
         });
-        
+       
         document.getElementById('user-search').addEventListener('input', function() {
             const query = this.value.trim();
             const resultsContainer = document.getElementById('search-results');
-           
+          
             if (query.length < 2) {
                 resultsContainer.classList.remove('active');
                 return;
             }
-           
+          
             const results = server.searchUsers(query);
             resultsContainer.innerHTML = '';
-           
+          
             if (results.length === 0) {
                 resultsContainer.innerHTML = '<div class="search-result-item">No users found</div>';
             } else {
                 results.forEach(user => {
                     const resultItem = document.createElement('div');
                     resultItem.className = 'search-result-item';
-                   
+                  
                     const isFriend = currentUser && userData.friends && userData.friends.includes(user.username);
                     const hasPendingRequest = currentUser && server.getFriendRequests(user.username).includes(currentUser);
-                   
+                  
                     resultItem.innerHTML = `
                         <div class="search-result-avatar">${user.username.substring(0, 1).toUpperCase()}</div>
                         <div style="flex: 1;">
@@ -2161,9 +2230,9 @@
                                 ${isFriend ? 'Friends' : hasPendingRequest ? 'Pending' : 'Add Friend'}
                             </button>` : ''}
                     `;
-                   
+                  
                     resultsContainer.appendChild(resultItem);
-                    
+                   
                     // Add click event to show user profile
                     resultItem.addEventListener('click', function(e) {
                         if (!e.target.classList.contains('add-friend-btn')) {
@@ -2171,7 +2240,7 @@
                         }
                     });
                 });
-               
+              
                 document.querySelectorAll('.add-friend-btn').forEach(btn => {
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
@@ -2198,25 +2267,25 @@
                     });
                 });
             }
-           
+          
             resultsContainer.classList.add('active');
         });
-        
+       
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.search-bar')) {
                 document.getElementById('search-results').classList.remove('active');
             }
         });
-        
+       
         function updateFriendsList() {
             const friendsList = document.getElementById('friends-list');
             friendsList.innerHTML = '';
-           
+          
             if (!currentUser || !userData.friends || userData.friends.length === 0) {
                 friendsList.innerHTML = '<div class="no-friends">No friends yet</div>';
                 return;
             }
-           
+          
             userData.friends.forEach(friend => {
                 const friendItem = document.createElement('div');
                 friendItem.className = 'friend-item';
@@ -2225,28 +2294,28 @@
                     <span style="font-weight: 600; font-size: 14px;">${friend}</span>
                     <div class="friend-status status-online"></div>
                 `;
-                
+               
                 friendItem.addEventListener('click', function() {
                     showUserProfile(friend);
                 });
-                
+               
                 friendsList.appendChild(friendItem);
             });
         }
-        
+       
         function updateFriendRequestsList() {
             if (!currentUser) return;
-            
+           
             const container = document.getElementById('friend-requests-list');
             container.innerHTML = '';
-            
+           
             const requests = server.getFriendRequests(currentUser);
-            
+           
             if (requests.length === 0) {
                 container.innerHTML = '<div class="no-friends">No pending friend requests</div>';
                 return;
             }
-            
+           
             requests.forEach(requester => {
                 const requestItem = document.createElement('div');
                 requestItem.className = 'friend-request-item';
@@ -2263,8 +2332,8 @@
                 `;
                 container.appendChild(requestItem);
             });
-            
-            document.querySelectorAll('.accept-btn').forEach(btn => {
+           
+            document.querySelectorAll('.accept-btn:not(.duel-accept)').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const requester = this.getAttribute('data-requester');
                     if (server.acceptFriendRequest(currentUser, requester)) {
@@ -2276,8 +2345,8 @@
                     }
                 });
             });
-            
-            document.querySelectorAll('.decline-btn').forEach(btn => {
+           
+            document.querySelectorAll('.decline-btn:not(.duel-decline)').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const requester = this.getAttribute('data-requester');
                     if (server.declineFriendRequest(currentUser, requester)) {
@@ -2288,13 +2357,227 @@
                 });
             });
         }
-        
+       
+        function updateDuelRequestsList() {
+            if (!currentUser) return;
+           
+            const container = document.getElementById('duel-requests-list');
+            if (!container) return;
+           
+            container.innerHTML = '';
+           
+            const requests = server.getDuelRequests(currentUser);
+           
+            if (requests.length === 0) {
+                container.innerHTML = '<div class="no-friends">No pending duel requests</div>';
+                return;
+            }
+           
+            requests.forEach(requester => {
+                const requestItem = document.createElement('div');
+                requestItem.className = 'friend-request-item';
+                requestItem.innerHTML = `
+                    <div class="friend-request-avatar">${requester.substring(0, 1).toUpperCase()}</div>
+                    <div class="friend-request-info">
+                        <div class="friend-request-username">${requester}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">challenges you to a duel!</div>
+                    </div>
+                    <div class="friend-request-actions">
+                        <button class="accept-btn duel-accept" data-requester="${requester}">Accept</button>
+                        <button class="decline-btn duel-decline" data-requester="${requester}">Decline</button>
+                    </div>
+                `;
+                container.appendChild(requestItem);
+            });
+           
+            document.querySelectorAll('.duel-accept').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const opponent = this.getAttribute('data-requester');
+                    server.acceptDuelRequest(currentUser, opponent);
+                    startDuel(opponent);
+                    updateDuelRequestsList();
+                });
+            });
+           
+            document.querySelectorAll('.duel-decline').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const opponent = this.getAttribute('data-requester');
+                    server.declineDuelRequest(currentUser, opponent);
+                    updateDuelRequestsList();
+                    showNotification(`Declined duel from ${opponent}`, 'success');
+                });
+            });
+        }
+       
+        function updateOpponentsList() {
+            if (!currentUser) return;
+           
+            const list = document.getElementById('opponents-list');
+            list.innerHTML = '';
+           
+            const allUsers = Object.keys(server.users).filter(u => u !== currentUser);
+           
+            if (allUsers.length === 0) {
+                list.innerHTML = '<div class="no-friends">No opponents available</div>';
+                return;
+            }
+           
+            allUsers.forEach(u => {
+                const item = document.createElement('div');
+                item.className = 'friend-item';
+                item.innerHTML = `
+                    <div class="friend-avatar">${u.substring(0, 1).toUpperCase()}</div>
+                    <span style="font-weight: 600; font-size: 14px;">${u}</span>
+                    <button class="btn btn-primary challenge-btn" data-opponent="${u}">Challenge to Duel</button>
+                `;
+                list.appendChild(item);
+            });
+           
+            document.querySelectorAll('.challenge-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const opponent = this.getAttribute('data-opponent');
+                    if (server.sendDuelRequest(currentUser, opponent)) {
+                        showNotification(`Duel request sent to ${opponent}!`, 'success');
+                    } else {
+                        showNotification(`Duel request already sent or invalid!`, 'warning');
+                    }
+                });
+            });
+        }
+
+        function startDuel(opponent) {
+            const modal = document.getElementById('duel-modal');
+            modal.classList.add('active');
+           
+            const playerData = userData;
+            const opponentData = server.getUser(opponent) || { skinColor: '#ffffff', skinBrightness: 100 };
+           
+            let playerHP = 100;
+            let opponentHP = 100;
+            let isPlayerDefending = false;
+            let isOpponentDefending = false;
+           
+            const duelInfo = document.getElementById('duel-info');
+            duelInfo.innerHTML = `
+                <p>Your HP: <span id="player-hp">100</span></p>
+                <p>${opponent}'s HP: <span id="opponent-hp">100</span></p>
+                <p id="duel-message">Choose your move! (Attack beats Special, Special beats Defend, Defend beats Attack)</p>
+            `;
+           
+            const actions = document.getElementById('duel-actions');
+            actions.innerHTML = `
+                <button class="btn btn-primary" id="attack-btn">Attack</button>
+                <button class="btn btn-secondary" id="defend-btn">Defend</button>
+                <button class="btn btn-logout" id="special-btn">Special</button>
+            `;
+           
+            setupStickman('player-stickman', playerData.skinColor, playerData.skinBrightness / 100);
+            setupStickman('opponent-stickman', opponentData.skinColor, opponentData.skinBrightness / 100);
+           
+            function opponentMove() {
+                const moves = ['attack', 'defend', 'special'];
+                return moves[Math.floor(Math.random() * moves.length)];
+            }
+           
+            function playTurn(playerChoice) {
+                const opponentChoice = opponentMove();
+                let message = '';
+                let damageToOpponent = 0;
+                let damageToPlayer = 0;
+               
+                // Player action
+                if (playerChoice === 'attack') {
+                    damageToOpponent = 20;
+                    message += 'You attack! ';
+                } else if (playerChoice === 'defend') {
+                    isPlayerDefending = true;
+                    message += 'You defend! ';
+                } else if (playerChoice === 'special') {
+                    damageToOpponent = 30;
+                    message += 'You use special! ';
+                }
+               
+                // Opponent action
+                if (opponentChoice === 'attack') {
+                    damageToPlayer = 20;
+                    message += 'Opponent attacks!';
+                } else if (opponentChoice === 'defend') {
+                    isOpponentDefending = true;
+                    message += 'Opponent defends!';
+                } else if (opponentChoice === 'special') {
+                    damageToPlayer = 30;
+                    message += 'Opponent uses special!';
+                }
+               
+                // Apply counters
+                if (playerChoice === 'attack' && opponentChoice === 'special') damageToOpponent += 10; // Attack beats special
+                if (playerChoice === 'special' && opponentChoice === 'defend') damageToOpponent += 10; // Special beats defend
+                if (playerChoice === 'defend' && opponentChoice === 'attack') damageToPlayer -= 10; // Defend beats attack
+               
+                if (isOpponentDefending) {
+                    damageToOpponent = Math.floor(damageToOpponent / 2);
+                    isOpponentDefending = false;
+                }
+                if (isPlayerDefending) {
+                    damageToPlayer = Math.floor(damageToPlayer / 2);
+                    isPlayerDefending = false;
+                }
+               
+                opponentHP -= damageToOpponent;
+                playerHP -= damageToPlayer;
+               
+                if (opponentHP < 0) opponentHP = 0;
+                if (playerHP < 0) playerHP = 0;
+               
+                document.getElementById('player-hp').textContent = playerHP;
+                document.getElementById('opponent-hp').textContent = opponentHP;
+                document.getElementById('duel-message').textContent = message;
+               
+                if (playerHP <= 0 || opponentHP <= 0) {
+                    actions.innerHTML = '';
+                    if (playerHP <= 0 && opponentHP <= 0) {
+                        message = 'It\'s a tie!';
+                    } else if (playerHP <= 0) {
+                        message = 'You were defeated!';
+                    } else {
+                        message = 'You won!';
+                        userData.pencils += 100;
+                        server.saveUser(currentUser, userData);
+                        updateProfileData();
+                        updateUIForLoggedInState();
+                    }
+                    document.getElementById('duel-message').textContent = message;
+                    setTimeout(() => {
+                        modal.classList.remove('active');
+                    }, 3000);
+                    return;
+                }
+            }
+           
+            document.getElementById('attack-btn').addEventListener('click', () => playTurn('attack'));
+            document.getElementById('defend-btn').addEventListener('click', () => playTurn('defend'));
+            document.getElementById('special-btn').addEventListener('click', () => playTurn('special'));
+        }
+       
+        function setupStickman(id, color, brightness) {
+            const container = document.getElementById(id);
+            const adjColor = applyBrightness(color, brightness);
+            container.innerHTML = `
+                <div class="stickman-head" style="background-color: ${adjColor}; position: absolute; top: 10px; left: 60px; width: 30px; height: 30px;"></div>
+                <div class="stickman-body" style="background-color: ${adjColor}; position: absolute; top: 40px; left: 72px; width: 6px; height: 80px;"></div>
+                <div class="stickman-arm-left" style="background-color: ${adjColor}; position: absolute; top: 50px; left: 30px; width: 45px; height: 6px; transform: rotate(30deg);"></div>
+                <div class="stickman-arm-right" style="background-color: ${adjColor}; position: absolute; top: 50px; left: 75px; width: 45px; height: 6px; transform: rotate(-30deg);"></div>
+                <div class="stickman-leg-left" style="background-color: ${adjColor}; position: absolute; top: 120px; left: 30px; width: 45px; height: 6px; transform: rotate(-30deg);"></div>
+                <div class="stickman-leg-right" style="background-color: ${adjColor}; position: absolute; top: 120px; left: 75px; width: 45px; height: 6px; transform: rotate(30deg);"></div>
+            `;
+        }
+       
         function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
             notification.textContent = message;
             notification.className = `notification ${type}`;
             notification.classList.add('show');
-           
+          
             setTimeout(() => {
                 notification.classList.remove('show');
             }, 3000);
