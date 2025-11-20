@@ -2218,10 +2218,10 @@
                             joinDate: new Date().toLocaleDateString(),
                             friends: [],
                             followers: [],
-                            pencils: 0;
-                            aboutMe: '';
-                            badges: [];
-                            skinColor: '#ffffff';
+                            pencils: 0,
+                            aboutMe: '',
+                            badges: [],
+                            skinColor: '#ffffff',
                             skinBrightness: 100
                         };
                         localStorage.removeItem('stickverse_current_user');
@@ -2304,23 +2304,12 @@
             if (results.length === 0) {
                 resultsContainer.innerHTML = '<div class="search-result-item">No users found</div>';
             } else {
-                for (const user of results) {
+                results.forEach(user => {
                     const resultItem = document.createElement('div');
                     resultItem.className = 'search-result-item';
                  
-                    let buttonText = 'Add Friend';
-                    let hasPendingRequest = false;
-                    if (currentUser && currentUser !== user.username) {
-                        if (userData.friends && userData.friends.includes(user.username)) {
-                            buttonText = 'Friends';
-                        } else {
-                            const pendingRequests = await server.getFriendRequests(user.username);
-                            hasPendingRequest = pendingRequests.includes(currentUser);
-                            if (hasPendingRequest) {
-                                buttonText = 'Pending';
-                            }
-                        }
-                    }
+                    const isFriend = currentUser && userData.friends && userData.friends.includes(user.username);
+                    const hasPendingRequest = currentUser && (await server.getFriendRequests(user.username)).includes(currentUser);
                  
                     resultItem.innerHTML = `
                         <div class="search-result-avatar">${user.username.substring(0, 1).toUpperCase()}</div>
@@ -2329,8 +2318,8 @@
                             <div style="font-size: 12px; color: var(--text-secondary);">${user.aboutMe.substring(0, 30)}${user.aboutMe.length > 30 ? '...' : ''}</div>
                         </div>
                         ${currentUser && user.username !== currentUser ?
-                            `<button class="add-friend-btn ${userData.friends && userData.friends.includes(user.username) ? 'friends' : ''} ${hasPendingRequest ? 'pending' : ''}" data-username="${user.username}">
-                                ${buttonText}
+                            `<button class="add-friend-btn ${isFriend ? 'friends' : ''} ${hasPendingRequest ? 'pending' : ''}" data-username="${user.username}">
+                                ${isFriend ? 'Friends' : hasPendingRequest ? 'Pending' : 'Add Friend'}
                             </button>` : ''}
                     `;
                  
@@ -2342,7 +2331,7 @@
                             await showUserProfile(user.username);
                         }
                     });
-                }
+                });
              
                 document.querySelectorAll('.add-friend-btn').forEach(btn => {
                     btn.addEventListener('click', async function(e) {
